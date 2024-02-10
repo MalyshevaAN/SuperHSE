@@ -1,7 +1,7 @@
 #include <game.hpp>
 
 int main() {
-    auto game = Game();
+    auto game = super_hse::Game();
     game.run();
     return 0;
 }

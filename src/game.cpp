@@ -1,5 +1,7 @@
 #include <game.hpp>
 
+namespace super_hse {
+
 Game::Game() {
     window.create(sf::VideoMode(640, 480, 32), "SFML Window");
 }
@@ -16,3 +18,5 @@ void Game::run() {
         window.display();
     }  
 }
+
+} // namespace super_hse
