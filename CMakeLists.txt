@@ -4,7 +4,7 @@ project(super_hse)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(SRC_LIST src/main.cpp src/game.cpp)
+set(SRC_LIST src/main.cpp src/game.cpp src/scene.cpp)
 
 include_directories(include)
 
