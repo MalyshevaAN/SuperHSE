@@ -1,19 +1,15 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
-#include <memory>
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <filesystem>
+#include <iostream>
+#include <memory>
 #include <random>
 
 namespace super_hse {
 
-enum class SceneType {
-    MAIN_MENU,
-    LEVEL_MAP,
-    NONE
-};
+enum class SceneType { MAIN_MENU, LEVEL_MAP, NONE };
 
 class Scene {
 public:
@@ -50,17 +46,16 @@ public:
 
 class SceneManager {
 private:
-    std::unique_ptr<Scene> currentScene;
-public:
-    static bool needToChangeScene;
-    static SceneType nextSceneType;
+    static std::unique_ptr<Scene> currentScene;
 
-    void handleInput(sf::RenderWindow& window);
-    void changeScene(std::unique_ptr<Scene> newScene);
+public:
+    static void changeScene(std::unique_ptr<Scene> newScene);
+
+    void handleInput(sf::RenderWindow &window);
     void update();
     void draw(sf::RenderWindow &window);
 };
 
-} // namespace super_hse
+}  // namespace super_hse
 
-#endif // SCENE_HPP_
+#endif  // SCENE_HPP_

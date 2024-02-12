@@ -1,6 +1,6 @@
 #include "game.hpp"
-#include "scene.hpp"
 #include <memory>
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -11,7 +11,7 @@ void Game::run() {
         sceneManager.handleInput(window);
         sceneManager.update();
         sceneManager.draw(window);
-    }  
+    }
 }
 
-} // namespace super_hse
+}  // namespace super_hse
