@@ -1,21 +1,17 @@
-#include <game.hpp>
+#include "game.hpp"
+#include "scene.hpp"
+#include <memory>
 
 namespace super_hse {
 
-Game::Game() {
-    window.create(sf::VideoMode(640, 480, 32), "SFML Window");
-}
-
 void Game::run() {
+    auto sceneManager = SceneManager();
+    sceneManager.changeScene(std::make_unique<MainMenuScene>());
+
     while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-        window.clear();
-        window.display();
+        sceneManager.handleInput(window);
+        sceneManager.update();
+        sceneManager.draw(window);
     }  
 }
 
