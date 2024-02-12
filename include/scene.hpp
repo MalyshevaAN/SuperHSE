@@ -4,6 +4,8 @@
 #include <memory>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <filesystem>
+#include <random>
 
 namespace super_hse {
 
@@ -20,7 +22,6 @@ public:
     virtual void draw(sf::RenderWindow &window) = 0;
     virtual void handleInput(sf::RenderWindow &window) = 0;
 };
-
 
 class LevelMapScene : public Scene {
 private:

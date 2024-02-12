@@ -5,6 +5,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "scene.hpp"
+#include <filesystem>
+#include <random>
 #include <memory>
 
 namespace super_hse {
@@ -22,6 +24,5 @@ public:
     void run();
 };
 
-}  // namespace super_hse
-
+}
 #endif // GAME_HPP_

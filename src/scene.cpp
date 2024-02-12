@@ -87,6 +87,13 @@ void LevelMapScene::handleInput(sf::RenderWindow &window) {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
+
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::P) {
+                SceneManager::needToChangeScene = true;
+                SceneManager::nextSceneType = SceneType::MAIN_MENU;
+            }
+        }
     }
 }
 
