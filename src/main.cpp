@@ -1,4 +1,4 @@
-#include <game.hpp>
+#include "game.hpp"
 
 int main() {
     auto game = super_hse::Game();
