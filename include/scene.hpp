@@ -2,6 +2,7 @@
 #define SCENE_HPP_
 
 #include <memory>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 namespace super_hse {
@@ -14,9 +15,23 @@ public:
     virtual void handleInput(sf::RenderWindow &window) = 0;
 };
 
-class MainMenuScene : public Scene {
+
+class LevelMapScene : public Scene {
 public:
-    MainMenuScene() = default;
+    LevelMapScene() = default;
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
+    void handleInput(sf::RenderWindow &window) override;
+};
+
+class MainMenuScene : public Scene {
+private:
+    sf::Texture mainMenuLabel;
+    sf::Sprite label;
+
+public:
+    MainMenuScene();
+
     void update() override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::RenderWindow &window) override;
