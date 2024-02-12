@@ -5,7 +5,6 @@
 namespace super_hse {
 
 void Game::run() {
-    auto sceneManager = SceneManager();
     sceneManager.changeScene(std::make_unique<MainMenuScene>());
 
     while (window.isOpen()) {

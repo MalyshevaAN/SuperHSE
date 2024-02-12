@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <scene.hpp>
+#include "scene.hpp"
 #include <memory>
 
 namespace super_hse {
@@ -15,9 +15,10 @@ class Game {
     friend class LevelMapScene;
 private:
     sf::RenderWindow window;
+    SceneManager sceneManager;
 
 public:
-    Game() : window(sf::VideoMode(640, 480, 32), "SFML Window") {};
+    Game() : window(sf::VideoMode(640, 480, 32), "SFML Window"), sceneManager() {};
     void run();
 };
 
