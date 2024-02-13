@@ -19,16 +19,16 @@ public:
     virtual void handleInput(sf::RenderWindow &window) = 0;
 };
 
-class LevelMapScene : public Scene {
+class SceneManager {
 private:
-    sf::Texture levelMapPicture;
-    sf::Sprite label;
+    static std::unique_ptr<Scene> currentScene;
 
 public:
-    LevelMapScene();
-    void update() override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    static void changeScene(std::unique_ptr<Scene> newScene);
+
+    void handleInput(sf::RenderWindow &window);
+    void update();
+    void draw(sf::RenderWindow &window);
 };
 
 class MainMenuScene : public Scene {
@@ -44,16 +44,28 @@ public:
     void handleInput(sf::RenderWindow &window) override;
 };
 
-class SceneManager {
+class LevelMapScene : public Scene {
 private:
-    static std::unique_ptr<Scene> currentScene;
+    sf::Texture levelMapPicture;
+    sf::Sprite label;
 
 public:
-    static void changeScene(std::unique_ptr<Scene> newScene);
+    LevelMapScene();
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
+    void handleInput(sf::RenderWindow &window) override;
+};
 
-    void handleInput(sf::RenderWindow &window);
-    void update();
-    void draw(sf::RenderWindow &window);
+class LevelScene : public Scene {
+private:
+    sf::Texture levelPicture;
+    sf::Sprite label;
+
+public:
+    LevelScene();
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
+    void handleInput(sf::RenderWindow &window) override;
 };
 
 }  // namespace super_hse
