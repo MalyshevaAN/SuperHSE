@@ -8,11 +8,13 @@ Player::Player() {
         std::cerr << "Error loading level_map.png\n";
     }
     sprite.setTexture(playerPicture);
+
     // тут инициализируем все что нужно в этой сцене
     sprite.setPosition(10, 10);
 }
 
-void Player::update() {}
+void Player::update() {
+}
 
 void Player::draw(sf::RenderWindow &window) {
     window.draw(sprite);
@@ -33,8 +35,12 @@ void Player::handleInput(sf::Event &event) {
 }
 
 void Player::move(int dx, int dy) {
+    // TODO:
+    // разобраться с int/float
     sprite.move(dx, dy);
-    sprite.setPosition(sprite.getPosition().x + dx, sprite.getPosition().y + dy);
+    sprite.setPosition(
+        sprite.getPosition().x + dx, sprite.getPosition().y + dy
+    );
 }
 
 }  // namespace super_hse

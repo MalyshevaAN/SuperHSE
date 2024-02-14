@@ -15,6 +15,14 @@ enum class SceneType { MAIN_MENU, LEVEL_MAP, NONE };
 class Scene {
 public:
     Scene() = default;
+    virtual ~Scene() = default;
+
+    Scene(const Scene &) = delete;
+    Scene &operator=(const Scene &) = delete;
+
+    Scene(Scene &&) = delete;
+    Scene &operator=(Scene &&) = delete;
+
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     virtual void handleInput(sf::Event &event) = 0;
@@ -22,14 +30,15 @@ public:
 
 class SceneManager {
 private:
+    // NOLINTNEXTLINE [cppcoreguidelines-avoid-non-const-global-variables]
     static std::unique_ptr<Scene> currentScene;
 
 public:
     static void changeScene(std::unique_ptr<Scene> newScene);
 
-    void handleInput(sf::Event &event);
-    void update();
-    void draw(sf::RenderWindow &window);
+    static void handleInput(sf::Event &event);
+    static void update();
+    static void draw(sf::RenderWindow &window);
 };
 
 class MainMenuScene : public Scene {

@@ -5,18 +5,18 @@
 namespace super_hse {
 
 void Game::run() {
-    sceneManager.changeScene(std::make_unique<MainMenuScene>());
+    SceneManager::changeScene(std::make_unique<MainMenuScene>());
 
     while (window.isOpen()) {
-        sf::Event event;
+        sf::Event event{};
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            sceneManager.handleInput(event);
+            SceneManager::handleInput(event);
         }
-        sceneManager.update();
-        sceneManager.draw(window);
+        SceneManager::update();
+        SceneManager::draw(window);
     }
 }
 

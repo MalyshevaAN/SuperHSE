@@ -5,7 +5,6 @@ namespace super_hse {
 
 LevelScene::LevelScene() {
     player = Player();
-
 }
 
 void LevelScene::handleInput(sf::Event &event) {
