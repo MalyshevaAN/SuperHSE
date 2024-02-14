@@ -7,23 +7,16 @@ MainMenuScene::MainMenuScene() {
     if (!mainMenuLabel.loadFromFile("../assets/images/ryan.png")) {
         std::cerr << "Error loading ryan.png\n";
     }
-    std::cout << "MainMenuScene::MainMenuScene()\n";
     label.setTexture(mainMenuLabel);
     // тут инициализируем все что нужно в этой сцене
     label.setPosition(100, 100);
 }
 
-void MainMenuScene::handleInput(sf::RenderWindow &window) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::M) {
-                SceneManager::changeScene(std::make_unique<LevelMapScene>());
-                return;
-            }
+void MainMenuScene::handleInput(sf::Event &event) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::M) {
+            SceneManager::changeScene(std::make_unique<LevelMapScene>());
+            return;
         }
     }
 }

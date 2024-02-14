@@ -3,8 +3,8 @@
 
 namespace super_hse {
 
-void SceneManager::handleInput(sf::RenderWindow &window) {
-    currentScene->handleInput(window);
+void SceneManager::handleInput(sf::Event &event) {
+    currentScene->handleInput(event);
 }
 
 std::unique_ptr<Scene> SceneManager::currentScene = nullptr;

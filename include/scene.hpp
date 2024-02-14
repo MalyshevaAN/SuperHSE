@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <random>
+#include "player.hpp"
 
 namespace super_hse {
 
@@ -16,7 +17,7 @@ public:
     Scene() = default;
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
-    virtual void handleInput(sf::RenderWindow &window) = 0;
+    virtual void handleInput(sf::Event &event) = 0;
 };
 
 class SceneManager {
@@ -26,7 +27,7 @@ private:
 public:
     static void changeScene(std::unique_ptr<Scene> newScene);
 
-    void handleInput(sf::RenderWindow &window);
+    void handleInput(sf::Event &event);
     void update();
     void draw(sf::RenderWindow &window);
 };
@@ -41,7 +42,7 @@ public:
 
     void update() override;
     void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
 };
 
 class LevelMapScene : public Scene {
@@ -53,19 +54,18 @@ public:
     LevelMapScene();
     void update() override;
     void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
 };
 
 class LevelScene : public Scene {
 private:
-    sf::Texture levelPicture;
-    sf::Sprite label;
+    Player player;
 
 public:
     LevelScene();
     void update() override;
     void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
 };
 
 }  // namespace super_hse

@@ -12,21 +12,14 @@ LevelMapScene::LevelMapScene() {
     label.setPosition(100, 100);
 }
 
-void LevelMapScene::handleInput(sf::RenderWindow &window) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Num1) {
-                SceneManager::changeScene(std::make_unique<LevelScene>());
-                return;
-            } else if (event.key.code == sf::Keyboard::M) {
-                SceneManager::changeScene(std::make_unique<MainMenuScene>());
-                return;
-            }
+void LevelMapScene::handleInput(sf::Event &event) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Num1) {
+            SceneManager::changeScene(std::make_unique<LevelScene>());
+            return;
+        } else if (event.key.code == sf::Keyboard::M) {
+            SceneManager::changeScene(std::make_unique<MainMenuScene>());
+            return;
         }
     }
 }
