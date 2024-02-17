@@ -7,6 +7,8 @@
 #include <memory>
 #include <random>
 #include "player.hpp"
+#include "Level.hpp"
+#include <LDtkLoader/Project.hpp>
 
 namespace super_hse {
 
@@ -69,6 +71,7 @@ public:
 class LevelScene : public Scene {
 private:
     Player player;
+    Level level; // добавила класс уровня
 
 public:
     LevelScene();
