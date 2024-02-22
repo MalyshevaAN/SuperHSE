@@ -1,26 +1,18 @@
-#include <memory>
-#include "scene.hpp"
-#include "Level.hpp"
 #include <LDtkLoader/Project.hpp>
-#include <string>
-#include "TileMap.hpp"
 #include <iostream>
+#include <memory>
+#include <string>
+#include "Level.hpp"
+#include "TileMap.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
-LevelScene::LevelScene() {
+LevelScene::LevelScene(std::string filename) {
     player = Player();
-    Level level;
-    ldtk::Project project;
-    std::string ldtk_filename = "../source/first_level2.ldtk";
-    try {
-        project.loadFromFile(ldtk_filename);
-        std::cout << "LDtk World \"" << project.getFilePath() << "\" was loaded successfully." << std::endl;
-    }
-    catch (std::exception& ex) {
-        std::cerr << ex.what() << std::endl;
-    }
-    level.init(project);
+    level.ldtk_filename = filename;
+    level.project.loadFromFile(filename);
+    level.init();
 }
 
 void LevelScene::handleInput(sf::Event &event) {
@@ -37,20 +29,10 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::update() {
-    //level.update() - пока нет
+    // level.update() - пока нет
 }
 
-void LevelScene::draw(sf::RenderWindow &window) { // вот тут кринж, по другому пока не получилось, поэтому оно каждый раз занова карту загружает
-    ldtk::Project project;                       // что плохо, но по другому оно почему то не видит уже загруженные слои, в чем трабла я пока не поняла
-    std::string ldtk_filename = "../source/first_level2.ldtk"; // делать статическим пока тоже не вариант, у нас же много уровней будет. короче, разберусь
-    try {
-        project.loadFromFile(ldtk_filename);
-        std::cout << "LDtk World \"" << project.getFilePath() << "\" was loaded successfully." << std::endl;
-    }
-    catch (std::exception& ex) {
-        std::cerr << ex.what() << std::endl;
-    }
-    level.init(project);
+void LevelScene::draw(sf::RenderWindow &window) {
     window.clear();
     player.draw(window);
     level.render(window);

@@ -10,8 +10,20 @@
 
 namespace super_hse {
 
-void Level::init(const ldtk::Project &project) {
-    auto &world = project.getWorld();
+Level::Level(std::string filename) {
+    ldtk_filename = filename;
+    try {
+        project.loadFromFile(ldtk_filename);
+        std::cout << "LDtk World \"" << project.getFilePath()
+                  << "\" was loaded successfully." << std::endl;
+        init();
+    } catch (std::exception &ex) {
+        std::cerr << ex.what() << std::endl;
+    }
+}
+
+void Level::init() {
+    auto &world = project.allWorlds().at(0);
     auto &ldtk_first_level =
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
     TileMap::path = project.getFilePath().directory(

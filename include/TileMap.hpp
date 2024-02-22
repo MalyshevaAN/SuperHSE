@@ -36,8 +36,8 @@ public:
     };
 
     TileMap() = default;
-    void load(const ldtk::Level &level
-    );  // загрузка уровня, запись слоёв уровня в мапу со слоями
+    void load(const ldtk::Level &level);
+    // загрузка уровня, запись слоёв уровня в мапу со слоями
     auto getLayer(const std::string &name) const
         -> const Layer &;  // выбор конкретного слоя из всех слоёв уровня
 private:

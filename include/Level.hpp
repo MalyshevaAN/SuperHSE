@@ -6,9 +6,14 @@
 
 namespace super_hse {
 struct Level {
+    Level() = default;
+    Level(std::string filename);
+    std::string
+        ldtk_filename;  // файл на основе которого всё строем теперь как поле
     TileMap tilemap;  // сама карта тайлов для этого уровня
 
-    void init(const ldtk::Project &project);
+    ldtk::Project project;  // сделала проект откуда берем уровень его полем
+    void init();
 
     void render(sf::RenderTarget &target);
 };
@@ -24,3 +29,6 @@ struct Level {
 // друга конкретно сейчас подгружаются только тайловые слои по сути нам
 // понадобятся они и еще слои entity, чтобы они как колладеры были, научусь
 // подгружать их тоже
+
+// ** следующие шаги - выгрузка объектов столкновения именно как коллайдеров,
+// плюс создание enum-ов и мап, для передачи разных уровней
