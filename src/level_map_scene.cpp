@@ -15,7 +15,9 @@ LevelMapScene::LevelMapScene() {
 void LevelMapScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Num1) {
-            SceneManager::changeScene(std::make_unique<LevelScene>());
+            SceneManager::changeScene(std::make_unique<LevelScene>(
+                "../assets/tilemaps/first_level2.ldtk"
+            ));
             return;
         } else if (event.key.code == sf::Keyboard::M) {
             SceneManager::changeScene(std::make_unique<MainMenuScene>());

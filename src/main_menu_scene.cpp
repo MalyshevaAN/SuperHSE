@@ -26,7 +26,6 @@ void MainMenuScene::update() {
 
 void MainMenuScene::draw(sf::RenderWindow &window) {
     window.clear();
-
     window.draw(label);
     window.display();
 }

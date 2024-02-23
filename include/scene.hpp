@@ -1,11 +1,13 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
+#include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <iostream>
 #include <memory>
 #include <random>
+#include "Level.hpp"
 #include "player.hpp"
 
 namespace super_hse {
@@ -68,10 +70,13 @@ public:
 
 class LevelScene : public Scene {
 private:
+    std::string ldtk_filename;
     Player player;
+    Level level;  // добавила класс уровня
 
 public:
-    LevelScene();
+    LevelScene() = default;
+    LevelScene(std::string ldtk_filename);
     void update() override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;

@@ -1,10 +1,18 @@
+#include <LDtkLoader/Project.hpp>
+#include <iostream>
 #include <memory>
+#include <string>
+#include "Level.hpp"
+#include "TileMap.hpp"
 #include "scene.hpp"
 
 namespace super_hse {
 
-LevelScene::LevelScene() {
+LevelScene::LevelScene(std::string filename) {
     player = Player();
+    level.ldtk_filename = filename;
+    level.project.loadFromFile(filename);
+    level.init();
 }
 
 void LevelScene::handleInput(sf::Event &event) {
@@ -21,11 +29,13 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::update() {
+    // level.update() - пока нет
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
     window.clear();
     player.draw(window);
+    level.render(window);
     window.display();
 }
 
