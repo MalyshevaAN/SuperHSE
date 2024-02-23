@@ -6,7 +6,6 @@ namespace super_hse {
 
 void Game::run() {
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
-
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {

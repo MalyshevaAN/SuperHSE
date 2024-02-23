@@ -8,11 +8,17 @@
 
 namespace super_hse {
 
-LevelScene::LevelScene(std::string filename) {
+LevelScene::LevelScene(int levelN) {
+    levelNumber = levelN;
     player = Player();
-    level.ldtk_filename = filename;
+    std::string filename = storage.storage.at(levelNumber)->filename;
+    level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
-    level.init();
+    level.init(
+        storage.storage.at(levelNumber)->tileLayerName,
+        storage.storage.at(levelNumber)->entityLayerName,
+        storage.storage.at(levelNumber)->colliderName
+    );
 }
 
 void LevelScene::handleInput(sf::Event &event) {
@@ -34,8 +40,8 @@ void LevelScene::update() {
 
 void LevelScene::draw(sf::RenderWindow &window) {
     window.clear();
+    level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
-    level.render(window);
     window.display();
 }
 

@@ -72,11 +72,13 @@ class LevelScene : public Scene {
 private:
     std::string ldtk_filename;
     Player player;
+    LevelsStorage storage;
+    int levelNumber;
     Level level;  // добавила класс уровня
 
 public:
     LevelScene() = default;
-    LevelScene(std::string ldtk_filename);
+    LevelScene(int levelNumber);
     void update() override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;

@@ -2,8 +2,8 @@
 #define LEVEL_HPP_
 #include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
-#include "TileMap.hpp"
 #include <vector>
+#include "TileMap.hpp"
 
 namespace super_hse {
 struct Level {
@@ -15,13 +15,37 @@ struct Level {
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
 
     std::vector<sf::FloatRect> colliders;
-    void init();
+    void init(
+        std::vector<std::string> &tileLayerName,
+        std::vector<std::string> &entityLayerNames,
+        std::vector<std::string> &colliderNames
+    );
 
-    sf::RectangleShape getColliderShape(const sf::FloatRect& rect);
+    sf::RectangleShape getColliderShape(const sf::FloatRect &rect);
 
-    void render(sf::RenderTarget &target);
+    void
+    render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
 };
 }  // namespace super_hse
+
+struct LevelInfo;
+
+struct LevelsStorage {
+    std::vector<std::unique_ptr<LevelInfo>> storage;
+
+    LevelsStorage();
+};
+
+struct LevelInfo {
+    std::string filename;
+    std::vector<std::string> tileLayerName;
+    std::vector<std::string> entityLayerName;
+    std::vector<std::string> colliderName;
+
+    LevelInfo() = default;
+
+    friend LevelsStorage;
+};
 
 #endif
 
