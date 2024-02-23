@@ -28,7 +28,21 @@ void Level::init() {
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
     TileMap::path = project.getFilePath().directory(
     );  // достали папку где лежит проект, чтобы потом там искать текстуры
-    tilemap.load(ldtk_first_level);  // загружаем стои конкретного уровня
+    tilemap.load(ldtk_first_level);  // загружаем слои конкретного уровня
+    auto& entities_layer = ldtk_first_level.getLayer("Bricks"); // мапу надо
+    for (ldtk::Entity& entity : entities_layer.getEntitiesByName("OrangeBrick")){
+        colliders.emplace_back((float)entity.getPosition().x, (float)entity.getPosition().y, (float)entity.getSize().x, (float)entity.getSize().y);
+    }
+    for (ldtk::Entity& entity : entities_layer.getEntitiesByName("WhiteBrick")){
+        colliders.emplace_back((float)entity.getPosition().x, (float)entity.getPosition().y, (float)entity.getSize().x, (float)entity.getSize().y);
+    }
+}
+
+sf::RectangleShape Level::getColliderShape(const sf::FloatRect& rect){
+    sf::RectangleShape r({rect.width, rect.height});
+    r.setPosition(rect.left, rect.top);
+    r.setFillColor(sf::Color::Red); // поменять на красивую текстуру!!!
+    return r;
 }
 
 void Level::render(sf::RenderTarget &target) {
@@ -38,6 +52,9 @@ void Level::render(sf::RenderTarget &target) {
     target.draw(tilemap.getLayer("Clouds"));
     target.draw(tilemap.getLayer("Grass"));
     target.draw(tilemap.getLayer("Texture_bricks"));
+    for (auto& entity: colliders){
+        target.draw(getColliderShape(entity));
+    }
 }
 }  // namespace super_hse
 

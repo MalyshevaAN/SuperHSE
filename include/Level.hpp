@@ -3,6 +3,7 @@
 #include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
 #include "TileMap.hpp"
+#include <vector>
 
 namespace super_hse {
 struct Level {
@@ -11,9 +12,12 @@ struct Level {
     std::string
         ldtk_filename;  // файл на основе которого всё строем теперь как поле
     TileMap tilemap;  // сама карта тайлов для этого уровня
-
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
+
+    std::vector<sf::FloatRect> colliders;
     void init();
+
+    sf::RectangleShape getColliderShape(const sf::FloatRect& rect);
 
     void render(sf::RenderTarget &target);
 };
