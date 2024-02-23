@@ -6,30 +6,50 @@
 namespace super_hse {
 
 Player::Player() {
-    if (!playerPicture.loadFromFile("../assets/images/ryan-stand.png")) {
-        std::cerr << "Error loading level_map.png\n";
+    if (!playerPicture.loadFromFile("../assets/images/man_walk.png")) {
+        std::cerr << "Error loading man_walk.png\n";
     }
+    std::cout << "Player created\n";
     sprite.setTexture(playerPicture);
-
-    // тут инициализируем все что нужно в этой сцене
     sprite.setPosition(10, 10);
 }
 
 void Player::update(sf::Time dTime) {
+    // обрабатываем передвижение персонажа
     sf::Vector2f movement(0.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
+        state = PlayerState::WALK_LEFT;
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         movement.x += speed;
+        state = PlayerState::WALK_RIGHT;
+
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         movement.y -= speed;
+
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         movement.y += speed;
+
+    } else {
+        state = PlayerState::STAND;
     }
     movement *= dTime.asSeconds();
-    std::cout << movement.x << " " << movement.y << std::endl;
     move(movement.x, movement.y);
+
+    // грузим следующий фрейм
+    if (state == PlayerState::WALK_LEFT || state == PlayerState::WALK_RIGHT) {
+        currentFrame += 0.008 * dTime.asMilliseconds();
+        if (currentFrame > totalFrames) {
+            currentFrame -= totalFrames;
+        }
+        sprite.setTextureRect(sf::IntRect(
+            frameWidth * int(currentFrame), 0, frameWidth, frameHeight
+        ));
+        
+    } else {
+        sprite.setTextureRect(sf::IntRect(0, 0, frameWidth, frameHeight));
+    }
 }
 
 void Player::draw(sf::RenderWindow &window) {

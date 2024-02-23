@@ -11,12 +11,26 @@ struct Position {
     int y;
 };
 
+enum class PlayerState {
+    STAND,
+    WALK_LEFT,
+    WALK_RIGHT,
+    JUMP
+};
+
 class Player {
 private:
     sf::Texture playerPicture;
     sf::Sprite sprite;
+
     Position position = {10, 10};
-    float speed = 100.f;
+    float speed = 80.f;
+    PlayerState state = PlayerState::STAND;
+    
+    float currentFrame = 0;
+    int totalFrames = 6;
+    int frameWidth = 48;
+    int frameHeight = 54;
 
 public:
     Player();

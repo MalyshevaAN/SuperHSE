@@ -9,7 +9,8 @@
 namespace super_hse {
 
 LevelScene::LevelScene(std::string filename) {
-    player = Player();
+    // player = Player();
+
     level.ldtk_filename = filename;
     level.project.loadFromFile(filename);
     level.init();
