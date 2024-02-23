@@ -26,7 +26,7 @@ void LevelMapScene::handleInput(sf::Event &event) {
     }
 }
 
-void LevelMapScene::update() {
+void LevelMapScene::update(sf::Time &dTime) {
 }
 
 void LevelMapScene::draw(sf::RenderWindow &window) {

@@ -6,9 +6,12 @@
 #include <vector>
 
 namespace super_hse {
+
 struct Level {
+
     Level() = default;
     Level(std::string filename);
+    
     std::string
         ldtk_filename;  // файл на основе которого всё строем теперь как поле
     TileMap tilemap;  // сама карта тайлов для этого уровня
@@ -21,6 +24,7 @@ struct Level {
 
     void render(sf::RenderTarget &target);
 };
+
 }  // namespace super_hse
 
 #endif

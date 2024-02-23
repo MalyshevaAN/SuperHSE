@@ -16,13 +16,17 @@ private:
     sf::Texture playerPicture;
     sf::Sprite sprite;
     Position position = {10, 10};
+    float speed = 100.f;
 
 public:
     Player();
-    void update();
+    void update(sf::Time dTime);
     void draw(sf::RenderWindow &window);
     void handleInput(sf::Event &event);
     void move(int dx, int dy);
+    sf::FloatRect getCollider();
+
+    float getSpeed() const { return speed; }
 };
 
 }  // namespace super_hse

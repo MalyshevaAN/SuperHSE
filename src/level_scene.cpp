@@ -25,17 +25,43 @@ void LevelScene::handleInput(sf::Event &event) {
             return;
         }
     }
-    player.handleInput(event);
+    // player.handleInput(event);
 }
 
-void LevelScene::update() {
+void LevelScene::update(sf::Time &dTime) {
     // level.update() - пока нет
+
+    player.update(dTime);
+
+    // collision checks:
+    auto player_collider = player.getCollider();
+    int dTimeSeconds = dTime.asSeconds();
+    for (auto &entity: level.colliders) {
+        sf::FloatRect intersect;
+        if (player_collider.intersects(entity, intersect)) {
+            if (intersect.width < intersect.height) {
+                if (player_collider.left < entity.left) {
+                    player.move(-dTimeSeconds * player.getSpeed(), 0);
+                } else {
+                    player.move(dTimeSeconds * player.getSpeed(), 0);
+                }
+            } else {
+                if (player_collider.top < entity.top) {
+                    player.move(0, -dTimeSeconds * player.getSpeed());
+                } else {
+                    player.move(0, dTimeSeconds * player.getSpeed());
+                }
+            }
+        }
+    }
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
     window.clear();
-    player.draw(window);
+    
     level.render(window);
+
+    player.draw(window);
     window.display();
 }
 

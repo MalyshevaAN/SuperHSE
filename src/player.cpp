@@ -1,5 +1,7 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
 #include "player.hpp"
+#include <iostream>
+
 
 namespace super_hse {
 
@@ -13,7 +15,21 @@ Player::Player() {
     sprite.setPosition(10, 10);
 }
 
-void Player::update() {
+void Player::update(sf::Time dTime) {
+    sf::Vector2f movement(0.f, 0.f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        movement.x -= speed;
+
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        movement.x += speed;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        movement.y -= speed;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        movement.y += speed;
+    }
+    movement *= dTime.asSeconds();
+    std::cout << movement.x << " " << movement.y << std::endl;
+    move(movement.x, movement.y);
 }
 
 void Player::draw(sf::RenderWindow &window) {
@@ -21,17 +37,7 @@ void Player::draw(sf::RenderWindow &window) {
 }
 
 void Player::handleInput(sf::Event &event) {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Right) {
-            move(5, 0);
-        } else if (event.key.code == sf::Keyboard::Left) {
-            move(-5, 0);
-        } else if (event.key.code == sf::Keyboard::Up) {
-            move(0, -5);
-        } else if (event.key.code == sf::Keyboard::Down) {
-            move(0, 5);
-        }
-    }
+
 }
 
 void Player::move(int dx, int dy) {
@@ -41,6 +47,16 @@ void Player::move(int dx, int dy) {
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
     );
+}
+
+sf::FloatRect Player::getCollider() {
+    auto bounds = sprite.getGlobalBounds();
+    sf::FloatRect rect;
+    rect.left = bounds.left;
+    rect.width = bounds.width;
+    rect.top = bounds.top + bounds.height / 2;
+    rect.height = bounds.height / 2;
+    return rect;
 }
 
 }  // namespace super_hse
