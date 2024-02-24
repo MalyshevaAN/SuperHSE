@@ -11,11 +11,11 @@ Player::Player() {
     }
     std::cout << "Player created\n";
     sprite.setTexture(playerPicture);
-    sprite.setPosition(10, 10);
+    sprite.setPosition(200, 10);
 }
 
-void Player::update(sf::Time dTime) {
-    // обрабатываем передвижение персонажа
+sf::Vector2f Player::calcMovement(sf::Time dTime) {
+    // считаем передвижение персонажа в плоскости
     sf::Vector2f movement(0.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
@@ -35,8 +35,11 @@ void Player::update(sf::Time dTime) {
         state = PlayerState::STAND;
     }
     movement *= dTime.asSeconds();
-    move(movement.x, movement.y);
+    return movement;
+    // move(movement.x, movement.y);
+};
 
+void Player::update(sf::Time dTime) {
     // грузим следующий фрейм
     if (state == PlayerState::WALK_LEFT || state == PlayerState::WALK_RIGHT) {
         currentFrame += 0.008 * dTime.asMilliseconds();
@@ -73,7 +76,10 @@ sf::FloatRect Player::getCollider() {
     auto bounds = sprite.getGlobalBounds();
     sf::FloatRect rect;
     rect.left = bounds.left;
-    rect.width = bounds.width;
+    // TODO тут какой-то косяк потому что размер фрейма сильно не равно
+    //      реальному размеру человечка.
+    // Надо смотреть пересечения как-то по непрозрачным каналам картинки, скорее всего
+    rect.width = bounds.width - 20; 
     rect.top = bounds.top + bounds.height / 2;
     rect.height = bounds.height / 2;
     return rect;

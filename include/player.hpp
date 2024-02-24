@@ -23,7 +23,7 @@ private:
     sf::Texture playerPicture;
     sf::Sprite sprite;
 
-    Position position = {10, 10};
+    Position position = {200, 10};
     float speed = 80.f;
     PlayerState state = PlayerState::STAND;
     
@@ -39,6 +39,7 @@ public:
     void handleInput(sf::Event &event);
     void move(int dx, int dy);
     sf::FloatRect getCollider();
+    sf::Vector2f calcMovement(sf::Time dTime);
 
     float getSpeed() const { return speed; }
 };

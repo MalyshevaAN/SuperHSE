@@ -32,29 +32,34 @@ void LevelScene::handleInput(sf::Event &event) {
 void LevelScene::update(sf::Time &dTime) {
     // level.update() - пока нет
 
-    player.update(dTime);
+    // посчитаем следующую возможную позицию игрока
+    sf::FloatRect nextPositionCollider = player.getCollider();
+    sf::Vector2f movement = player.calcMovement(dTime);
+    nextPositionCollider.left += movement.x;
+    nextPositionCollider.top += movement.y;
 
-    // collision checks:
-    auto player_collider = player.getCollider();
+    // Проверяем, будет ли пересечение с блоками
     int dTimeSeconds = dTime.asSeconds();
+
+    bool isCollidingWithBlock = false;
     for (auto &entity: level.colliders) {
         sf::FloatRect intersect;
-        if (player_collider.intersects(entity, intersect)) {
-            if (intersect.width < intersect.height) {
-                if (player_collider.left < entity.left) {
-                    player.move(-dTimeSeconds * player.getSpeed(), 0);
-                } else {
-                    player.move(dTimeSeconds * player.getSpeed(), 0);
-                }
-            } else {
-                if (player_collider.top < entity.top) {
-                    player.move(0, -dTimeSeconds * player.getSpeed());
-                } else {
-                    player.move(0, dTimeSeconds * player.getSpeed());
-                }
-            }
+        if (nextPositionCollider.intersects(entity, intersect)) {
+            // проверить тип объекта, с кем пересеклись (в данном случае - стены/пол)
+            // TODO - добавить проверку на тип объекта (тут нужна Настя и её енамы)
+            isCollidingWithBlock = true;
         }
+        // TODO если пересечение с монетками/врагами это тоже надо 
+        //      обрабатывать тут где-то (инфа на будущее)
     }
+
+    // если не пересекается с блоками, то двигаем игрока
+    if (!isCollidingWithBlock) {
+        player.move(movement.x, movement.y);
+    }
+
+    // обновление фрейма
+    player.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
