@@ -34,12 +34,12 @@ private:
 
 public:
     Player();
-    void update(sf::Time dTime);
+    void update(const sf::Time &dTime);
     void draw(sf::RenderWindow &window);
-    void handleInput(sf::Event &event);
+    void handleInput(const sf::Event &event);
     void move(int dx, int dy);
     sf::FloatRect getCollider();
-    sf::Vector2f calcMovement(sf::Time dTime);
+    sf::Vector2f calcMovement(const sf::Time &dTime);
 
     float getSpeed() const { return speed; }
 };

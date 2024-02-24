@@ -42,14 +42,16 @@ void LevelScene::update(sf::Time &dTime) {
     int dTimeSeconds = dTime.asSeconds();
 
     bool isCollidingWithBlock = false;
-    for (auto &entity: level.colliders) {
+    for (auto &entity : level.colliders) {
         sf::FloatRect intersect;
         if (nextPositionCollider.intersects(entity, intersect)) {
-            // проверить тип объекта, с кем пересеклись (в данном случае - стены/пол)
-            // TODO - добавить проверку на тип объекта (тут нужна Настя и её енамы)
+            // проверить тип объекта, с кем пересеклись (в данном случае -
+            // стены/пол)
+            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+            // енамы)
             isCollidingWithBlock = true;
         }
-        // TODO если пересечение с монетками/врагами это тоже надо 
+        // TODO если пересечение с монетками/врагами это тоже надо
         //      обрабатывать тут где-то (инфа на будущее)
     }
 
@@ -64,7 +66,7 @@ void LevelScene::update(sf::Time &dTime) {
 
 void LevelScene::draw(sf::RenderWindow &window) {
     window.clear();
-    
+
     level.render(window);
 
     player.draw(window);
