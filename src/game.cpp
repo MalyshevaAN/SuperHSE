@@ -1,17 +1,23 @@
 #include "game.hpp"
-#include "scene.hpp"
 #include <memory>
+#include "scene.hpp"
 
 namespace super_hse {
 
 void Game::run() {
-    sceneManager.changeScene(std::make_unique<MainMenuScene>());
+    SceneManager::changeScene(std::make_unique<MainMenuScene>());
 
     while (window.isOpen()) {
-        sceneManager.handleInput(window);
-        sceneManager.update();
-        sceneManager.draw(window);
-    }  
+        sf::Event event{};
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            SceneManager::handleInput(event);
+        }
+        SceneManager::update();
+        SceneManager::draw(window);
+    }
 }
 
-} // namespace super_hse
+}  // namespace super_hse

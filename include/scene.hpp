@@ -1,38 +1,46 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
-#include <memory>
-#include <iostream>
+#include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
 #include <filesystem>
+#include <iostream>
+#include <memory>
 #include <random>
+#include "Level.hpp"
+#include "player.hpp"
 
 namespace super_hse {
 
-enum class SceneType {
-    MAIN_MENU,
-    LEVEL_MAP,
-    NONE
-};
+enum class SceneType { MAIN_MENU, LEVEL_MAP, NONE };
 
 class Scene {
 public:
     Scene() = default;
+    virtual ~Scene() = default;
+
+    Scene(const Scene &) = delete;
+    Scene &operator=(const Scene &) = delete;
+
+    Scene(Scene &&) = delete;
+    Scene &operator=(Scene &&) = delete;
+
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
-    virtual void handleInput(sf::RenderWindow &window) = 0;
+    virtual void handleInput(sf::Event &event) = 0;
 };
 
-class LevelMapScene : public Scene {
+class SceneManager {
 private:
-    sf::Texture levelMapPicture;
-    sf::Sprite label;
+    // NOLINTNEXTLINE [cppcoreguidelines-avoid-non-const-global-variables]
+    static std::unique_ptr<Scene> currentScene;
 
 public:
-    LevelMapScene();
-    void update() override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    static void changeScene(std::unique_ptr<Scene> newScene);
+
+    static void handleInput(sf::Event &event);
+    static void update();
+    static void draw(sf::RenderWindow &window);
 };
 
 class MainMenuScene : public Scene {
@@ -45,22 +53,35 @@ public:
 
     void update() override;
     void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
 };
 
-class SceneManager {
+class LevelMapScene : public Scene {
 private:
-    std::unique_ptr<Scene> currentScene;
-public:
-    static bool needToChangeScene;
-    static SceneType nextSceneType;
+    sf::Texture levelMapPicture;
+    sf::Sprite label;
 
-    void handleInput(sf::RenderWindow& window);
-    void changeScene(std::unique_ptr<Scene> newScene);
-    void update();
-    void draw(sf::RenderWindow &window);
+public:
+    LevelMapScene();
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
 };
 
-} // namespace super_hse
+class LevelScene : public Scene {
+private:
+    std::string ldtk_filename;
+    Player player;
+    Level level;  // добавила класс уровня
 
-#endif // SCENE_HPP_
+public:
+    LevelScene() = default;
+    LevelScene(std::string ldtk_filename);
+    void update() override;
+    void draw(sf::RenderWindow &window) override;
+    void handleInput(sf::Event &event) override;
+};
+
+}  // namespace super_hse
+
+#endif  // SCENE_HPP_
