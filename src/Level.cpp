@@ -4,6 +4,7 @@
 #include "Level.hpp"
 #include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
@@ -64,20 +65,37 @@ void Level::render(
         target.draw(getColliderShape(entity));
     }
 }
-}  // namespace super_hse
+
+LevelInfo::LevelInfo(std::string file) {
+    std::string line;
+    std::ifstream in(file);
+    if (in.is_open()) {
+        std::getline(in, line);
+        filename = line.substr(0, line.size());
+        std::getline(in, line);
+        std::getline(in, line);
+        while (!line.empty()) {
+            tileLayerName.push_back(line);
+            std::getline(in, line);
+        }
+        std::getline(in, line);
+        while (!line.empty()) {
+            entityLayerName.push_back(line);
+            std::getline(in, line);
+        }
+        std::getline(in, line);
+        while (!line.empty()) {
+            colliderName.push_back(line);
+            std::getline(in, line);
+        }
+    } else {
+        throw 1;
+    }
+}
 
 LevelsStorage::LevelsStorage() {
-    auto level1 = std::make_unique<LevelInfo>();
-    level1->filename = "../assets/tilemaps/first_level2.ldtk";
-    level1->colliderName.push_back("OrangeBrick");
-    level1->colliderName.push_back("WhiteBrick");
-    level1->entityLayerName.push_back("Bricks");
-    level1->tileLayerName.push_back("Background");
-    level1->tileLayerName.push_back("Ground");
-    level1->tileLayerName.push_back("Clouds");
-    level1->tileLayerName.push_back("Grass");
-    level1->tileLayerName.push_back("Texture_bricks");
+    auto level1 = std::make_unique<LevelInfo>("../assets/files/level1.txt");
     storage.push_back(std::move(level1));
 }  // namespace super_hse
-
+}  // namespace super_hse
 #endif

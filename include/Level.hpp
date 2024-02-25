@@ -26,7 +26,6 @@ struct Level {
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
 };
-}  // namespace super_hse
 
 struct LevelInfo;
 
@@ -44,8 +43,11 @@ struct LevelInfo {
 
     LevelInfo() = default;
 
+    LevelInfo(std::string file);
+
     friend LevelsStorage;
 };
+}  // namespace super_hse
 
 #endif
 

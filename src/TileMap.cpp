@@ -60,6 +60,7 @@ void TileMap::load(const ldtk::Level &level) {  // подгрузка уровн
     m_render_texture.create(level.size.x, level.size.y);
     m_layers.clear();
     for (const auto &layer : level.allLayers()) {
+        std::cout << layer.getName();
         if (layer.getType() == ldtk::LayerType::Tiles) {
             m_layers.insert({layer.getName(), {layer, m_render_texture}});
         }
@@ -73,6 +74,7 @@ auto TileMap::getLayer(const std::string &name) const
     try {
         return m_layers.at(name);
     } catch (std::out_of_range &e) {
-        throw 1;
+        std::cerr << name;
+        throw 10;
     }
 }
