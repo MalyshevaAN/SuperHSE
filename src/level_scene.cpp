@@ -39,9 +39,10 @@ void LevelScene::update(sf::Time &dTime) {
     nextPositionCollider.top += movement.y;
 
     // Проверяем, будет ли пересечение с блоками
-    int dTimeSeconds = dTime.asSeconds();
+    const float dTimeSeconds = dTime.asSeconds();
 
-    bool isCollidingWithBlock = false;
+    bool isCollidingWithWall = false;
+    bool isCollidingWithFloor = false;
     for (auto &entity : level.colliders) {
         sf::FloatRect intersect;
         if (nextPositionCollider.intersects(entity, intersect)) {
@@ -49,15 +50,32 @@ void LevelScene::update(sf::Time &dTime) {
             // стены/пол)
             // TODO - добавить проверку на тип объекта (тут нужна Настя и её
             // енамы)
-            isCollidingWithBlock = true;
+
+            // проверка что пересекаемся с полом
+            if (nextPositionCollider.top + nextPositionCollider.height >=
+                entity.top) {
+                isCollidingWithFloor = true;
+                nextPositionCollider.top -= movement.y;
+                movement.y = 0;
+
+                // если после отката человечка наверх мы всё равно пересекаемся
+                // с блоком - значит он стена
+                if (nextPositionCollider.intersects(entity, intersect)) {
+                    isCollidingWithWall = true;
+                }
+            } else {
+                isCollidingWithWall = true;
+            }
         }
-        // TODO если пересечение с монетками/врагами это тоже надо
-        //      обрабатывать тут где-то (инфа на будущее)
     }
 
-    // если не пересекается с блоками, то двигаем игрока
-    if (!isCollidingWithBlock) {
-        player.move(movement.x, movement.y);
+    player.isGrounded = isCollidingWithFloor;
+
+    if (!isCollidingWithWall) {
+        player.move(movement.x, 0);
+    }
+    if (!isCollidingWithFloor) {
+        player.move(0, movement.y);
     }
 
     // обновление фрейма

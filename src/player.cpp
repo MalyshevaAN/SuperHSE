@@ -4,7 +4,7 @@
 
 namespace super_hse {
 
-float GRAVITY = 80.f;
+const float GRAVITY = 70.f;
 
 Player::Player() {
     if (!playerPicture.loadFromFile("../assets/images/man_walk.png")) {
@@ -36,21 +36,20 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         movement.y += speed;
 
-    } 
-    else {
+    } else {
         state = PlayerState::STAND;
     }
-    // гравитация пока не особо работает, плеер прилипает к полу :(
-    movement.y += GRAVITY;
+    if (!isGrounded) {
+        movement.y += GRAVITY;
+    }
     movement *= dTime.asSeconds();
     return movement;
-    // move(movement.x, movement.y);
 };
 
 void Player::update(const sf::Time &dTime) {
     // грузим следующий фрейм
     if (state == PlayerState::WALK_LEFT || state == PlayerState::WALK_RIGHT) {
-        currentFrame += 0.008 * dTime.asMilliseconds();
+        currentFrame += frameSpeed * dTime.asMilliseconds();
         if (currentFrame > totalFrames) {
             currentFrame -= totalFrames;
         }

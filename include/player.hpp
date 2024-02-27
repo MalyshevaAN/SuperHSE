@@ -24,13 +24,15 @@ private:
     sf::Sprite sprite;
 
     Position position = {200, 10};
-    float speed = 80.f;
+    const float speed = 70.f;
     PlayerState state = PlayerState::STAND;
     
     float currentFrame = 0;
     int totalFrames = 6;
-    int frameWidth = 48;
-    int frameHeight = 54;
+    const int frameWidth = 48;
+    const int frameHeight = 54;
+    const float frameSpeed = 0.008;
+
 
 public:
     Player();
@@ -42,6 +44,7 @@ public:
     sf::Vector2f calcMovement(const sf::Time &dTime);
 
     float getSpeed() const { return speed; }
+    bool isGrounded = false;
 };
 
 }  // namespace super_hse
