@@ -7,6 +7,8 @@ namespace super_hse {
 void Game::run() {
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
 
+    sf::Clock clock;
+
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
@@ -15,7 +17,8 @@ void Game::run() {
             }
             SceneManager::handleInput(event);
         }
-        SceneManager::update();
+        sf::Time dTime = clock.restart();
+        SceneManager::update(dTime);
         SceneManager::draw(window);
     }
 }

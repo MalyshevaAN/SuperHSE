@@ -13,8 +13,8 @@ void SceneManager::changeScene(std::unique_ptr<Scene> newScene) {
     currentScene = std::move(newScene);
 }
 
-void SceneManager::update() {
-    currentScene->update();
+void SceneManager::update(sf::Time &dTime) {
+    currentScene->update(dTime);
 }
 
 void SceneManager::draw(sf::RenderWindow &window) {

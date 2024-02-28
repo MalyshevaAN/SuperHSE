@@ -1,46 +1,91 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
 #include "player.hpp"
+#include <iostream>
 
 namespace super_hse {
 
-Player::Player() {
-    if (!playerPicture.loadFromFile("../assets/images/ryan-stand.png")) {
-        std::cerr << "Error loading level_map.png\n";
-    }
-    sprite.setTexture(playerPicture);
+const float GRAVITY = 70.f;
 
-    // тут инициализируем все что нужно в этой сцене
-    sprite.setPosition(10, 10);
+Player::Player() {
+    if (!playerPicture.loadFromFile("../assets/images/ivankalinin.png")) {
+        std::cerr << "Error loading man_walk.png\n";
+    }
+    std::cout << "Player created\n";
+    sprite.setTexture(playerPicture);
+    sprite.setPosition(220, 10);
 }
 
-void Player::update() {
+sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
+    // вообще у плеера тоже должны быть стейты, чтобы например
+    // он не мог прыгнуть, уже находясь в прыжке.
+
+    sf::Vector2f movement(0.f, 0.f);
+    // TODO: одновременное нажатие клавиш (прыжок + движение влево/вправо)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        movement.x -= speed;
+        state = PlayerState::WALK_LEFT;
+
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        movement.x += speed;
+        state = PlayerState::WALK_RIGHT;
+
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        // TODO прыжок
+        movement.y -= 2 * speed;
+
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        movement.y += speed;
+
+    } else {
+        state = PlayerState::STAND;
+    }
+    if (!isGrounded) {
+        movement.y += GRAVITY;
+    }
+    movement *= dTime.asSeconds();
+    return movement;
+};
+
+void Player::update(const sf::Time &dTime) {
+    // грузим следующий фрейм
+    if (state == PlayerState::WALK_LEFT || state == PlayerState::WALK_RIGHT) {
+        currentFrameColumn += frameSpeed * dTime.asMilliseconds();
+        if (currentFrameColumn > totalFrames) {
+            currentFrameColumn -= totalFrames;
+        }
+        sprite.setTextureRect(sf::IntRect(
+            frameWidth * int(currentFrameColumn), currentFrameRow * frameHeight, frameWidth, frameHeight
+        ));
+
+    } else {
+        sprite.setTextureRect(sf::IntRect(0, currentFrameRow * frameHeight, frameWidth, frameHeight));
+    }
 }
 
 void Player::draw(sf::RenderWindow &window) {
     window.draw(sprite);
 }
 
-void Player::handleInput(sf::Event &event) {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Right) {
-            move(5, 0);
-        } else if (event.key.code == sf::Keyboard::Left) {
-            move(-5, 0);
-        } else if (event.key.code == sf::Keyboard::Up) {
-            move(0, -5);
-        } else if (event.key.code == sf::Keyboard::Down) {
-            move(0, 5);
-        }
-    }
+void Player::handleInput(const sf::Event &event) {
 }
 
 void Player::move(int dx, int dy) {
-    // TODO:
-    // разобраться с int/float
+    // TODO: разобраться с int/float
     sprite.move(dx, dy);
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
     );
+}
+
+sf::FloatRect Player::getCollider() {
+    auto bounds = sprite.getGlobalBounds();
+    sf::FloatRect rect;
+    rect.width = bounds.width / 3;
+    rect.left = bounds.left + rect.width;
+    
+    rect.top = bounds.top + 10;
+    rect.height = bounds.height - 14;
+    return rect;
 }
 
 }  // namespace super_hse
