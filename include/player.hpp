@@ -27,10 +27,11 @@ private:
     const float speed = 70.f;
     PlayerState state = PlayerState::STAND;
     
-    float currentFrame = 0;
+    float currentFrameColumn = 0;
+    int currentFrameRow = 11;
     int totalFrames = 6;
-    const int frameWidth = 48;
-    const int frameHeight = 54;
+    const int frameWidth = 64;
+    const int frameHeight = 64;
     const float frameSpeed = 0.008;
 
 

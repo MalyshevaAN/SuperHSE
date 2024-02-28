@@ -7,7 +7,7 @@ namespace super_hse {
 const float GRAVITY = 70.f;
 
 Player::Player() {
-    if (!playerPicture.loadFromFile("../assets/images/man_walk.png")) {
+    if (!playerPicture.loadFromFile("../assets/images/ivankalinin.png")) {
         std::cerr << "Error loading man_walk.png\n";
     }
     std::cout << "Player created\n";
@@ -49,16 +49,16 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
 void Player::update(const sf::Time &dTime) {
     // грузим следующий фрейм
     if (state == PlayerState::WALK_LEFT || state == PlayerState::WALK_RIGHT) {
-        currentFrame += frameSpeed * dTime.asMilliseconds();
-        if (currentFrame > totalFrames) {
-            currentFrame -= totalFrames;
+        currentFrameColumn += frameSpeed * dTime.asMilliseconds();
+        if (currentFrameColumn > totalFrames) {
+            currentFrameColumn -= totalFrames;
         }
         sprite.setTextureRect(sf::IntRect(
-            frameWidth * int(currentFrame), 0, frameWidth, frameHeight
+            frameWidth * int(currentFrameColumn), currentFrameRow * frameHeight, frameWidth, frameHeight
         ));
 
     } else {
-        sprite.setTextureRect(sf::IntRect(0, 0, frameWidth, frameHeight));
+        sprite.setTextureRect(sf::IntRect(0, currentFrameRow * frameHeight, frameWidth, frameHeight));
     }
 }
 
@@ -80,14 +80,11 @@ void Player::move(int dx, int dy) {
 sf::FloatRect Player::getCollider() {
     auto bounds = sprite.getGlobalBounds();
     sf::FloatRect rect;
-    rect.left = bounds.left;
-    // TODO тут какой-то косяк потому что размер фрейма сильно не равно
-    //      реальному размеру человечка.
-    // Надо смотреть пересечения как-то по непрозрачным каналам картинки, скорее
-    // всего
-    rect.width = bounds.width - 20;
-    rect.top = bounds.top + bounds.height / 2;
-    rect.height = bounds.height / 2;
+    rect.width = bounds.width / 3;
+    rect.left = bounds.left + rect.width;
+    
+    rect.top = bounds.top + 10;
+    rect.height = bounds.height - 14;
     return rect;
 }
 
