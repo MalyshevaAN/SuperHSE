@@ -1,0 +1,12 @@
+../assets/tilemaps/project_2.ldtk
+
+Ground
+BackGround
+StartEnd
+Trees
+Flowers
+
+Bricks
+
+Collider
+Bridge

@@ -36,10 +36,10 @@ TileMap::Layer::Layer(
             m_vertex_array[i * 4 + j].position.x = vertices[j].pos.x;
             m_vertex_array[i * 4 + j].position.y = vertices[j].pos.y;
             m_vertex_array[i * 4 + j].texCoords.x = static_cast<float>(
-                vertices[j].tex.x / 1.2
+                vertices[j].tex.x
             );  // где-то тут беда с текстурой
             m_vertex_array[i * 4 + j].texCoords.y =
-                static_cast<float>(vertices[j].tex.y / 1.1);
+                static_cast<float>(vertices[j].tex.y);
         }
         i++;
     }

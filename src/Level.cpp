@@ -49,8 +49,11 @@ void Level::init(
 
 sf::RectangleShape Level::getColliderShape(const sf::FloatRect &rect) {
     sf::RectangleShape r({rect.width, rect.height});
+    sf::Texture texture;
     r.setPosition(rect.left, rect.top);
-    r.setFillColor(sf::Color::Red);  // поменять на красивую текстуру!!!
+    texture.loadFromFile("../assets/tilemaps/materials/orangebrick.png");
+    //r.setFillColor(sf::Color(100, 100, 200));  // поменять на красивую текстуру!!!
+    r.setTexture(&texture);
     return r;
 }
 
@@ -94,7 +97,7 @@ LevelInfo::LevelInfo(std::string file) {
 }
 
 LevelsStorage::LevelsStorage() {
-    auto level1 = std::make_unique<LevelInfo>("../assets/files/level1.txt");
+    auto level1 = std::make_unique<LevelInfo>("../assets/files/level2.txt");
     storage.push_back(std::move(level1));
 }  // namespace super_hse
 }  // namespace super_hse
