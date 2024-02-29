@@ -10,7 +10,7 @@ namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
     levelNumber = levelN;
-    player = Player();
+    //player = Player();
     std::string filename = storage.storage.at(levelNumber)->filename;
     level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
@@ -31,11 +31,60 @@ void LevelScene::handleInput(sf::Event &event) {
             return;
         }
     }
-    player.handleInput(event);
+    // player.handleInput(event);
 }
 
-void LevelScene::update() {
+void LevelScene::update(sf::Time &dTime) {
     // level.update() - пока нет
+
+    // посчитаем следующую возможную позицию игрока
+    sf::FloatRect nextPositionCollider = player.getCollider();
+    sf::Vector2f movement = player.calcMovement(dTime);
+    nextPositionCollider.left += movement.x;
+    nextPositionCollider.top += movement.y;
+
+    // Проверяем, будет ли пересечение с блоками
+    const float dTimeSeconds = dTime.asSeconds();
+
+    bool isCollidingWithWall = false;
+    bool isCollidingWithFloor = false;
+    for (auto &entity : level.colliders) {
+        sf::FloatRect intersect;
+        if (nextPositionCollider.intersects(entity, intersect)) {
+            // проверить тип объекта, с кем пересеклись (в данном случае -
+            // стены/пол)
+            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+            // енамы)
+
+            // проверка что пересекаемся с полом
+            if (nextPositionCollider.top + nextPositionCollider.height >=
+                entity.top) {
+                isCollidingWithFloor = true;
+                nextPositionCollider.top -= movement.y;
+                movement.y = 0;
+
+                // если после отката человечка наверх мы всё равно пересекаемся
+                // с блоком - значит он стена
+                if (nextPositionCollider.intersects(entity, intersect)) {
+                    isCollidingWithWall = true;
+                }
+            } else {
+                isCollidingWithWall = true;
+            }
+        }
+    }
+
+    player.isGrounded = isCollidingWithFloor;
+
+    if (!isCollidingWithWall) {
+        player.move(movement.x, 0);
+    }
+    if (!isCollidingWithFloor) {
+        player.move(0, movement.y);
+    }
+
+    // обновление фрейма
+    player.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {

@@ -25,7 +25,7 @@ public:
     Scene(Scene &&) = delete;
     Scene &operator=(Scene &&) = delete;
 
-    virtual void update() = 0;
+    virtual void update(sf::Time &dTime) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     virtual void handleInput(sf::Event &event) = 0;
 };
@@ -39,7 +39,7 @@ public:
     static void changeScene(std::unique_ptr<Scene> newScene);
 
     static void handleInput(sf::Event &event);
-    static void update();
+    static void update(sf::Time &dTime);
     static void draw(sf::RenderWindow &window);
 };
 
@@ -51,7 +51,7 @@ private:
 public:
     MainMenuScene();
 
-    void update() override;
+    void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
 };
@@ -63,7 +63,7 @@ private:
 
 public:
     LevelMapScene();
-    void update() override;
+    void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
 };
@@ -78,8 +78,9 @@ private:
 
 public:
     LevelScene() = default;
-    LevelScene(int levelNumber);
-    void update() override;
+    LevelScene(std::string ldtk_filename);
+    LevelScene(int levelN);
+    void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
 };

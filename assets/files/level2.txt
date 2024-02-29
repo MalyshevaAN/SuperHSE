@@ -5,6 +5,7 @@ BackGround
 StartEnd
 Trees
 Flowers
+Clouds
 
 Bricks
 

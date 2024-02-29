@@ -6,7 +6,9 @@
 #include "TileMap.hpp"
 
 namespace super_hse {
+
 struct Level {
+
     Level() = default;
     Level(std::string filename);
     std::string
@@ -47,6 +49,7 @@ struct LevelInfo {
 
     friend LevelsStorage;
 };
+
 }  // namespace super_hse
 
 #endif

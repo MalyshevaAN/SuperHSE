@@ -21,7 +21,7 @@ void MainMenuScene::handleInput(sf::Event &event) {
     }
 }
 
-void MainMenuScene::update() {
+void MainMenuScene::update(sf::Time &dTime) {
 }
 
 void MainMenuScene::draw(sf::RenderWindow &window) {
