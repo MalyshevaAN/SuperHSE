@@ -22,7 +22,9 @@ private:
 
 public:
     Game()
-        : window(sf::VideoMode(640, 480, 32), "SFML Window"), sceneManager(){};
+        : window(sf::VideoMode(640, 480, 32), "SFML Window"), sceneManager(){
+            window.setFramerateLimit(60);
+        };
     void run();
 };
 
