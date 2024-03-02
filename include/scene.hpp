@@ -45,8 +45,16 @@ public:
 
 class MainMenuScene : public Scene {
 private:
-    sf::Texture mainMenuLabel;
-    sf::Sprite label;
+    sf::Texture bigRectanglePicture;
+    sf::Sprite bigRectangle;
+
+    sf::Texture buttonPicture;
+    sf::Sprite buttonSingleplayer;
+    sf::Sprite buttonMultiplayer;
+
+    sf::Font font;
+    sf::Text text;
+    const sf::Color backgroundColor = sf::Color(125, 186, 179);
 
 public:
     MainMenuScene();

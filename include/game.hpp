@@ -12,17 +12,17 @@
 namespace super_hse {
 
 class Game {
-    friend class SceneManager;
-    friend class MainMenuScene;
-    friend class LevelMapScene;
-
 private:
     sf::RenderWindow window;
     SceneManager sceneManager;
 
 public:
+    static int windowWidth;
+    static int windowHeight;
+
     Game()
-        : window(sf::VideoMode(640, 480, 32), "SFML Window"), sceneManager(){};
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window"), sceneManager(){
+        };
     void run();
 };
 
