@@ -5,6 +5,7 @@
 #include "Level.hpp"
 #include "TileMap.hpp"
 #include "scene.hpp"
+#include "level_map_scene.hpp"
 
 namespace super_hse {
 
