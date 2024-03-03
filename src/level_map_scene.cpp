@@ -24,6 +24,16 @@ void LevelMapScene::handleInput(sf::Event &event) {
             return;
         }
     }
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (buttonLevel1.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                SceneManager::changeScene(std::make_unique<LevelScene>(
+                    "../assets/tilemaps/first_level2.ldtk"
+                ));
+                return;
+            }
+        }
+    }
 }
 
 void LevelMapScene::update(sf::Time &dTime) {
