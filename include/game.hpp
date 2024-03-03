@@ -21,8 +21,8 @@ public:
     static int windowHeight;
 
     Game()
-        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window"), sceneManager(){
-        };
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window"),
+          sceneManager(){};
     void run();
 };
 

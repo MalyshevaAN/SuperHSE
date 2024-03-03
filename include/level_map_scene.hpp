@@ -1,7 +1,6 @@
 #ifndef LEVEL_MAP_SCENE_HPP_
 #define LEVEL_MAP_SCENE_HPP_
 
-
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
 
@@ -23,4 +22,4 @@ public:
 
 }  // namespace super_hse
 
-#endif // LEVEL_MAP_SCENE_HPP_
+#endif  // LEVEL_MAP_SCENE_HPP_
