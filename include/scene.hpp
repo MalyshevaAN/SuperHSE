@@ -65,18 +65,6 @@ public:
     void handleInput(sf::Event &event) override;
 };
 
-class LevelMapScene : public Scene {
-private:
-    sf::Texture levelMapPicture;
-    sf::Sprite label;
-
-public:
-    LevelMapScene();
-    void update(sf::Time &dTime) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::Event &event) override;
-};
-
 class LevelScene : public Scene {
 private:
     std::string ldtk_filename;

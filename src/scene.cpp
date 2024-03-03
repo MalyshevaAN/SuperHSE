@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "level_map_scene.hpp"
 #include <memory>
 
 namespace super_hse {
