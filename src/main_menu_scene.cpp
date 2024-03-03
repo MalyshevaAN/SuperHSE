@@ -52,7 +52,7 @@ MainMenuScene::MainMenuScene() {
         std::cerr << "Error loading font\n";
     }
     text.setFont(font);
-    text.setString("This is the main menu. \nPress M to go to the level map!");
+    text.setString("This is the main menu. \nPress M (or click on button with your mouse) to go to the level map!");
     text.setCharacterSize(24); 
     text.setFillColor(sf::Color::Black);
     text.setPosition(150, 10);
@@ -63,6 +63,17 @@ void MainMenuScene::handleInput(sf::Event &event) {
         if (event.key.code == sf::Keyboard::M) {
             SceneManager::changeScene(std::make_unique<LevelMapScene>());
             return;
+        }
+    }
+    // тык на кнопку "singleplayer"
+    // пока что тут просто переход на карту уровня
+    // TODO проверить что игрок залогинился(?) и только после этого разрешать ему переход на карту и в целом игру
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (buttonSingleplayer.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                SceneManager::changeScene(std::make_unique<LevelMapScene>());
+                return;
+            }
         }
     }
 }
