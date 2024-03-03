@@ -5,12 +5,11 @@
 namespace super_hse {
 
 LevelMapScene::LevelMapScene() {
-    if (!levelMapPicture.loadFromFile("../assets/images/ryan2.png")) {
+    if (!buttonLevel1Picture.loadFromFile("../assets/images/button_level_1.png")) {
         std::cerr << "Error loading level_map.png\n";
     }
-    label.setTexture(levelMapPicture);
-    // тут инициализируем все что нужно в этой сцене
-    label.setPosition(100, 100);
+    buttonLevel1.setTexture(buttonLevel1Picture);
+    buttonLevel1.setPosition(100, 100);
 }
 
 void LevelMapScene::handleInput(sf::Event &event) {
@@ -31,8 +30,8 @@ void LevelMapScene::update(sf::Time &dTime) {
 }
 
 void LevelMapScene::draw(sf::RenderWindow &window) {
-    window.clear();
-    window.draw(label);
+    window.clear(backgroundColor);
+    window.draw(buttonLevel1);
     window.display();
 }
 

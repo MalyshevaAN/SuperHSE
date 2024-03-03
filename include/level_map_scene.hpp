@@ -7,13 +7,12 @@
 
 namespace super_hse {
 
-
 class LevelMapScene : public Scene {
 private:
-    sf::Texture levelMapPicture;
-    sf::Sprite label;
+    sf::Texture buttonLevel1Picture;
+    sf::Sprite buttonLevel1;
 
-    const sf::Color backgroundColor = sf::Color(64, 26, 40);
+    const sf::Color backgroundColor = sf::Color(114, 134, 207);
 
 public:
     LevelMapScene();
