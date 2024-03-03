@@ -22,25 +22,29 @@ MainMenuScene::MainMenuScene() {
     );
     
     // buttons init
-    if (!buttonPicture.loadFromFile("../assets/images/main_menu_scene_option_button.png")) {
-        std::cerr << "Error loadingmain_menu_scene_option_button.png\n";
-    }
     float buttonWidthScale = 0.6;
     float buttonHeightScale = 0.2;
-    buttonPicture.setSmooth(true);
 
-    buttonSingleplayer.setTexture(buttonPicture);
+    if (!buttonSingleplayerPicture.loadFromFile("../assets/images/main_menu_scene_button_singleplayer.png")) {
+        std::cerr << "Error loading main_menu_scene_button_singleplayer.png\n";
+    }
+    buttonSingleplayerPicture.setSmooth(true);
+    buttonSingleplayer.setTexture(buttonSingleplayerPicture);
     buttonSingleplayer.setScale(buttonWidthScale, buttonHeightScale);
     buttonSingleplayer.setPosition(
-        (Game::windowWidth - buttonPicture.getSize().x * buttonWidthScale) / 2,
-        (Game::windowHeight - buttonPicture.getSize().y * buttonHeightScale) / 2 - 50
+        (Game::windowWidth - buttonSingleplayerPicture.getSize().x * buttonWidthScale) / 2,
+        (Game::windowHeight - buttonSingleplayerPicture.getSize().y * buttonHeightScale) / 2
     );
 
-    buttonMultiplayer.setTexture(buttonPicture);
+    if (!buttonMultiplayerPicture.loadFromFile("../assets/images/main_menu_scene_button_multiplayer.png")) {
+        std::cerr << "Error loading main_menu_scene_option_button.png\n";
+    }
+    buttonMultiplayerPicture.setSmooth(true);
+    buttonMultiplayer.setTexture(buttonMultiplayerPicture);
     buttonMultiplayer.setScale(buttonWidthScale, buttonHeightScale);
     buttonMultiplayer.setPosition(
-        (Game::windowWidth - buttonPicture.getSize().x * buttonWidthScale) / 2,
-        (Game::windowHeight - buttonPicture.getSize().y * buttonHeightScale) / 2 + 50
+        (Game::windowWidth - buttonMultiplayerPicture.getSize().x * buttonWidthScale) / 2,
+        (Game::windowHeight - buttonMultiplayerPicture.getSize().y * buttonHeightScale) / 2 + 100
     );
 
     // text init

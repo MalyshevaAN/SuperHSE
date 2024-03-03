@@ -48,7 +48,8 @@ private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
-    sf::Texture buttonPicture;
+    sf::Texture buttonSingleplayerPicture;
+    sf::Texture buttonMultiplayerPicture;
     sf::Sprite buttonSingleplayer;
     sf::Sprite buttonMultiplayer;
 
