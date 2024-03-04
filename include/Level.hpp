@@ -17,13 +17,15 @@ struct Level {
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
 
     std::vector<sf::FloatRect> colliders;
+    std::vector<sf::Sprite> coins;
+    std::vector<sf::Color> colorColliders;
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,
         std::vector<std::string> &colliderNames
     );
 
-    sf::RectangleShape getColliderShape(const sf::FloatRect &rect);
+    sf::RectangleShape getColliderShape(const sf::FloatRect &rect, sf::Color color);
 
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);

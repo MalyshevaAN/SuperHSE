@@ -9,5 +9,11 @@ Clouds
 
 Bricks
 
-Collider
-Bridge
+LongPlatform64
+HighPlatform64
+LongPlatform128
+HighPlatform128
+LongPlatform256
+LongPlatform512
+SmallPlatform32
+Floor

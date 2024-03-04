@@ -1,10 +1,12 @@
 #include <memory>
 #include "scene.hpp"
+#include <filesystem>
 
 namespace super_hse {
 
 LevelMapScene::LevelMapScene() {
-    if (!levelMapPicture.loadFromFile("../assets/images/ryan2.png")) {
+    std::filesystem::path p(std::filesystem::current_path());
+    if (!levelMapPicture.loadFromFile(p.parent_path().string() + "/assets/images/ryan2.png")) {
         std::cerr << "Error loading level_map.png\n";
     }
     label.setTexture(levelMapPicture);

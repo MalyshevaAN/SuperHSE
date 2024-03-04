@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
+#include <filesystem>
 
 namespace super_hse {
 
@@ -37,23 +38,42 @@ void Level::init(
         auto &entitiesLayer = ldtk_first_level.getLayer(elem);
         for (auto name : colliderNames) {
             for (ldtk::Entity &entity : entitiesLayer.getEntitiesByName(name)) {
-                colliders.emplace_back(
+                sf::FloatRect rect(
                     (float)entity.getPosition().x,
                     (float)entity.getPosition().y, (float)entity.getSize().x,
                     (float)entity.getSize().y
                 );
+                colliders.emplace_back(rect);
+                if (name!="Floor"){
+                    colorColliders.emplace_back(sf::Color::Red);
+                }else {
+                    colorColliders.emplace_back(sf::Color(0, 0, 0, 0));
+                }
             }
         }
     }
+    auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
+    sf::Texture coinTexture;
+    std::filesystem::path p = std::filesystem::current_path();
+    if (!coinTexture.loadFromFile(p.parent_path().string() + "/assets/images/coin.png")){
+        std::cerr << "Error loading coin";
+    }
+    for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")){
+        sf::Sprite coin;
+        coin.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        coin.setTexture(coinTexture);
+        coin.setTextureRect(sf::IntRect(0,0,16,16));
+        coins.emplace_back(coin);
+    }
 }
 
-sf::RectangleShape Level::getColliderShape(const sf::FloatRect &rect) {
+sf::RectangleShape Level::getColliderShape(const sf::FloatRect &rect, sf::Color color) {
     sf::RectangleShape r({rect.width, rect.height});
     sf::Texture texture;
     r.setPosition(rect.left, rect.top);
-    texture.loadFromFile("../assets/tilemaps/materials/orangebrick.png");
-    //r.setFillColor(sf::Color(100, 100, 200));  // поменять на красивую текстуру!!!
-    r.setTexture(&texture);
+    r.setFillColor(color);  // поменять на красивую текстуру!!!
+    //std::filesystem::path p(std::filesystem::current_path());
+    //texture.loadFromFile(p.parent_path().string() + "/assets/tilemaps/materials/brick.jpg");
     return r;
 }
 
@@ -64,11 +84,13 @@ void Level::render(
     for (auto elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
-    for (auto &entity : colliders) {
-        target.draw(getColliderShape(entity));
+    for (size_t i = 0; i < colliders.size(); i++){
+        target.draw(getColliderShape(colliders[i], colorColliders[i]));
+    }
+    for (auto elem : coins){
+        target.draw(elem);
     }
 }
-
 LevelInfo::LevelInfo(std::string file) {
     std::string line;
     std::ifstream in(file);
@@ -97,8 +119,9 @@ LevelInfo::LevelInfo(std::string file) {
 }
 
 LevelsStorage::LevelsStorage() {
-    auto level1 = std::make_unique<LevelInfo>("../assets/files/level2.txt");
+    std::filesystem::path p(std::filesystem::current_path());
+    auto level1 = std::make_unique<LevelInfo>(p.parent_path().string() + "/assets/files/level2.txt");
     storage.push_back(std::move(level1));
-}  // namespace super_hse
+}  
 }  // namespace super_hse
 #endif
