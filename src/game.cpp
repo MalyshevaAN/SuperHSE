@@ -4,6 +4,9 @@
 
 namespace super_hse {
 
+int Game::windowWidth = 960;
+int Game::windowHeight = 640;
+
 void Game::run() {
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
 
