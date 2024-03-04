@@ -14,18 +14,17 @@
 namespace super_hse {
 
 class Game {
-    friend class SceneManager;
-    friend class MainMenuScene;
-    friend class LevelMapScene;
-
 private:
     sf::RenderWindow window;
     SceneManager sceneManager;
 
 public:
+    static int windowWidth;
+    static int windowHeight;
+
     Game()
         : window(sf::VideoMode(640, 480, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
-            window.setFramerateLimit(40);
+            window.setFramerateLimit(60);
             window.setVerticalSyncEnabled(true);
         };
     void run();

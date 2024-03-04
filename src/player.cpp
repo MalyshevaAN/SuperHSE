@@ -10,7 +10,6 @@ Player::Player() {
     if (!playerPicture.loadFromFile("../assets/images/ivankalinin.png")) {
         std::cerr << "Error loading man_walk.png\n";
     }
-    std::cout << "Player created\n";
     sprite.setTexture(playerPicture);
     sprite.setPosition(220, 10);
 }
