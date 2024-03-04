@@ -45,24 +45,21 @@ public:
 
 class MainMenuScene : public Scene {
 private:
-    sf::Texture mainMenuLabel;
-    sf::Sprite label;
+    sf::Texture bigRectanglePicture;
+    sf::Sprite bigRectangle;
+
+    sf::Texture buttonSingleplayerPicture;
+    sf::Texture buttonMultiplayerPicture;
+    sf::Sprite buttonSingleplayer;
+    sf::Sprite buttonMultiplayer;
+
+    sf::Font font;
+    sf::Text text;
+    const sf::Color backgroundColor = sf::Color(125, 186, 179);
 
 public:
     MainMenuScene();
 
-    void update(sf::Time &dTime) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::Event &event) override;
-};
-
-class LevelMapScene : public Scene {
-private:
-    sf::Texture levelMapPicture;
-    sf::Sprite label;
-
-public:
-    LevelMapScene();
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
