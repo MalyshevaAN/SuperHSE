@@ -36,7 +36,7 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::update(sf::Time &dTime) {
-    // level.update() - пока нет
+    level.update(dTime);
 
     // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
@@ -86,10 +86,11 @@ void LevelScene::update(sf::Time &dTime) {
 
     // обновление фрейма
     player.update(dTime);
+    level.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
-    window.clear();
+    window.clear(); 
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
     window.display();

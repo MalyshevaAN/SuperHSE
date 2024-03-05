@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "TileMap.hpp"
+#include <map>
 
 namespace super_hse {
 
@@ -18,17 +19,30 @@ struct Level {
 
     std::vector<sf::FloatRect> colliders;
     std::vector<sf::Sprite> coins;
-    std::vector<sf::Color> colorColliders;
+    std::vector<std::string> textureColliders;
+    sf::Texture coinTexture;
+    sf::Texture brickTexture;
+    sf::Texture floorTexture;
+    const int coinHeight = 16;
+    const int coinWidth = 16;
+    const float frameSpeed = 0.004;
+    float currentFrameColumn = 0;
+    std::map<std::string, sf::Texture> textures = {
+        {"coin", coinTexture},
+        {"brick", brickTexture},
+        {"floor", floorTexture}
+    };
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,
         std::vector<std::string> &colliderNames
     );
 
-    sf::RectangleShape getColliderShape(const sf::FloatRect &rect, sf::Color color);
+    sf::RectangleShape getColliderShape(const sf::FloatRect &rect, std::string texture_name);
 
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
+    void update(sf::Time &dTime);
 };
 
 struct LevelInfo;
