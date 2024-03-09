@@ -23,7 +23,7 @@ public:
     static int windowHeight;
 
     Game()
-        : window(sf::VideoMode(640, 480, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
             window.setFramerateLimit(60);
             window.setVerticalSyncEnabled(true);
         };
