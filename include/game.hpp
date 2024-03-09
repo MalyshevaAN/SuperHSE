@@ -21,7 +21,7 @@ public:
     static int windowHeight;
 
     Game()
-        : window(sf::VideoMode(640, 480, 32), "SFML Window"), sceneManager(){
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window"), sceneManager(){
             window.setFramerateLimit(60);
         };
     void run();
