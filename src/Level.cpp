@@ -10,6 +10,7 @@
 #include <string>
 #include "TileMap.hpp"
 #include <filesystem>
+#include "coin.hpp"
 
 namespace super_hse {
 
@@ -61,11 +62,15 @@ void Level::init(
     }
     auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
     for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")){
-        sf::Sprite coin;
-        coin.setTexture(coinTexture);
-        coin.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
-        coin.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-        coins.emplace_back(coin);
+        // sf::Sprite coin;
+        // coin.setTexture(coinTexture);
+        // coin.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
+        // coin.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        coin new_coin;
+        new_coin.coin_sprite.setTexture(coinTexture);
+        new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
+        new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        coins.emplace_back(new_coin);
     }
 }
 
@@ -83,7 +88,9 @@ void Level::update(sf::Time &dTime){
         currentFrameColumn -= 5;
     }
     for (auto &elem : coins){
-        elem.setTextureRect(sf::IntRect(static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth, coinHeight));
+        if (elem.get_status()){
+            elem.coin_sprite.setTextureRect(sf::IntRect(static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth, coinHeight));
+        }
     }
 }
 
@@ -98,8 +105,9 @@ void Level::render(
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
     for (auto elem : coins){
-        //elem.setTextureRect(sf::IntRect(0, 0, 16, 16));
-        target.draw(elem);
+        if (elem.get_status()){
+            target.draw(elem.coin_sprite);
+        }
     }
 }
 LevelInfo::LevelInfo(std::string file) {

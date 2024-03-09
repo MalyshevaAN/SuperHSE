@@ -5,6 +5,7 @@
 #include <vector>
 #include "TileMap.hpp"
 #include <map>
+#include "coin.hpp"
 
 namespace super_hse {
 
@@ -18,7 +19,7 @@ struct Level {
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
 
     std::vector<sf::FloatRect> colliders;
-    std::vector<sf::Sprite> coins;
+    std::vector<coin> coins;
     std::vector<std::string> textureColliders;
     sf::Texture coinTexture;
     sf::Texture brickTexture;
