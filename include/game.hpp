@@ -8,6 +8,8 @@
 #include <memory>
 #include <random>
 #include "scene.hpp"
+#include <string>
+#include <filesystem>
 
 namespace super_hse {
 
@@ -21,8 +23,9 @@ public:
     static int windowHeight;
 
     Game()
-        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window"), sceneManager(){
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
             window.setFramerateLimit(60);
+            window.setVerticalSyncEnabled(true);
         };
     void run();
 };

@@ -9,12 +9,17 @@
 
 namespace super_hse {
 
-LevelScene::LevelScene(std::string filename) {
-    // player = Player();
-
-    level.ldtk_filename = filename;
+LevelScene::LevelScene(int levelN) {
+    levelNumber = levelN;
+    //player = Player();
+    std::string filename = storage.storage.at(levelNumber)->filename;
+    level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
-    level.init();
+    level.init(
+        storage.storage.at(levelNumber)->tileLayerName,
+        storage.storage.at(levelNumber)->entityLayerName,
+        storage.storage.at(levelNumber)->colliderName
+    );
 }
 
 void LevelScene::handleInput(sf::Event &event) {
@@ -31,7 +36,7 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::update(sf::Time &dTime) {
-    // level.update() - пока нет
+    level.update(dTime);
 
     // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
@@ -81,13 +86,12 @@ void LevelScene::update(sf::Time &dTime) {
 
     // обновление фрейма
     player.update(dTime);
+    level.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
-    window.clear();
-
-    level.render(window);
-
+    window.clear(); 
+    level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
     window.display();
 }

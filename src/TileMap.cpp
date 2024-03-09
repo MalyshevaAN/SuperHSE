@@ -36,10 +36,10 @@ TileMap::Layer::Layer(
             m_vertex_array[i * 4 + j].position.x = vertices[j].pos.x;
             m_vertex_array[i * 4 + j].position.y = vertices[j].pos.y;
             m_vertex_array[i * 4 + j].texCoords.x = static_cast<float>(
-                vertices[j].tex.x / 1.2
+                vertices[j].tex.x
             );  // где-то тут беда с текстурой
             m_vertex_array[i * 4 + j].texCoords.y =
-                static_cast<float>(vertices[j].tex.y / 1.1);
+                static_cast<float>(vertices[j].tex.y);
         }
         i++;
     }
@@ -61,11 +61,11 @@ void TileMap::load(const ldtk::Level &level) {  // подгрузка уровн
     m_layers.clear();
     for (const auto &layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::Tiles) {
-            m_layers.insert({layer.getName(), {layer, m_render_texture}});
+            if (layer.getName() != "TestBricks"){
+                m_layers.insert({layer.getName(), {layer, m_render_texture}});
+            }
         }
     }
-    // std::cout << 111111111 << '\n';
-    std::cout << m_layers.size();
 }
 
 auto TileMap::getLayer(const std::string &name) const
@@ -73,6 +73,7 @@ auto TileMap::getLayer(const std::string &name) const
     try {
         return m_layers.at(name);
     } catch (std::out_of_range &e) {
-        throw 1;
+        std::cerr << name;
+        throw 10;
     }
 }

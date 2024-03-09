@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(LDtkLoader 1.5.2)
 
 set(SRC_LIST src/main.cpp src/game.cpp src/scene.cpp src/level_map_scene.cpp
- src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp src/TileMap.cpp)
+ src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp src/TileMap.cpp src/hse_utils.cpp)
 
 include_directories(main include)
 

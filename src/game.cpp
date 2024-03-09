@@ -18,6 +18,9 @@ void Game::run() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
+                window.close();
+            }
             SceneManager::handleInput(event);
         }
         sf::Time dTime = clock.restart();

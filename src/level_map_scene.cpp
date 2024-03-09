@@ -1,6 +1,7 @@
 #include "level_map_scene.hpp"
 #include <memory>
 #include "scene.hpp"
+#include <filesystem>
 
 namespace super_hse {
 
@@ -16,9 +17,8 @@ LevelMapScene::LevelMapScene() {
 void LevelMapScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Num1) {
-            SceneManager::changeScene(std::make_unique<LevelScene>(
-                "../assets/tilemaps/first_level2.ldtk"
-            ));
+            SceneManager::changeScene(std::make_unique<LevelScene>(0));
+
             return;
         } else if (event.key.code == sf::Keyboard::M) {
             SceneManager::changeScene(std::make_unique<MainMenuScene>());
@@ -30,9 +30,7 @@ void LevelMapScene::handleInput(sf::Event &event) {
             if (buttonLevel1.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                SceneManager::changeScene(std::make_unique<LevelScene>(
-                    "../assets/tilemaps/first_level2.ldtk"
-                ));
+                SceneManager::changeScene(std::make_unique<LevelScene>(0));
                 return;
             }
         }
