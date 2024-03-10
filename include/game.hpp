@@ -20,6 +20,8 @@ private:
     SceneManager sceneManager;
     bool isFullScreen = false;
 
+    sf::Image icon;
+
 public:
     static int windowWidth;
     static int windowHeight;
@@ -27,11 +29,7 @@ public:
     static int defaultWindowWidth;
     static int defaultWindowHeight;
 
-    Game()
-        : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager(){
-            window.setFramerateLimit(60);
-            window.setVerticalSyncEnabled(true);
-        };
+    Game();
     void run();
 
     void changeFullScreenMode();

@@ -14,6 +14,21 @@ int Game::windowHeight = 640;
 int Game::defaultWindowWidth = 960;
 int Game::defaultWindowHeight = 640;
 
+Game::Game()
+    : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager() {
+        window.setFramerateLimit(60);
+        window.setVerticalSyncEnabled(true);
+
+        // set icon
+        std::filesystem::path p = std::filesystem::current_path();
+        std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
+
+        if (!icon.loadFromFile(texture_path)){
+            std::cerr << "Error loading texture file logo2.png" << '\n';
+        }
+        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    }
+
 void Game::run() {
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
 
