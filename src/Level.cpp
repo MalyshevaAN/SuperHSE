@@ -30,11 +30,10 @@ void Level::init(
     std::vector<std::string> &colliderNames
 ) {
 
-    std::filesystem::path p = std::filesystem::current_path();
-    std::string texture_path = p.parent_path().string() + "/assets/images/";
-    get_texture_from_file(texture_path + "HSEcoin.png", coinTexture);
-    get_texture_from_file(texture_path + "bricks.png", textures.at("brick"));
-    get_texture_from_file(texture_path + "floor.png", textures.at("floor"));
+
+    get_texture_from_file("HSEcoin.png", coinTexture);
+    get_texture_from_file("bricks.png", textures.at("brick"));
+    get_texture_from_file("floor.png", textures.at("floor"));
     auto &world = project.allWorlds().at(0);
     auto &ldtk_first_level =
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень

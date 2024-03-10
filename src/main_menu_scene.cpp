@@ -8,41 +8,17 @@ namespace super_hse {
 
 MainMenuScene::MainMenuScene() {
     // bigRectangle init
-    if (!bigRectanglePicture.loadFromFile("../assets/images/menu.png")) {
-        std::cerr << "Error loading menu.png\n";
-    }
-
+    get_texture_from_file("menu.png", bigRectanglePicture);
     bigRectangle.setTexture(bigRectanglePicture);
 
-    bigRectangle.setPosition(
-        (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
-        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 50
-    );
-
     // buttons init
-    if (!buttonSingleplayerPicture.loadFromFile(
-            "../assets/images/singleplayer_button.png"
-        )) {
-        std::cerr << "Error loading assets/images/singleplayer_button.png\n";
-    }
-
+    get_texture_from_file("singleplayer_button.png", buttonSingleplayerPicture);
     buttonSingleplayer.setTexture(buttonSingleplayerPicture);
-    buttonSingleplayer.setPosition(
-        (Game::windowWidth - buttonSingleplayerPicture.getSize().x) / 2,
-        (Game::windowHeight - buttonSingleplayerPicture.getSize().y) / 2 + 50
-    );
 
-    if (!buttonMultiplayerPicture.loadFromFile(
-            "../assets/images/multiplayer_button.png"
-        )) {
-        std::cerr << "Error loading assets/images/multiplayer_button.png.png\n";
-    }
-
+    get_texture_from_file("multiplayer_button.png", buttonMultiplayerPicture);
     buttonMultiplayer.setTexture(buttonMultiplayerPicture);
-    buttonMultiplayer.setPosition(
-        (Game::windowWidth - buttonMultiplayerPicture.getSize().x) / 2,
-        (Game::windowHeight - buttonMultiplayerPicture.getSize().y) / 2 + 150
-    );
+
+    updateSceneSize();
 }
 
 void MainMenuScene::handleInput(sf::Event &event) {

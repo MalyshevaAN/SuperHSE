@@ -8,6 +8,7 @@
 #include <memory>
 #include <random>
 #include "scene.hpp"
+#include "hse_utils.hpp"
 #include <string>
 #include <filesystem>
 

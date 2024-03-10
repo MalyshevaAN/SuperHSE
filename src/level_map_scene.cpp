@@ -3,15 +3,14 @@
 #include "main_menu_scene.hpp"
 #include <memory>
 #include "scene.hpp"
+#include "hse_utils.hpp"
 #include <filesystem>
 
 namespace super_hse {
 
 LevelMapScene::LevelMapScene() {
-    if (!buttonLevel1Picture.loadFromFile("../assets/images/button_level_1.png"
-        )) {
-        std::cerr << "Error loading level_map.png\n";
-    }
+    get_texture_from_file("button_level_1.png", buttonLevel1Picture);
+
     buttonLevel1.setTexture(buttonLevel1Picture);
     buttonLevel1.setPosition(100, 100);
 }

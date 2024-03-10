@@ -1,5 +1,6 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
 #include "player.hpp"
+#include "hse_utils.hpp"
 #include <iostream>
 
 namespace super_hse {
@@ -7,9 +8,7 @@ namespace super_hse {
 const float GRAVITY = 70.f;
 
 Player::Player() {
-    if (!playerPicture.loadFromFile("../assets/images/ivankalinin.png")) {
-        std::cerr << "Error loading man_walk.png\n";
-    }
+    get_texture_from_file("ivankalinin.png", playerPicture);
     sprite.setTexture(playerPicture);
     sprite.setPosition(220, 10);
 }
