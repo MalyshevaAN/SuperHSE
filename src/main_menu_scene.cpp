@@ -1,6 +1,7 @@
 #include <memory>
 #include "game.hpp"
 #include "level_map_scene.hpp"
+#include "main_menu_scene.hpp"
 #include "scene.hpp"
 
 namespace super_hse {

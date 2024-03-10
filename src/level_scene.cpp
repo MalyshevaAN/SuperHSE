@@ -6,6 +6,7 @@
 #include "TileMap.hpp"
 #include "scene.hpp"
 #include "level_map_scene.hpp"
+#include "main_menu_scene.hpp"
 #include "level_scene.hpp"
 
 namespace super_hse {
