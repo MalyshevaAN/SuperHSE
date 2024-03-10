@@ -18,7 +18,7 @@ private:
 
     sf::Font font;
     sf::Text text;
-    const sf::Color backgroundColor = sf::Color(125, 186, 179);
+    const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public:
     MainMenuScene();
@@ -28,6 +28,6 @@ public:
     void handleInput(sf::Event &event) override;
 };
 
-} // namespace super_hse
+}  // namespace super_hse
 
-#endif // MAIN_MENU_SCENE_HPP_
+#endif  // MAIN_MENU_SCENE_HPP_

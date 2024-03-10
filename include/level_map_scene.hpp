@@ -11,7 +11,7 @@ private:
     sf::Texture buttonLevel1Picture;
     sf::Sprite buttonLevel1;
 
-    const sf::Color backgroundColor = sf::Color(114, 134, 207);
+    const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public:
     LevelMapScene();
