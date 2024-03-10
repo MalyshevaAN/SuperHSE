@@ -59,8 +59,7 @@ MainMenuScene::MainMenuScene() {
             2,
         (Game::windowHeight -
          buttonMultiplayerPicture.getSize().y * buttonHeightScale) /
-                2 +
-            100
+                2 + 100
     );
 
     // text init

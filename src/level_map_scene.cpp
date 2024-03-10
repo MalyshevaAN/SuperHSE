@@ -1,4 +1,5 @@
 #include "level_map_scene.hpp"
+#include "level_scene.hpp"
 #include <memory>
 #include "scene.hpp"
 #include <filesystem>

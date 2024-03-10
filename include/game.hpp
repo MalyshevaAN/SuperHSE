@@ -17,13 +17,17 @@ class Game {
 private:
     sf::RenderWindow window;
     SceneManager sceneManager;
+    bool isFullScreen = false;
 
 public:
     static int windowWidth;
     static int windowHeight;
 
+    static int defaultWindowWidth;
+    static int defaultWindowHeight;
+
     Game()
-        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
+        : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager(){
             window.setFramerateLimit(60);
             window.setVerticalSyncEnabled(true);
         };

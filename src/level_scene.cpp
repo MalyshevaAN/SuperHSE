@@ -6,6 +6,7 @@
 #include "TileMap.hpp"
 #include "scene.hpp"
 #include "level_map_scene.hpp"
+#include "level_scene.hpp"
 
 namespace super_hse {
 
@@ -90,7 +91,7 @@ void LevelScene::update(sf::Time &dTime) {
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
-    window.clear(); 
+    window.clear(windowFillColor);
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
     window.display();
