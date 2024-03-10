@@ -46,5 +46,7 @@ mkdir build && cd build
 cmake ../ && make
 
 ./main
+
+**перед запуском прогоните папку files через dos2unix!!!
 ```
 
