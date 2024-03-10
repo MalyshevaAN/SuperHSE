@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/julia/Documents/project/sqlite/",
+                "C:/Users/julia/Documents/project/SFML-2.6.1/include/",
+                "C:/Users/julia/Documents/project/SuperHSE/"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}
