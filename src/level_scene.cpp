@@ -37,6 +37,9 @@ void LevelScene::handleInput(sf::Event &event) {
     // player.handleInput(event);
 }
 
+void LevelScene::updateSceneSize() {
+}
+
 void LevelScene::update(sf::Time &dTime) {
     level.update(dTime);
 

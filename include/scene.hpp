@@ -28,6 +28,7 @@ public:
     virtual void update(sf::Time &dTime) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     virtual void handleInput(sf::Event &event) = 0;
+    virtual void updateSceneSize() = 0;
 };
 
 class SceneManager {
@@ -37,7 +38,7 @@ private:
 
 public:
     static void changeScene(std::unique_ptr<Scene> newScene);
-
+    static void updateSceneSize();
     static void handleInput(sf::Event &event);
     static void update(sf::Time &dTime);
     static void draw(sf::RenderWindow &window);

@@ -22,6 +22,7 @@ public:
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
+    void updateSceneSize() override;
 };
 
 }

@@ -68,6 +68,25 @@ void MainMenuScene::handleInput(sf::Event &event) {
 void MainMenuScene::update(sf::Time &dTime) {
 }
 
+void MainMenuScene::updateSceneSize() {
+    // update positions of all objects
+    bigRectangle.setPosition(
+        (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
+        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 50
+    );
+
+    buttonSingleplayer.setPosition(
+        (Game::windowWidth - buttonSingleplayerPicture.getSize().x) / 2,
+        (Game::windowHeight - buttonSingleplayerPicture.getSize().y) / 2 + 50
+    );
+
+    buttonMultiplayer.setPosition(
+        (Game::windowWidth - buttonMultiplayerPicture.getSize().x) / 2,
+        (Game::windowHeight - buttonMultiplayerPicture.getSize().y) / 2 + 150
+    );
+
+}
+
 void MainMenuScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);

@@ -38,7 +38,7 @@ void Game::run() {
                     windowWidth = window.getSize().x;
                     windowHeight = window.getSize().y;
                 }
-
+                SceneManager::updateSceneSize();
                 isFullScreen = !isFullScreen;
             }
             SceneManager::handleInput(event);
