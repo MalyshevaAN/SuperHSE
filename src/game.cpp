@@ -25,28 +25,46 @@ void Game::run() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
-                window.close();
 
-                if (isFullScreen) {
-                    windowWidth = defaultWindowWidth;
-                    windowHeight = defaultWindowHeight;
-                    window.create(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE", sf::Style::Default);
+            if (event.type == sf::Event::Resized) {
+                windowWidth = window.getSize().x;
+                windowHeight = window.getSize().y;
 
-                } else {
-                    window.create(sf::VideoMode::getDesktopMode(), "Super HSE", sf::Style::Fullscreen);
-                    windowWidth = window.getSize().x;
-                    windowHeight = window.getSize().y;
-                }
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+
                 SceneManager::updateSceneSize();
-                isFullScreen = !isFullScreen;
             }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
+                changeFullScreenMode();
+            }
+            
             SceneManager::handleInput(event);
         }
+
         sf::Time dTime = clock.restart();
         SceneManager::update(dTime);
         SceneManager::draw(window);
     }
+}
+void Game::changeFullScreenMode() {
+    window.close();
+
+    if (isFullScreen) {
+        windowWidth = defaultWindowWidth;
+        windowHeight = defaultWindowHeight;
+        window.create(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE", sf::Style::Default);
+
+    } else {
+        window.create(sf::VideoMode::getDesktopMode(), "Super HSE", sf::Style::Fullscreen);
+        windowWidth = window.getSize().x;
+        windowHeight = window.getSize().y;
+    }
+    SceneManager::updateSceneSize();
+    isFullScreen = !isFullScreen;
+
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
 }
 
 }  // namespace super_hse

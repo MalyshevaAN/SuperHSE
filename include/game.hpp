@@ -33,6 +33,8 @@ public:
             window.setVerticalSyncEnabled(true);
         };
     void run();
+
+    void changeFullScreenMode();
 };
 
 }  // namespace super_hse
