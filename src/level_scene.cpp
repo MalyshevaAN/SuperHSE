@@ -1,17 +1,19 @@
+#include "level_scene.hpp"
 #include <LDtkLoader/Project.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
 #include "Level.hpp"
 #include "TileMap.hpp"
-#include "scene.hpp"
 #include "level_map_scene.hpp"
+#include "main_menu_scene.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
     levelNumber = levelN;
-    //player = Player();
+    // player = Player();
     std::string filename = storage.storage.at(levelNumber)->filename;
     level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
@@ -33,6 +35,9 @@ void LevelScene::handleInput(sf::Event &event) {
         }
     }
     // player.handleInput(event);
+}
+
+void LevelScene::updateSceneSize() {
 }
 
 void LevelScene::update(sf::Time &dTime) {
@@ -90,7 +95,7 @@ void LevelScene::update(sf::Time &dTime) {
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
-    window.clear(); 
+    window.clear(windowFillColor);
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
     window.display();

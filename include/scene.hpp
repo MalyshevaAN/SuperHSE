@@ -28,6 +28,7 @@ public:
     virtual void update(sf::Time &dTime) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
     virtual void handleInput(sf::Event &event) = 0;
+    virtual void updateSceneSize() = 0;
 };
 
 class SceneManager {
@@ -37,49 +38,10 @@ private:
 
 public:
     static void changeScene(std::unique_ptr<Scene> newScene);
-
+    static void updateSceneSize();
     static void handleInput(sf::Event &event);
     static void update(sf::Time &dTime);
     static void draw(sf::RenderWindow &window);
-};
-
-class MainMenuScene : public Scene {
-private:
-    sf::Texture bigRectanglePicture;
-    sf::Sprite bigRectangle;
-
-    sf::Texture buttonSingleplayerPicture;
-    sf::Texture buttonMultiplayerPicture;
-    sf::Sprite buttonSingleplayer;
-    sf::Sprite buttonMultiplayer;
-
-    sf::Font font;
-    sf::Text text;
-    const sf::Color backgroundColor = sf::Color(125, 186, 179);
-
-public:
-    MainMenuScene();
-
-    void update(sf::Time &dTime) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::Event &event) override;
-};
-
-class LevelScene : public Scene {
-private:
-    std::string ldtk_filename;
-    Player player;
-    LevelsStorage storage;
-    int levelNumber;
-    Level level;  // добавила класс уровня
-
-public:
-    LevelScene() = default;
-    LevelScene(std::string ldtk_filename);
-    LevelScene(int levelN);
-    void update(sf::Time &dTime) override;
-    void draw(sf::RenderWindow &window) override;
-    void handleInput(sf::Event &event) override;
 };
 
 }  // namespace super_hse

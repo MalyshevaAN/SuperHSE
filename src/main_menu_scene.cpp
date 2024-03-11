@@ -1,3 +1,4 @@
+#include "main_menu_scene.hpp"
 #include <memory>
 #include "game.hpp"
 #include "level_map_scene.hpp"
@@ -6,75 +7,18 @@
 namespace super_hse {
 
 MainMenuScene::MainMenuScene() {
-    // возможно потом лучше разбить конструктор на несколько отдельных функций
-
     // bigRectangle init
-    if (!bigRectanglePicture.loadFromFile(
-            "../assets/images/main_menu_scene_big_rectangle.png"
-        )) {
-        std::cerr << "Error loading main_menu_scene_big_rectangle.png\n";
-    }
-    bigRectanglePicture.setSmooth(true);
+    get_texture_from_file("menu.png", bigRectanglePicture);
     bigRectangle.setTexture(bigRectanglePicture);
-    // скаляр временный, пока нет нормальных картинок для уровня
-    float scale = 1.6;
-    bigRectangle.setScale(scale, scale);
-    bigRectangle.setPosition(
-        (Game::windowWidth - bigRectanglePicture.getSize().x * scale) / 2,
-        (Game::windowHeight - bigRectanglePicture.getSize().y * scale) / 2
-    );
 
     // buttons init
-    float buttonWidthScale = 0.6;
-    float buttonHeightScale = 0.2;
-
-    if (!buttonSingleplayerPicture.loadFromFile(
-            "../assets/images/main_menu_scene_button_singleplayer.png"
-        )) {
-        std::cerr << "Error loading main_menu_scene_button_singleplayer.png\n";
-    }
-    buttonSingleplayerPicture.setSmooth(true);
+    get_texture_from_file("singleplayer_button.png", buttonSingleplayerPicture);
     buttonSingleplayer.setTexture(buttonSingleplayerPicture);
-    buttonSingleplayer.setScale(buttonWidthScale, buttonHeightScale);
-    buttonSingleplayer.setPosition(
-        (Game::windowWidth -
-         buttonSingleplayerPicture.getSize().x * buttonWidthScale) /
-            2,
-        (Game::windowHeight -
-         buttonSingleplayerPicture.getSize().y * buttonHeightScale) /
-            2
-    );
 
-    if (!buttonMultiplayerPicture.loadFromFile(
-            "../assets/images/main_menu_scene_button_multiplayer.png"
-        )) {
-        std::cerr << "Error loading main_menu_scene_option_button.png\n";
-    }
-    buttonMultiplayerPicture.setSmooth(true);
+    get_texture_from_file("multiplayer_button.png", buttonMultiplayerPicture);
     buttonMultiplayer.setTexture(buttonMultiplayerPicture);
-    buttonMultiplayer.setScale(buttonWidthScale, buttonHeightScale);
-    buttonMultiplayer.setPosition(
-        (Game::windowWidth -
-         buttonMultiplayerPicture.getSize().x * buttonWidthScale) /
-            2,
-        (Game::windowHeight -
-         buttonMultiplayerPicture.getSize().y * buttonHeightScale) /
-                2 +
-            100
-    );
 
-    // text init
-    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
-        std::cerr << "Error loading font\n";
-    }
-    text.setFont(font);
-    text.setString(
-        "This is the main menu. \nPress M (or click on button with your mouse) "
-        "to go to the level map!"
-    );
-    text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(150, 10);
+    updateSceneSize();
 }
 
 void MainMenuScene::handleInput(sf::Event &event) {
@@ -84,10 +28,7 @@ void MainMenuScene::handleInput(sf::Event &event) {
             return;
         }
     }
-    // тык на кнопку "singleplayer"
-    // пока что тут просто переход на карту уровня
-    // TODO проверить что игрок залогинился(?) и только после этого разрешать
-    // ему переход на карту и в целом игру
+
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (buttonSingleplayer.getGlobalBounds().contains(
@@ -101,6 +42,25 @@ void MainMenuScene::handleInput(sf::Event &event) {
 }
 
 void MainMenuScene::update(sf::Time &dTime) {
+}
+
+void MainMenuScene::updateSceneSize() {
+    // update positions of all objects
+    bigRectangle.setPosition(
+        (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
+        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 50
+    );
+
+    buttonSingleplayer.setPosition(
+        (Game::windowWidth - buttonSingleplayerPicture.getSize().x) / 2,
+        (Game::windowHeight - buttonSingleplayerPicture.getSize().y) / 2 + 50
+    );
+
+    buttonMultiplayer.setPosition(
+        (Game::windowWidth - buttonMultiplayerPicture.getSize().x) / 2,
+        (Game::windowHeight - buttonMultiplayerPicture.getSize().y) / 2 + 150
+    );
+
 }
 
 void MainMenuScene::draw(sf::RenderWindow &window) {
