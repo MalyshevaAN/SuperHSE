@@ -8,6 +8,7 @@
 #include <memory>
 #include <random>
 #include "scene.hpp"
+#include "hse_utils.hpp"
 #include <string>
 #include <filesystem>
 
@@ -17,17 +18,24 @@ class Game {
 private:
     sf::RenderWindow window;
     SceneManager sceneManager;
+    bool isFullScreen = false;
+
+    sf::Image icon;
 
 public:
     static int windowWidth;
     static int windowHeight;
 
-    Game()
-        : window(sf::VideoMode(windowWidth, windowHeight, 32), "SFML Window", sf::Style::Fullscreen), sceneManager(){
-            window.setFramerateLimit(60);
-            window.setVerticalSyncEnabled(true);
-        };
+    static int defaultWindowWidth;
+    static int defaultWindowHeight;
+
+    static inline sf::Sprite backButton;
+    static inline sf::Texture backButtonTexture;
+
+    Game();
     void run();
+
+    void changeFullScreenMode();
 };
 
 }  // namespace super_hse

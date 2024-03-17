@@ -22,4 +22,8 @@ void SceneManager::draw(sf::RenderWindow &window) {
     currentScene->draw(window);
 }
 
+void SceneManager::updateSceneSize() {
+    currentScene->updateSceneSize();
+}
+
 }  // namespace super_hse
