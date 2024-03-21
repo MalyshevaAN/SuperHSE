@@ -29,6 +29,9 @@ public:
     static int defaultWindowWidth;
     static int defaultWindowHeight;
 
+    static int player_id;
+    static std::string player_name;
+
     Game();
     void run();
 

@@ -26,6 +26,12 @@ AuthenticationScene::AuthenticationScene() {
     text.setFillColor(sf::Color::Black);
     text.setPosition(150, 10);
 
+    playerUsername.setFont(font);
+    playerUsername.setString("Player name: " + Game::player_name);
+    playerUsername.setCharacterSize(24);
+    playerUsername.setFillColor(sf::Color::Black);
+    playerUsername.setPosition(150, 30);
+
     updateSceneSize();
 }
 
@@ -66,6 +72,11 @@ void AuthenticationScene::updateSceneSize() {
         (Game::windowWidth - buttonPlayPicture.getSize().x) / 2,
         (Game::windowHeight - buttonPlayPicture.getSize().y) / 2 + 200
     );
+
+    playerUsername.setPosition(
+        (Game::windowWidth - playerUsername.getLocalBounds().width) / 2,
+        (Game::windowHeight - playerUsername.getLocalBounds().height) / 2 + 100
+    );
 }
 
 void AuthenticationScene::draw(sf::RenderWindow &window) {
@@ -73,6 +84,7 @@ void AuthenticationScene::draw(sf::RenderWindow &window) {
     window.draw(bigRectangle);
     window.draw(buttonPlay);
     window.draw(text);
+    window.draw(playerUsername);
     window.display();
 }
 

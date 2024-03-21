@@ -16,6 +16,8 @@ private:
 
     sf::Font font;
     sf::Text text;
+    sf::Text playerUsername;
+    
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public :

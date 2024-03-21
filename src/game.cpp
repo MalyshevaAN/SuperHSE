@@ -14,6 +14,9 @@ int Game::windowHeight = 640;
 int Game::defaultWindowWidth = 960;
 int Game::defaultWindowHeight = 640;
 
+int Game::player_id = -1;
+std::string Game::player_name = "NULL";
+
 Game::Game()
     : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager() {
         window.setFramerateLimit(60);
