@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include <memory>
 #include "scene.hpp"
-#include "main_menu_scene.hpp"
+#include "authentication_scene.hpp"
 
 
 #include <iostream>
@@ -30,7 +30,7 @@ Game::Game()
     }
 
 void Game::run() {
-    SceneManager::changeScene(std::make_unique<MainMenuScene>());
+    SceneManager::changeScene(std::make_unique<AuthenticationScene>());
 
     sf::Clock clock;
 

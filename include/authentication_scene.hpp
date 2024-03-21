@@ -11,10 +11,8 @@ private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
-    // sf::Texture buttonSingleplayerPicture;
-    // sf::Texture buttonMultiplayerPicture;
-    // sf::Sprite buttonSingleplayer;
-    // sf::Sprite buttonMultiplayer;
+    sf::Texture buttonPlayPicture;
+    sf::Sprite buttonPlay;
 
     sf::Font font;
     sf::Text text;
