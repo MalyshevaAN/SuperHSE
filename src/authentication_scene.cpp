@@ -11,7 +11,7 @@ AuthenticationScene::AuthenticationScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // buttons init
-    get_texture_from_file("singleplayer_button.png", buttonPlayPicture);
+    get_texture_from_file("authentication_play_button.png", buttonPlayPicture);
     buttonPlay.setTexture(buttonPlayPicture);
 
     // text init
