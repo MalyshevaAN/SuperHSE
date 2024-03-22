@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "authentication_scene.hpp"
+#include "register_scene.hpp"
 #include "login_scene.hpp"
 #include "scene.hpp"
 #include <iostream>
@@ -24,23 +25,19 @@ AuthenticationScene::AuthenticationScene() {
 void AuthenticationScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            // TODO handle buttons click
 
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
-                )) {
-                std::cout << "Login button pressed\n";
+                )) {;
                 SceneManager::changeScene(std::make_unique<LoginScene>());
                 return;
             }
-
-            // if (buttonPlay.getGlobalBounds().contains(
-            //         event.mouseButton.x, event.mouseButton.y
-            //     )) {
-            //     // TODO check if player is authenticated
-            //     SceneManager::changeScene(std::make_unique<MainMenuScene>());
-            //     return;
-            // }
+            if (registerButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<RegisterScene>());
+                return;
+            }
         }
     }
 }

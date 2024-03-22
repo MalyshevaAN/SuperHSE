@@ -16,9 +16,6 @@ private:
 
     sf::Texture registerButtonPicture;
     sf::Sprite registerButton;
-
-    sf::Font font;
-    sf::Text playerUsername;
     
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 

@@ -7,8 +7,6 @@
 namespace super_hse {
 
 LoginScene::LoginScene() {
-    std::cout << "LoginScene constructor\n";
-
     // bigRectangle init
     get_texture_from_file("menu.png", bigRectanglePicture);
     bigRectangle.setTexture(bigRectanglePicture);
@@ -36,7 +34,6 @@ void LoginScene::handleInput(sf::Event &event) {
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                std::cout << "Login button pressed\n";
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
