@@ -8,11 +8,11 @@
 
 namespace super_hse {
 
-int Game::windowWidth = 960;
-int Game::windowHeight = 640;
+int Game::windowWidth = 1180;
+int Game::windowHeight = 760;
 
-int Game::defaultWindowWidth = 960;
-int Game::defaultWindowHeight = 640;
+int Game::defaultWindowWidth = 1180;
+int Game::defaultWindowHeight = 760;
 
 int Game::player_id = -1;
 std::string Game::player_name = "NULL";

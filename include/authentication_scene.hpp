@@ -11,11 +11,13 @@ private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
-    sf::Texture buttonPlayPicture;
-    sf::Sprite buttonPlay;
+    sf::Texture loginButtonPicture;
+    sf::Sprite loginButton;
+
+    sf::Texture registerButtonPicture;
+    sf::Sprite registerButton;
 
     sf::Font font;
-    sf::Text text;
     sf::Text playerUsername;
     
     const sf::Color backgroundColor = sf::Color(154, 217, 234);

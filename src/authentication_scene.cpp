@@ -11,21 +11,16 @@ AuthenticationScene::AuthenticationScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // buttons init
-    get_texture_from_file("authentication_play_button.png", buttonPlayPicture);
-    buttonPlay.setTexture(buttonPlayPicture);
+    get_texture_from_file("authentication_login_button.png", loginButtonPicture);
+    loginButton.setTexture(loginButtonPicture);
+
+    get_texture_from_file("authentication_register_button.png", registerButtonPicture);
+    registerButton.setTexture(registerButtonPicture);
 
     // text init
     if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
         std::cerr << "Error loading font\n";
     }
-    text.setFont(font);
-    text.setString(
-        "Here some authentication logic should be added\n"
-    );
-    text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(150, 10);
-
     playerUsername.setFont(font);
     playerUsername.setString("Player name: " + Game::player_name);
     playerUsername.setCharacterSize(24);
@@ -36,21 +31,17 @@ AuthenticationScene::AuthenticationScene() {
 }
 
 void AuthenticationScene::handleInput(sf::Event &event) {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::P) {
-            SceneManager::changeScene(std::make_unique<MainMenuScene>());
-            return;
-        }
-    }
-
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            if (buttonPlay.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                SceneManager::changeScene(std::make_unique<MainMenuScene>());
-                return;
-            }
+            // TODO handle buttons click
+
+            // if (buttonPlay.getGlobalBounds().contains(
+            //         event.mouseButton.x, event.mouseButton.y
+            //     )) {
+            //     // TODO check if player is authenticated
+            //     SceneManager::changeScene(std::make_unique<MainMenuScene>());
+            //     return;
+            // }
         }
     }
 
@@ -65,12 +56,17 @@ void AuthenticationScene::updateSceneSize() {
     // update positions of all objects
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
-        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 50
+        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
     );
 
-    buttonPlay.setPosition(
-        (Game::windowWidth - buttonPlayPicture.getSize().x) / 2,
-        (Game::windowHeight - buttonPlayPicture.getSize().y) / 2 + 200
+    loginButton.setPosition(
+        (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 200
+    );
+
+    registerButton.setPosition(
+        (Game::windowWidth - registerButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - registerButtonPicture.getSize().y) / 2 + 300
     );
 
     playerUsername.setPosition(
@@ -82,8 +78,8 @@ void AuthenticationScene::updateSceneSize() {
 void AuthenticationScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);
-    window.draw(buttonPlay);
-    window.draw(text);
+    window.draw(loginButton);
+    window.draw(registerButton);
     window.draw(playerUsername);
     window.display();
 }

@@ -22,13 +22,6 @@ MainMenuScene::MainMenuScene() {
 }
 
 void MainMenuScene::handleInput(sf::Event &event) {
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::M) {
-            SceneManager::changeScene(std::make_unique<LevelMapScene>());
-            return;
-        }
-    }
-
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (buttonSingleplayer.getGlobalBounds().contains(
@@ -48,7 +41,7 @@ void MainMenuScene::updateSceneSize() {
     // update positions of all objects
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
-        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 50
+        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
     );
 
     buttonSingleplayer.setPosition(
