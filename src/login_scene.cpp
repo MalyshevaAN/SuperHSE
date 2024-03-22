@@ -33,7 +33,13 @@ LoginScene::LoginScene() {
 void LoginScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            // TODO handle buttons click
+            if (loginButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                std::cout << "Login button pressed\n";
+                SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                return;
+            }
 
         }
     }
