@@ -35,9 +35,9 @@ TileMap::Layer::Layer(
             auto vertices = tile.getVertices();
             m_vertex_array[i * 4 + j].position.x = vertices[j].pos.x;
             m_vertex_array[i * 4 + j].position.y = vertices[j].pos.y;
-            m_vertex_array[i * 4 + j].texCoords.x = static_cast<float>(
-                vertices[j].tex.x
-            );  // где-то тут беда с текстурой
+            m_vertex_array[i * 4 + j].texCoords.x =
+                static_cast<float>(vertices[j].tex.x
+                );  // где-то тут беда с текстурой
             m_vertex_array[i * 4 + j].texCoords.y =
                 static_cast<float>(vertices[j].tex.y);
         }
@@ -61,7 +61,7 @@ void TileMap::load(const ldtk::Level &level) {  // подгрузка уровн
     m_layers.clear();
     for (const auto &layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::Tiles) {
-            if (layer.getName() != "TestBricks"){
+            if (layer.getName() != "TestBricks") {
                 m_layers.insert({layer.getName(), {layer, m_render_texture}});
             }
         }

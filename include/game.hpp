@@ -7,10 +7,9 @@
 #include <filesystem>
 #include <memory>
 #include <random>
-#include "scene.hpp"
-#include "hse_utils.hpp"
 #include <string>
-#include <filesystem>
+#include "hse_utils.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -28,6 +27,12 @@ public:
 
     static int defaultWindowWidth;
     static int defaultWindowHeight;
+
+    static inline sf::Sprite backButton;
+    static inline sf::Texture backButtonTexture;
+
+    static int player_id;
+    static std::string player_name;
 
     Game();
     void run();

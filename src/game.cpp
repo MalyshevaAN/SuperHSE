@@ -1,18 +1,21 @@
 #include "game.hpp"
 #include <memory>
 #include "scene.hpp"
-#include "main_menu_scene.hpp"
+#include "authentication_scene.hpp"
 
 
 #include <iostream>
 
 namespace super_hse {
 
-int Game::windowWidth = 960;
-int Game::windowHeight = 640;
+int Game::windowWidth = 1180;
+int Game::windowHeight = 760;
 
-int Game::defaultWindowWidth = 960;
-int Game::defaultWindowHeight = 640;
+int Game::defaultWindowWidth = 1180;
+int Game::defaultWindowHeight = 760;
+
+int Game::player_id = -1;
+std::string Game::player_name = "NULL";
 
 Game::Game()
     : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager() {
@@ -20,17 +23,21 @@ Game::Game()
         window.setVerticalSyncEnabled(true);
 
         // set icon
-        std::filesystem::path p = std::filesystem::current_path();
-        std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
+        const std::filesystem::path p = std::filesystem::current_path();
+        const std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
 
         if (!icon.loadFromFile(texture_path)){
             std::cerr << "Error loading texture file logo2.png" << '\n';
         }
         window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
+        get_texture_from_file("back_button.png", backButtonTexture);
+        backButton.setTexture(backButtonTexture);
+        backButton.setScale(0.8, 0.8);
     }
 
 void Game::run() {
-    SceneManager::changeScene(std::make_unique<MainMenuScene>());
+    SceneManager::changeScene(std::make_unique<AuthenticationScene>());
 
     sf::Clock clock;
 
@@ -45,7 +52,7 @@ void Game::run() {
                 windowWidth = window.getSize().x;
                 windowHeight = window.getSize().y;
 
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                const sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
 
                 SceneManager::updateSceneSize();
