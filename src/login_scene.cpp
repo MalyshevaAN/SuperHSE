@@ -50,6 +50,22 @@ LoginScene::LoginScene() {
     updateSceneSize();
 }
 
+void LoginScene::updateActiveInputText(const sf::Uint32 unicode) {
+    if (unicode >= 128) {
+        return;
+    }
+
+    std::string text = activeInputText->getString();
+    if (unicode == 8) {  // backspace
+        if (!text.empty()) {
+            text.pop_back();
+        }
+    } else {
+        text += static_cast<char>(unicode);
+    }
+    activeInputText->setString(text);
+}
+
 void LoginScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
@@ -79,19 +95,7 @@ void LoginScene::handleInput(sf::Event &event) {
         }
     }
     if (event.type == sf::Event::TextEntered) {
-        if (event.text.unicode >= 128) {
-            return;
-        }
-
-        std::string text = activeInputText->getString();
-        if (event.text.unicode == 8) {  // backspace
-            if (!text.empty()) {
-                text.pop_back();
-            }
-        } else {
-            text += static_cast<char>(event.text.unicode);
-        }
-        activeInputText->setString(text);
+        updateActiveInputText(event.text.unicode);
     }
 }
 
