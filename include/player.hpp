@@ -11,12 +11,7 @@ struct Position {
     int y;
 };
 
-enum class PlayerState {
-    STAND,
-    WALK_LEFT,
-    WALK_RIGHT,
-    JUMP
-};
+enum class PlayerState { STAND, WALK_LEFT, WALK_RIGHT, JUMP };
 
 class Player {
 private:
@@ -26,14 +21,13 @@ private:
     Position position = {200, 10};
     const float speed = 70.f;
     PlayerState state = PlayerState::STAND;
-    
+
     float currentFrameColumn = 0;
     int currentFrameRow = 11;
     int totalFrames = 6;
     const int frameWidth = 64;
     const int frameHeight = 64;
     const float frameSpeed = 0.008;
-
 
 public:
     Player();
@@ -44,7 +38,10 @@ public:
     sf::FloatRect getCollider();
     sf::Vector2f calcMovement(const sf::Time &dTime);
 
-    float getSpeed() const { return speed; }
+    float getSpeed() const {
+        return speed;
+    }
+
     bool isGrounded = false;
 };
 

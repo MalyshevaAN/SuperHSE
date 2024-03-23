@@ -1,4 +1,5 @@
-../assets/tilemaps/project_2.ldtk
+<<<<<<< HEAD
+../assets/tilemaps/project_1.ldtk
 
 Ground
 BackGround
@@ -17,3 +18,17 @@ LongPlatform256
 LongPlatform512
 SmallPlatform32
 Floor
+=======
+../assets/tilemaps/first_level2.ldtk
+
+Background
+Ground
+Clouds
+Grass
+Texture_bricks
+
+Bricks
+
+OrangeBrick
+WhiteBrick
+>>>>>>> main

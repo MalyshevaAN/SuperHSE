@@ -25,6 +25,6 @@ public:
     void updateSceneSize() override;
 };
 
-}
+}  // namespace super_hse
 
-#endif // LEVEL_SCENE_HPP_
+#endif  // LEVEL_SCENE_HPP_
