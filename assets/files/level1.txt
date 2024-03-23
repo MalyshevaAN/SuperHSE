@@ -1,12 +1,19 @@
-../assets/tilemaps/first_level2.ldtk
+../assets/tilemaps/project_1.ldtk
 
-Background
 Ground
+BackGround
+StartEnd
+Trees
+Flowers
 Clouds
-Grass
-Texture_bricks
 
 Bricks
 
-OrangeBrick
-WhiteBrick
+LongPlatform64
+HighPlatform64
+LongPlatform128
+HighPlatform128
+LongPlatform256
+LongPlatform512
+SmallPlatform32
+Floor

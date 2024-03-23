@@ -138,7 +138,7 @@ LevelInfo::LevelInfo(std::string file) {
 
 LevelsStorage::LevelsStorage() {
     std::filesystem::path p(std::filesystem::current_path());
-    auto level1 = std::make_unique<LevelInfo>(p.parent_path().string() + "/assets/files/level2.txt");
+    auto level1 = std::make_unique<LevelInfo>(p.parent_path().string() + "/assets/files/level1.txt");
     storage.push_back(std::move(level1));
 }  
 }  // namespace super_hse
