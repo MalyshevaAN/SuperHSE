@@ -20,15 +20,13 @@ private:
     sf::Text usernameInputText;
     sf::RectangleShape passwordInputBox;
     sf::Text passwordInputText;
-
     sf::Text *activeInputText = &usernameInputText;
 
     sf::Texture loginButtonPicture;
     sf::Sprite loginButton;
 
     sf::Font font;
-    sf::Text playerUsername;
-    
+
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public :

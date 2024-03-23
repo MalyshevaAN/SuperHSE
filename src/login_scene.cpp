@@ -19,30 +19,19 @@ LoginScene::LoginScene() {
     // input boxes init
     usernameInputBox.setSize(sf::Vector2f(200, 50));
     usernameInputBox.setFillColor(sf::Color::White);
-    usernameInputBox.setPosition(
-        (Game::windowWidth - usernameInputBox.getSize().x) / 2,
-        (Game::windowHeight - usernameInputBox.getSize().y) / 2
-    );
-
     usernameInputText.setFont(font);
     usernameInputText.setCharacterSize(24);
     usernameInputText.setFillColor(sf::Color::Black);
-    usernameInputText.setPosition(
-        (Game::windowWidth - usernameInputBox.getSize().x) / 2 + 10,
-        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
-    );
 
+    passwordInputBox.setSize(sf::Vector2f(200, 50));
+    passwordInputBox.setFillColor(sf::Color::White);
+    passwordInputText.setFont(font);
+    passwordInputText.setCharacterSize(24);
+    passwordInputText.setFillColor(sf::Color::Black);
 
     // buttons init
     get_texture_from_file("authentication_login_button.png", loginButtonPicture);
     loginButton.setTexture(loginButtonPicture);
-
-
-    playerUsername.setFont(font);
-    playerUsername.setString("Player name: " + Game::player_name);
-    playerUsername.setCharacterSize(24);
-    playerUsername.setFillColor(sf::Color::Black);
-    playerUsername.setPosition(150, 30);
 
     updateSceneSize();
 }
@@ -53,6 +42,9 @@ void LoginScene::handleInput(sf::Event &event) {
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
+                // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
+                std::string username = usernameInputText.getString();
+                std::string password = passwordInputText.getString();
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
@@ -61,7 +53,11 @@ void LoginScene::handleInput(sf::Event &event) {
                 )) {
                 activeInputText = &usernameInputText;
             }
-
+            if (passwordInputBox.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+            )) {
+                activeInputText = &passwordInputText;
+            }
         }
     }
     if (event.type == sf::Event::TextEntered) {
@@ -70,7 +66,7 @@ void LoginScene::handleInput(sf::Event &event) {
         }
 
         std::string text = activeInputText->getString();
-        if (event.text.unicode == 8) {
+        if (event.text.unicode == 8) {  // backspace
             if (text.size() > 0) {
                 text.pop_back();
             }
@@ -91,24 +87,38 @@ void LoginScene::updateSceneSize() {
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
     );
 
+    usernameInputBox.setPosition(
+        (Game::windowWidth - usernameInputBox.getSize().x) / 2,
+        (Game::windowHeight - usernameInputBox.getSize().y) / 2
+    );
+    usernameInputText.setPosition(
+        (Game::windowWidth - usernameInputBox.getSize().x) / 2 + 10,
+        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
+    );
+
+    passwordInputBox.setPosition(
+        (Game::windowWidth - passwordInputBox.getSize().x) / 2,
+        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 100
+    );
+    passwordInputText.setPosition(
+        (Game::windowWidth - passwordInputBox.getSize().x) / 2 + 10,
+        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 110
+    );
+
     loginButton.setPosition(
         (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
         (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 200
-    );
-
-    playerUsername.setPosition(
-        (Game::windowWidth - playerUsername.getLocalBounds().width) / 2,
-        (Game::windowHeight - playerUsername.getLocalBounds().height) / 2 + 100
     );
 }
 
 void LoginScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);
-    window.draw(playerUsername);
 
     window.draw(usernameInputBox);
     window.draw(usernameInputText);
+    window.draw(passwordInputBox);
+    window.draw(passwordInputText);
 
     window.draw(loginButton);
     window.display();
