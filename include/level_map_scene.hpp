@@ -3,13 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
+#include <vector>
+#include "level_icon.hpp"
 
 namespace super_hse {
 
 class LevelMapScene : public Scene {
 private:
-    sf::Texture buttonLevel1Picture;
-    sf::Sprite buttonLevel1;
+    sf::Texture clothesPicture;
+    sf::Texture levelMapTexture;
+
+    sf::Sprite clothes;
+    sf::Sprite levelMap;
+
+    std::vector<levelIcon> levelIcons;
+
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 

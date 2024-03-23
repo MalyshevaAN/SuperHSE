@@ -29,6 +29,9 @@ public:
     static int defaultWindowWidth;
     static int defaultWindowHeight;
 
+    static inline sf::Sprite backButton;
+    static inline sf::Texture backButtonTexture;
+
     Game();
     void run();
 
