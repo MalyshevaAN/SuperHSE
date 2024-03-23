@@ -1,7 +1,7 @@
+#include "sql.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "sql.hpp"
 #include "sqlite/sqlite3.h"
 
 namespace super_hse {

@@ -4,12 +4,12 @@
 #include "Level.hpp"
 #include <LDtkLoader/Project.hpp>
 #include <SFML/Graphics.hpp>
-#include "hse_utils.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
-#include <filesystem>
+#include "hse_utils.hpp"
 #include "coin.hpp"
 
 namespace super_hse {
@@ -30,8 +30,6 @@ void Level::init(
     std::vector<std::string> &entityLayerNames,
     std::vector<std::string> &colliderNames
 ) {
-
-
     get_texture_from_file("HSEcoin.png", coinTexture);
     get_texture_from_file("bricks.png", textures.at("brick"));
     get_texture_from_file("floor.png", textures.at("floor"));
@@ -51,20 +49,22 @@ void Level::init(
                     (float)entity.getSize().y
                 );
                 colliders.emplace_back(rect);
-                if (name!="Floor"){
+                if (name != "Floor") {
                     textureColliders.emplace_back("brick");
-                }else {
+                } else {
                     textureColliders.emplace_back("floor");
                 }
             }
         }
     }
     auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
-    for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")){
+    for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
         // sf::Sprite coin;
         // coin.setTexture(coinTexture);
-        // coin.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
-        // coin.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        // coin.setTextureRect(sf::IntRect(0, 0, coinWidth, coinHeight));
+        // coin.setPosition(
+        //     sf::Vector2f(entity.getPosition().x, entity.getPosition().y)
+        // );
         coin new_coin;
         new_coin.coin_sprite.setTexture(coinTexture);
         new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
@@ -73,7 +73,8 @@ void Level::init(
     }
 }
 
-sf::RectangleShape Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
+sf::RectangleShape
+Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
     sf::RectangleShape r({rect.width, rect.height});
     r.setPosition(rect.left, rect.top);
     r.setTexture(&textures.at(texture_name));
@@ -81,14 +82,17 @@ sf::RectangleShape Level::getColliderShape(const sf::FloatRect &rect, std::strin
     return r;
 }
 
-void Level::update(sf::Time &dTime){
+void Level::update(sf::Time &dTime) {
     currentFrameColumn += frameSpeed * dTime.asMilliseconds();
-    if (currentFrameColumn >= 5){
+    if (currentFrameColumn >= 5) {
         currentFrameColumn -= 5;
     }
-    for (auto &elem : coins){
+    for (auto &elem : coins) {
         if (elem.get_status()){
-            elem.coin_sprite.setTextureRect(sf::IntRect(static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth, coinHeight));
+            elem.coin_sprite.setTextureRect(sf::IntRect(
+            static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth,
+            coinHeight
+        ));
         }
     }
 }
@@ -100,15 +104,16 @@ void Level::render(
     for (auto elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
-    for (size_t i = 0; i < colliders.size(); i++){
+    for (size_t i = 0; i < colliders.size(); i++) {
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
-    for (auto elem : coins){
+    for (auto elem : coins) {
         if (elem.get_status()){
             target.draw(elem.coin_sprite);
         }
     }
 }
+
 LevelInfo::LevelInfo(std::string file) {
     std::string line;
     std::ifstream in(file);
@@ -138,8 +143,10 @@ LevelInfo::LevelInfo(std::string file) {
 
 LevelsStorage::LevelsStorage() {
     std::filesystem::path p(std::filesystem::current_path());
-    auto level1 = std::make_unique<LevelInfo>(p.parent_path().string() + "/assets/files/level2.txt");
+    auto level1 = std::make_unique<LevelInfo>(
+        p.parent_path().string() + "/assets/files/level2.txt"
+    );
     storage.push_back(std::move(level1));
-}  
+}
 }  // namespace super_hse
 #endif
