@@ -11,6 +11,18 @@ private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
+    sf::RectangleShape usernameInputBox;
+    sf::Text usernameInputText;
+    sf::Text usernameLabel;
+
+    sf::RectangleShape passwordInputBox;
+    sf::Text passwordInputText;
+    sf::Text passwordLabel;
+
+    // TODO после предзащиты добавить подтверждение пароля
+
+    sf::Text *activeInputText = &usernameInputText;
+
     sf::Texture createPlayerButtonPicture;
     sf::Sprite createPlayerButton;
 
@@ -18,6 +30,7 @@ private:
     sf::Text playerUsername;
     
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
+    const sf::Color activeInputBoxColor = sf::Color(219, 219, 219);
 
 public :
     RegisterScene();
