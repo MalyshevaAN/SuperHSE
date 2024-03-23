@@ -53,7 +53,6 @@ void MainMenuScene::updateSceneSize() {
         (Game::windowWidth - buttonMultiplayerPicture.getSize().x) / 2,
         (Game::windowHeight - buttonMultiplayerPicture.getSize().y) / 2 + 150
     );
-
 }
 
 void MainMenuScene::draw(sf::RenderWindow &window) {

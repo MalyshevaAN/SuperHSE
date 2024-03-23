@@ -1,8 +1,8 @@
-#include "game.hpp"
 #include "login_scene.hpp"
+#include <iostream>
+#include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
-#include <iostream>
 
 namespace super_hse {
 
@@ -42,7 +42,9 @@ LoginScene::LoginScene() {
     passwordLabel.setString("Password: ");
 
     // buttons init
-    get_texture_from_file("authentication_login_button.png", loginButtonPicture);
+    get_texture_from_file(
+        "authentication_login_button.png", loginButtonPicture
+    );
     loginButton.setTexture(loginButtonPicture);
 
     updateSceneSize();
@@ -55,8 +57,8 @@ void LoginScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
-                std::string username = usernameInputText.getString();
-                std::string password = passwordInputText.getString();
+                const std::string username = usernameInputText.getString();
+                const std::string password = passwordInputText.getString();
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
@@ -69,7 +71,7 @@ void LoginScene::handleInput(sf::Event &event) {
             }
             if (passwordInputBox.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
-            )) {
+                )) {
                 activeInputText = &passwordInputText;
                 usernameInputBox.setFillColor(sf::Color::White);
                 passwordInputBox.setFillColor(activeInputBoxColor);
@@ -83,7 +85,7 @@ void LoginScene::handleInput(sf::Event &event) {
 
         std::string text = activeInputText->getString();
         if (event.text.unicode == 8) {  // backspace
-            if (text.size() > 0) {
+            if (!text.empty()) {
                 text.pop_back();
             }
         } else {

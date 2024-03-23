@@ -6,10 +6,7 @@
 
 namespace super_hse {
 
-enum class InputBoxType {
-    Username,
-    Password
-};
+enum class InputBoxType { Username, Password };
 
 class LoginScene : public Scene {
 private:
@@ -34,7 +31,7 @@ private:
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
     const sf::Color activeInputBoxColor = sf::Color(219, 219, 219);
 
-public :
+public:
     LoginScene();
 
     void update(sf::Time &dTime) override;

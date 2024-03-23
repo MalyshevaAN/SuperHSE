@@ -1,7 +1,7 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
 #include "player.hpp"
-#include "hse_utils.hpp"
 #include <iostream>
+#include "hse_utils.hpp"
 
 namespace super_hse {
 
@@ -52,11 +52,14 @@ void Player::update(const sf::Time &dTime) {
             currentFrameColumn -= totalFrames;
         }
         sprite.setTextureRect(sf::IntRect(
-            frameWidth * int(currentFrameColumn), currentFrameRow * frameHeight, frameWidth, frameHeight
+            frameWidth * int(currentFrameColumn), currentFrameRow * frameHeight,
+            frameWidth, frameHeight
         ));
 
     } else {
-        sprite.setTextureRect(sf::IntRect(0, currentFrameRow * frameHeight, frameWidth, frameHeight));
+        sprite.setTextureRect(sf::IntRect(
+            0, currentFrameRow * frameHeight, frameWidth, frameHeight
+        ));
     }
 }
 
@@ -80,7 +83,7 @@ sf::FloatRect Player::getCollider() {
     sf::FloatRect rect;
     rect.width = bounds.width / 3;
     rect.left = bounds.left + rect.width;
-    
+
     rect.top = bounds.top + 10;
     rect.height = bounds.height - 14;
     return rect;

@@ -23,8 +23,8 @@ Game::Game()
         window.setVerticalSyncEnabled(true);
 
         // set icon
-        std::filesystem::path p = std::filesystem::current_path();
-        std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
+        const std::filesystem::path p = std::filesystem::current_path();
+        const std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
 
         if (!icon.loadFromFile(texture_path)){
             std::cerr << "Error loading texture file logo2.png" << '\n';
@@ -48,7 +48,7 @@ void Game::run() {
                 windowWidth = window.getSize().x;
                 windowHeight = window.getSize().y;
 
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                const sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
 
                 SceneManager::updateSceneSize();

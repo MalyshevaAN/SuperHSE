@@ -28,11 +28,11 @@ private:
 
     sf::Font font;
     sf::Text playerUsername;
-    
+
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
     const sf::Color activeInputBoxColor = sf::Color(219, 219, 219);
 
-public :
+public:
     RegisterScene();
 
     void update(sf::Time &dTime) override;

@@ -16,10 +16,10 @@ private:
 
     sf::Texture registerButtonPicture;
     sf::Sprite registerButton;
-    
+
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
-public :
+public:
     AuthenticationScene();
 
     void update(sf::Time &dTime) override;

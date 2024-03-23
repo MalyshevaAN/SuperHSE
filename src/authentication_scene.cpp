@@ -1,9 +1,9 @@
-#include "game.hpp"
 #include "authentication_scene.hpp"
-#include "register_scene.hpp"
-#include "login_scene.hpp"
-#include "scene.hpp"
 #include <iostream>
+#include "game.hpp"
+#include "login_scene.hpp"
+#include "register_scene.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -13,10 +13,14 @@ AuthenticationScene::AuthenticationScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // buttons init
-    get_texture_from_file("authentication_login_button.png", loginButtonPicture);
+    get_texture_from_file(
+        "authentication_login_button.png", loginButtonPicture
+    );
     loginButton.setTexture(loginButtonPicture);
 
-    get_texture_from_file("authentication_register_button.png", registerButtonPicture);
+    get_texture_from_file(
+        "authentication_register_button.png", registerButtonPicture
+    );
     registerButton.setTexture(registerButtonPicture);
 
     updateSceneSize();
@@ -25,10 +29,10 @@ AuthenticationScene::AuthenticationScene() {
 void AuthenticationScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
-                )) {;
+                )) {
+                ;
                 SceneManager::changeScene(std::make_unique<LoginScene>());
                 return;
             }
@@ -43,7 +47,6 @@ void AuthenticationScene::handleInput(sf::Event &event) {
 }
 
 void AuthenticationScene::update(sf::Time &dTime) {
-
 }
 
 void AuthenticationScene::updateSceneSize() {

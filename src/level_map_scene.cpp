@@ -1,10 +1,10 @@
 #include "level_map_scene.hpp"
+#include <filesystem>
+#include <memory>
+#include "hse_utils.hpp"
 #include "level_scene.hpp"
 #include "main_menu_scene.hpp"
-#include <memory>
 #include "scene.hpp"
-#include "hse_utils.hpp"
-#include <filesystem>
 
 namespace super_hse {
 
