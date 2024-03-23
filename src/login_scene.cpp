@@ -18,16 +18,28 @@ LoginScene::LoginScene() {
 
     // input boxes init
     usernameInputBox.setSize(sf::Vector2f(200, 50));
-    usernameInputBox.setFillColor(sf::Color::White);
+    usernameInputBox.setFillColor(activeInputBoxColor);
+
     usernameInputText.setFont(font);
     usernameInputText.setCharacterSize(24);
     usernameInputText.setFillColor(sf::Color::Black);
 
+    usernameLabel.setFont(font);
+    usernameLabel.setCharacterSize(24);
+    usernameLabel.setFillColor(sf::Color::Black);
+    usernameLabel.setString("Username: ");
+
     passwordInputBox.setSize(sf::Vector2f(200, 50));
     passwordInputBox.setFillColor(sf::Color::White);
+
     passwordInputText.setFont(font);
     passwordInputText.setCharacterSize(24);
     passwordInputText.setFillColor(sf::Color::Black);
+
+    passwordLabel.setFont(font);
+    passwordLabel.setCharacterSize(24);
+    passwordLabel.setFillColor(sf::Color::Black);
+    passwordLabel.setString("Password: ");
 
     // buttons init
     get_texture_from_file("authentication_login_button.png", loginButtonPicture);
@@ -52,11 +64,15 @@ void LoginScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 activeInputText = &usernameInputText;
+                usernameInputBox.setFillColor(activeInputBoxColor);
+                passwordInputBox.setFillColor(sf::Color::White);
             }
             if (passwordInputBox.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
             )) {
                 activeInputText = &passwordInputText;
+                usernameInputBox.setFillColor(sf::Color::White);
+                passwordInputBox.setFillColor(activeInputBoxColor);
             }
         }
     }
@@ -95,6 +111,10 @@ void LoginScene::updateSceneSize() {
         (Game::windowWidth - usernameInputBox.getSize().x) / 2 + 10,
         (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
     );
+    usernameLabel.setPosition(
+        (Game::windowWidth - usernameInputBox.getSize().x) / 2 - 125,
+        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
+    );
 
     passwordInputBox.setPosition(
         (Game::windowWidth - passwordInputBox.getSize().x) / 2,
@@ -102,6 +122,10 @@ void LoginScene::updateSceneSize() {
     );
     passwordInputText.setPosition(
         (Game::windowWidth - passwordInputBox.getSize().x) / 2 + 10,
+        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 110
+    );
+    passwordLabel.setPosition(
+        (Game::windowWidth - passwordInputBox.getSize().x) / 2 - 125,
         (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 110
     );
 
@@ -117,8 +141,11 @@ void LoginScene::draw(sf::RenderWindow &window) {
 
     window.draw(usernameInputBox);
     window.draw(usernameInputText);
+    window.draw(usernameLabel);
+
     window.draw(passwordInputBox);
     window.draw(passwordInputText);
+    window.draw(passwordLabel);
 
     window.draw(loginButton);
     window.display();
