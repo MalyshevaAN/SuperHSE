@@ -28,6 +28,9 @@ public:
     static int defaultWindowWidth;
     static int defaultWindowHeight;
 
+    static inline sf::Sprite backButton;
+    static inline sf::Texture backButtonTexture;
+
     static int player_id;
     static std::string player_name;
 

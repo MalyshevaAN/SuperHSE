@@ -30,6 +30,10 @@ Game::Game()
             std::cerr << "Error loading texture file logo2.png" << '\n';
         }
         window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
+        get_texture_from_file("back_button.png", backButtonTexture);
+        backButton.setTexture(backButtonTexture);
+        backButton.setScale(0.8, 0.8);
     }
 
 void Game::run() {
