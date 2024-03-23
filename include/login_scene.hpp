@@ -6,10 +6,22 @@
 
 namespace super_hse {
 
+enum class InputBoxType {
+    Username,
+    Password
+};
+
 class LoginScene : public Scene {
 private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
+
+    sf::RectangleShape usernameInputBox;
+    sf::Text usernameInputText;
+    sf::RectangleShape passwordInputBox;
+    sf::Text passwordInputText;
+
+    sf::Text *activeInputText = &usernameInputText;
 
     sf::Texture loginButtonPicture;
     sf::Sprite loginButton;

@@ -7,18 +7,37 @@
 namespace super_hse {
 
 LoginScene::LoginScene() {
+    // text init
+    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
+        std::cerr << "Error loading font\n";
+    }
+
     // bigRectangle init
     get_texture_from_file("menu.png", bigRectanglePicture);
     bigRectangle.setTexture(bigRectanglePicture);
+
+    // input boxes init
+    usernameInputBox.setSize(sf::Vector2f(200, 50));
+    usernameInputBox.setFillColor(sf::Color::White);
+    usernameInputBox.setPosition(
+        (Game::windowWidth - usernameInputBox.getSize().x) / 2,
+        (Game::windowHeight - usernameInputBox.getSize().y) / 2
+    );
+
+    usernameInputText.setFont(font);
+    usernameInputText.setCharacterSize(24);
+    usernameInputText.setFillColor(sf::Color::Black);
+    usernameInputText.setPosition(
+        (Game::windowWidth - usernameInputBox.getSize().x) / 2 + 10,
+        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
+    );
+
 
     // buttons init
     get_texture_from_file("authentication_login_button.png", loginButtonPicture);
     loginButton.setTexture(loginButtonPicture);
 
-    // text init
-    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
-        std::cerr << "Error loading font\n";
-    }
+
     playerUsername.setFont(font);
     playerUsername.setString("Player name: " + Game::player_name);
     playerUsername.setCharacterSize(24);
@@ -37,10 +56,29 @@ void LoginScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
+            if (usernameInputBox.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                activeInputText = &usernameInputText;
+            }
 
         }
     }
+    if (event.type == sf::Event::TextEntered) {
+        if (event.text.unicode >= 128) {
+            return;
+        }
 
+        std::string text = activeInputText->getString();
+        if (event.text.unicode == 8) {
+            if (text.size() > 0) {
+                text.pop_back();
+            }
+        } else {
+            text += static_cast<char>(event.text.unicode);
+        }
+        activeInputText->setString(text);
+    }
 }
 
 void LoginScene::update(sf::Time &dTime) {
@@ -68,6 +106,10 @@ void LoginScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);
     window.draw(playerUsername);
+
+    window.draw(usernameInputBox);
+    window.draw(usernameInputText);
+
     window.draw(loginButton);
     window.display();
 }
