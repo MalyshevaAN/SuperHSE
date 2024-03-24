@@ -11,6 +11,8 @@
 #include "TileMap.hpp"
 #include "hse_utils.hpp"
 #include "coin.hpp"
+#include "game.hpp"
+#include "player.hpp"
 
 namespace super_hse {
 
@@ -23,6 +25,8 @@ Level::Level(std::string filename) {
     } catch (std::exception &ex) {
         std::cerr << ex.what() << std::endl;
     }
+    view.reset(sf::FloatRect(0.0f, 0.0f, Game::windowWidth, Game::windowHeight));
+    view.setCenter(Game::windowWidth / 2 - 90, Game::windowHeight / 3);
 }
 
 void Level::init(
@@ -33,6 +37,7 @@ void Level::init(
     get_texture_from_file("HSEcoin.png", coinTexture);
     get_texture_from_file("bricks.png", textures.at("brick"));
     get_texture_from_file("floor.png", textures.at("floor"));
+    get_texture_from_file("enemy.png", textures.at("enemy"));
     auto &world = project.allWorlds().at(0);
     auto &ldtk_first_level =
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
@@ -59,17 +64,19 @@ void Level::init(
     }
     auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
     for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
-        // sf::Sprite coin;
-        // coin.setTexture(coinTexture);
-        // coin.setTextureRect(sf::IntRect(0, 0, coinWidth, coinHeight));
-        // coin.setPosition(
-        //     sf::Vector2f(entity.getPosition().x, entity.getPosition().y)
-        // );
         coin new_coin;
         new_coin.coin_sprite.setTexture(coinTexture);
-        new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
+        new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
         new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
         coins.emplace_back(new_coin);
+    }
+
+    auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
+    for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
+        enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
+        new_enemy.enemySprite.setTexture(textures.at("enemy"));
+        new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        enemies.push_back(new_enemy);
     }
 }
 
@@ -82,7 +89,12 @@ Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
     return r;
 }
 
-void Level::update(sf::Time &dTime) {
+void Level::update(sf::Time &dTime, Position player_pos) {
+    int diff = Game::windowWidth / 2 - Player::start_position_x - 90;
+    if (player_pos.x + diff >= Game::windowWidth / 2 - 90 && player_pos.x + diff < 2065){
+        view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
+    }
+
     currentFrameColumn += frameSpeed * dTime.asMilliseconds();
     if (currentFrameColumn >= 5) {
         currentFrameColumn -= 5;
@@ -90,8 +102,8 @@ void Level::update(sf::Time &dTime) {
     for (auto &elem : coins) {
         if (elem.get_status()){
             elem.coin_sprite.setTextureRect(sf::IntRect(
-            static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth,
-            coinHeight
+            static_cast<int>(currentFrameColumn) * coin::coinWidth, 0, coin::coinWidth,
+            coin::coinHeight
         ));
         }
     }
@@ -101,6 +113,7 @@ void Level::render(
     sf::RenderTarget &target,
     std::vector<std::string> &tileLayerName
 ) {
+    target.setView(view);
     for (auto elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
@@ -110,6 +123,11 @@ void Level::render(
     for (auto elem : coins) {
         if (elem.get_status()){
             target.draw(elem.coin_sprite);
+        }
+    }
+    for (auto elem : enemies){
+        if (elem.get_status()){
+            target.draw(elem.enemySprite);
         }
     }
 }

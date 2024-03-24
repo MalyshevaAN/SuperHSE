@@ -6,6 +6,8 @@
 #include <vector>
 #include "TileMap.hpp"
 #include "coin.hpp"
+#include "enemy.hpp"
+#include "player.hpp"
 
 namespace super_hse {
 
@@ -19,30 +21,34 @@ struct Level {
 
     std::vector<sf::FloatRect> colliders;
     std::vector<coin> coins;
+    std::vector<enemy> enemies;
     std::vector<std::string> textureColliders;
+    sf::View view;
     sf::Texture coinTexture;
     sf::Texture brickTexture;
     sf::Texture floorTexture;
-    const int coinHeight = 16;
-    const int coinWidth = 16;
+    sf::Texture enemyTexture;
     const float frameSpeed = 0.004;
     float currentFrameColumn = 0;
     std::map<std::string, sf::Texture> textures = {
         {"coin", coinTexture},
         {"brick", brickTexture},
-        {"floor", floorTexture}};
+        {"floor", floorTexture},
+        {"enemy", enemyTexture}};
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,
         std::vector<std::string> &colliderNames
     );
 
+    void init_enemies();
+
     sf::RectangleShape
     getColliderShape(const sf::FloatRect &rect, std::string texture_name);
 
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
-    void update(sf::Time &dTime);
+    void update(sf::Time &dTime, Position player_pos);
 };
 
 struct LevelInfo;

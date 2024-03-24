@@ -10,7 +10,7 @@ const float GRAVITY = 70.f;
 Player::Player() {
     get_texture_from_file("ivankalinin.png", playerPicture);
     sprite.setTexture(playerPicture);
-    sprite.setPosition(220, 10);
+    sprite.setPosition(200, 10);
 }
 
 sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
@@ -76,6 +76,10 @@ void Player::move(int dx, int dy) {
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
     );
+}
+
+Position Player::get_position(){
+    return {sprite.getPosition().x, sprite.getPosition().y};
 }
 
 sf::FloatRect Player::getCollider() {
