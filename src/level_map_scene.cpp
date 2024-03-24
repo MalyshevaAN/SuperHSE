@@ -17,6 +17,8 @@ LevelMapScene::LevelMapScene() {
     for (int i = 0; i < 4; ++i){
         levelIcons[i] = levelIcon(i+1);
     }
+    get_texture_from_file("clothes.png", clothesTexture);
+    clothes.setTexture(clothesTexture);
 }
 
 void LevelMapScene::handleInput(sf::Event &event) {
@@ -70,7 +72,10 @@ void LevelMapScene::draw(sf::RenderWindow &window) {
         elem.levelIconSprite.setScale(0.8, 0.8);
         window.draw(elem.levelIconSprite);
     }
+    clothes.setPosition((Game::windowWidth - clothesTexture.getSize().x) / 2 - Game::windowWidth / 6, (Game::windowHeight - clothesTexture.getSize().y) / 2 - Game::windowHeight/7);
+    clothes.setScale(x_scale, y_scale);
     window.draw(Game::backButton);
+    window.draw(clothes);
     window.display();
 }
 
