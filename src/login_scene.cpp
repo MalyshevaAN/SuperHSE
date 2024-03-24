@@ -43,7 +43,7 @@ LoginScene::LoginScene() {
 
     // buttons init
     get_texture_from_file(
-        "authentication_login_button.png", loginButtonPicture
+        "login_button.png", loginButtonPicture
     );
     loginButton.setTexture(loginButtonPicture);
 

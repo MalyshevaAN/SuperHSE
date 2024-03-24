@@ -56,6 +56,7 @@ void LevelMapScene::draw(sf::RenderWindow &window) {
     double x_scale = Game::windowWidth / static_cast<double>(Game::defaultWindowWidth);
     double y_scale = Game::windowHeight / static_cast<double>(Game::defaultWindowHeight);
     levelMap.setScale(x_scale, y_scale);
+    levelMap.setPosition((Game::windowWidth - levelMap.getPosition().x) / 8, (Game::windowHeight - levelMap.getPosition().y) / 8);
     window.draw(levelMap);
     for (auto &elem : levelIcons){
         if (elem.available){
