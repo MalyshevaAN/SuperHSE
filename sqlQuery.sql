@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS "USERS" (
 CREATE TABLE IF NOT EXISTS "USERS" (
     "USER_ID"	INTEGER NOT NULL UNIQUE,
     "USERNAME"	varchar(100) NOT NULL,
+    "PASSWORD"	varchar(100) NOT NULL,
     "BALANCE"	INTEGER NOT NULL DEFAULT 0,
     "CURRENT_SKIN"	INTEGER NOT NULL DEFAULT 1,
     PRIMARY KEY("USER_ID" AUTOINCREMENT),
@@ -40,9 +41,9 @@ CREATE TABLE IF NOT EXISTS "LEVELS" (
     FOREIGN KEY("USER_ID") REFERENCES "USERS"("USER_ID")
 );
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Ivan Kalinin', 0, '../assets/images/ivankalinin.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Khrabroff', 0, '../assets/images/khrabrov.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Antipoff', 0, '../assets/images/antipov.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Anna Gladkaya', 0, '../assets/images/annaglad.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Egor', 0, '../assets/images/egor_with_headphones.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Sergey Kopel Kopeliovich', 0, '../assets/images/kopel.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Ivan Kalinin', 0, 'ivankalinin.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Khrabroff', 0, 'khrabrov.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Antipoff', 0, 'antipov.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Anna Gladkaya', 0, 'annaglad.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Egor', 0, 'egor_with_headphones.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Sergey Kopel Kopeliovich', 0, 'kopel.png');

@@ -14,7 +14,10 @@ void closeDB();
 
 void updateBalance(int id, int newBalance);
 
-void addUser(const std::string &username);  // TODO: add password
+bool registerUser(const std::string &username, const std::string &password);
+
+[[nodiscard]] int
+loginUser(const std::string &username, const std::string &password);
 
 [[nodiscard]] std::string getCurrentSkin(int id);
 

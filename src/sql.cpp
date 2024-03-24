@@ -1,11 +1,12 @@
-#include "sql.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "sqlite/sqlite3.h"
+#include "../../sqlite/sqlite3.h"
+#include "../include/sql.hpp"
 
 namespace super_hse {
 sqlite3 *db;
+int levelsCount = 4;
 
 void executeQuery() {
     char *err = 0;
@@ -69,15 +70,72 @@ void updateBalance(int id, int newBalance) {
     }
 }
 
-void addUser(const std::string &username) {
-    std::string sql =
-        "INSERT INTO USERS (USERNAME) VALUES ('" + username + "')";
+bool registerUser(const std::string &username, const std::string &password) {
+    if (username.empty() || password.empty()) {
+        return false;
+    }
+
+    // сheck if username already exists
+    std::string checkSql =
+        "SELECT COUNT(*) FROM USERS WHERE USERNAME = '" + username + "'";
+    sqlite3_stmt *checkStmt;
+    sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, NULL);
+    sqlite3_step(checkStmt);
+    int count = sqlite3_column_int(checkStmt, 0);
+    sqlite3_finalize(checkStmt);
+    if (count > 0) {
+        // already exists
+        return false;
+    }
+
+    // new user
+    std::string sql = "INSERT INTO USERS (USERNAME, PASSWORD) VALUES ('" +
+                      username + "', '" + password + "')";
     char *err = 0;
     int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
     if (rc != SQLITE_OK) {
         std::cerr << "Add user error: " << err << '\n';
         sqlite3_free(err);
     }
+
+    std::string idSql =
+        "SELECT USER_ID FROM USERS WHERE USERNAME = '" + username + "'";
+    sqlite3_stmt *idStmt;
+    sqlite3_prepare_v2(db, idSql.c_str(), -1, &idStmt, NULL);
+    sqlite3_step(idStmt);
+    int id = sqlite3_column_int(idStmt, 0);
+    sqlite3_finalize(idStmt);
+
+    // levels for the new user
+    for (int i = 1; i <= levelsCount; ++i) {
+        sql = "INSERT INTO LEVELS (USER_ID, LVL_NUM, STATUS) VALUES (" +
+              std::to_string(id) + ", " + std::to_string(i) + ", " +
+              (i == 1 ? "1" : "0") + ")";
+        rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
+        if (rc != SQLITE_OK) {
+            std::cerr << "Add levels error: " << err << '\n';
+            sqlite3_free(err);
+        }
+    }
+
+    return true;
+}
+
+[[nodiscard]] int
+loginUser(const std::string &username, const std::string &password) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "SELECT USER_ID FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_STATIC);
+    int step = sqlite3_step(stmt);
+    int id = -1;
+    if (step == SQLITE_ROW) {
+        id = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    return id;
 }
 
 [[nodiscard]] std::string getCurrentSkin(int id) {
@@ -130,12 +188,15 @@ void updateLeveL(int id, int level, int newTime, int newCash) {
         std::cerr << "Update records error: " << err << '\n';
         sqlite3_free(err);
     }
-    sql = "UPDATE LEVELS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
-          " AND LVL_NUM = " + std::to_string(level + 1);
-    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Update next lvl status error: " << err << '\n';
-        sqlite3_free(err);
+    if (level < levelsCount) {
+        sql = "UPDATE LEVELS SET STATUS = 1 WHERE USER_ID = " +
+              std::to_string(id) +
+              " AND LVL_NUM = " + std::to_string(level + 1);
+        rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
+        if (rc != SQLITE_OK) {
+            std::cerr << "Update next lvl status error: " << err << '\n';
+            sqlite3_free(err);
+        }
     }
     sqlite3_finalize(stmt);
 }
