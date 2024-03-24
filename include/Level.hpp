@@ -28,6 +28,9 @@ struct Level {
     sf::Texture brickTexture;
     sf::Texture floorTexture;
     sf::Texture enemyTexture;
+    sf::RectangleShape coinCounterBack{};
+    sf::RectangleShape coinCounterFront{};
+    int allCoins = 0;
     const float frameSpeed = 0.004;
     float currentFrameColumn = 0;
     std::map<std::string, sf::Texture> textures = {

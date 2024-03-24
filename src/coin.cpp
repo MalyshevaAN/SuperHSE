@@ -15,7 +15,7 @@ bool coin::get_status(){
 }
 
 void coin::spin_and_dissappear(){
-    
+
 }
 }
 

@@ -70,7 +70,7 @@ void Level::init(
         new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
         coins.emplace_back(new_coin);
     }
-
+    allCoins = coins.size();
     auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
     for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
         enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
@@ -78,6 +78,13 @@ void Level::init(
         new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
         enemies.push_back(new_enemy);
     }
+
+    coinCounterBack.setSize({(float)Game::windowWidth / 10, (float)Game::windowHeight / 20});
+    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.5), (float)Game::windowHeight / 40});
+    coinCounterBack.setFillColor(sf::Color::White);
+    coinCounterFront.setPosition(coinCounterBack.getPosition());
+    coinCounterFront.setFillColor(sf::Color::Green);
+    coinCounterFront.setSize({0, coinCounterBack.getSize().y});
 }
 
 sf::RectangleShape
@@ -93,20 +100,25 @@ void Level::update(sf::Time &dTime, Position player_pos) {
     int diff = Game::windowWidth / 2 - Player::start_position_x - 90;
     if (player_pos.x + diff >= Game::windowWidth / 2 - 90 && player_pos.x + diff < 2065){
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
+        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.5, coinCounterBack.getPosition().y);
+        coinCounterFront.setPosition(coinCounterBack.getPosition());
     }
-
     currentFrameColumn += frameSpeed * dTime.asMilliseconds();
     if (currentFrameColumn >= 5) {
         currentFrameColumn -= 5;
     }
+    int gatheredCoins = 0;
     for (auto &elem : coins) {
         if (elem.get_status()){
             elem.coin_sprite.setTextureRect(sf::IntRect(
             static_cast<int>(currentFrameColumn) * coin::coinWidth, 0, coin::coinWidth,
             coin::coinHeight
         ));
+        }else {
+            gatheredCoins++;
+        };
         }
-    }
+    coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
 }
 
 void Level::render(
@@ -130,6 +142,8 @@ void Level::render(
             target.draw(elem.enemySprite);
         }
     }
+    target.draw(coinCounterBack);
+    target.draw(coinCounterFront);
 }
 
 LevelInfo::LevelInfo(std::string file) {

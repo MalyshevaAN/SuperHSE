@@ -80,6 +80,12 @@ void LevelScene::update(sf::Time &dTime) {
         }
     }
 
+    for (auto &entity : level.coins){
+        if (nextPositionCollider.intersects(entity.coin_sprite.getGlobalBounds())){
+            entity.disable();
+        }
+    }
+
     player.isGrounded = isCollidingWithFloor;
 
     if (!isCollidingWithWall) {
