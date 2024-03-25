@@ -40,7 +40,7 @@ RegisterScene::RegisterScene() {
     passwordLabel.setString("Password: ");
 
     // buttons init
-    get_texture_from_file("create_user.png", createPlayerButtonPicture);
+    get_texture_from_file("create_user_button.png", createPlayerButtonPicture);
     createPlayerButton.setTexture(createPlayerButtonPicture);
 
     updateSceneSize();

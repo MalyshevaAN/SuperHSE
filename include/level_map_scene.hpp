@@ -10,7 +10,7 @@ namespace super_hse {
 
 class LevelMapScene : public Scene {
 private:
-    sf::Texture clothesPicture;
+    sf::Texture clothesTexture;
     sf::Texture levelMapTexture;
 
     sf::Sprite clothes;

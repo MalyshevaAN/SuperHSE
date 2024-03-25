@@ -41,7 +41,7 @@ void LevelScene::updateSceneSize() {
 }
 
 void LevelScene::update(sf::Time &dTime) {
-    level.update(dTime);
+    level.update(dTime, player.get_position());
 
     // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
@@ -80,6 +80,12 @@ void LevelScene::update(sf::Time &dTime) {
         }
     }
 
+    for (auto &entity : level.coins){
+        if (nextPositionCollider.intersects(entity.coin_sprite.getGlobalBounds())){
+            entity.disable();
+        }
+    }
+
     player.isGrounded = isCollidingWithFloor;
 
     if (!isCollidingWithWall) {
@@ -91,7 +97,6 @@ void LevelScene::update(sf::Time &dTime) {
 
     // обновление фрейма
     player.update(dTime);
-    level.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {

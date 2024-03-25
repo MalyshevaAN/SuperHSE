@@ -11,6 +11,11 @@ void coin::disable(){
 
 bool coin::get_status(){
     return is_active;
+    
+}
+
+void coin::spin_and_dissappear(){
+
 }
 }
 

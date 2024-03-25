@@ -7,8 +7,8 @@
 namespace super_hse {
 
 struct Position {
-    int x;
-    int y;
+    float x;
+    float y;
 };
 
 enum class PlayerState { STAND, WALK_LEFT, WALK_RIGHT, JUMP };
@@ -37,11 +37,14 @@ public:
     void move(int dx, int dy);
     sf::FloatRect getCollider();
     sf::Vector2f calcMovement(const sf::Time &dTime);
+    static const int start_position_x = 200;
+    static const int start_position_y = 10;
 
     float getSpeed() const {
         return speed;
     }
 
+    Position get_position();
     bool isGrounded = false;
 };
 
