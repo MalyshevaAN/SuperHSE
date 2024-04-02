@@ -20,6 +20,7 @@ private:
 
     Position position = {200, 10};
     const float speed = 70.f;
+    float verticalVelocity = 0;
     PlayerState state = PlayerState::STAND;
 
     float currentFrameColumn = 0;

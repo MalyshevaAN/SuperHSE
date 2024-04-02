@@ -5,7 +5,7 @@
 
 namespace super_hse {
 
-const float GRAVITY = 70.f;
+const float GRAVITY = 200.f;
 
 Player::Player() {
     get_texture_from_file("ivankalinin.png", playerPicture);
@@ -29,17 +29,22 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
-        movement.y -= 2 * speed;
-
+        if (isGrounded) {
+            verticalVelocity -= 150;
+            isGrounded = false;
+        }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         movement.y += speed;
 
     } else {
         state = PlayerState::STAND;
     }
-    if (!isGrounded) {
-        movement.y += GRAVITY;
+    verticalVelocity += GRAVITY * dTime.asSeconds();
+    if (isGrounded) {
+        verticalVelocity = 0;
     }
+    // std::cout << verticalVelocity << "\n";
+    movement.y += verticalVelocity;
     movement *= dTime.asSeconds();
     return movement;
 };
@@ -71,7 +76,6 @@ void Player::handleInput(const sf::Event &event) {
 }
 
 void Player::move(int dx, int dy) {
-    // TODO: разобраться с int/float
     sprite.move(dx, dy);
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
