@@ -22,10 +22,12 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
         state = PlayerState::WALK_LEFT;
+        currentFrameRow = 9;
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         movement.x += speed;
         state = PlayerState::WALK_RIGHT;
+        currentFrameRow = 11;
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
@@ -38,6 +40,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
 
     } else {
         state = PlayerState::STAND;
+        currentFrameRow = 10;
     }
     verticalVelocity += GRAVITY * dTime.asSeconds();
     if (isGrounded) {

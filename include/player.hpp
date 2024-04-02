@@ -22,6 +22,7 @@ private:
     const float speed = 70.f;
     float verticalVelocity = 0;
     PlayerState state = PlayerState::STAND;
+    PlayerState prevState = PlayerState::STAND;
 
     float currentFrameColumn = 0;
     int currentFrameRow = 11;
