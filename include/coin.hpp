@@ -17,7 +17,7 @@ namespace super_hse{
         static const int coinWidth = 16;
         void disable();
         CoinStatus get_status();
-        void dissappear();
+        void disappear();
         void changeFrame(int frame);
         void setStatus(CoinStatus status_);
         static void init();

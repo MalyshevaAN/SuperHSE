@@ -33,7 +33,7 @@ CoinStatus coin::get_status(){
     return status;
 }
 
-void coin::dissappear(){
+void coin::disappear(){
     if (height_change <= 3){
         coin_sprite.setPosition(sf::Vector2f(coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2));
         height_change += 0.1;

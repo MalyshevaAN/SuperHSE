@@ -2,8 +2,16 @@
 #define ENEMY_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "hse_utils.hpp"
 namespace super_hse {
+
+    enum class EnemyState{
+        active,
+        not_active,
+        dieing,
+        dead
+    };
 
     struct enemy{
         sf::Sprite enemySprite;
@@ -12,11 +20,17 @@ namespace super_hse {
         float posY;
 
         enemy(float x_, float y_);
-        bool get_status();
-        void change_status();
-        void die();
+        EnemyState get_state();
+        void disable();
+        void unable();
+        void disappear();
+        static void init();
+        static inline sf::SoundBuffer buffer;
+        static inline sf::Sound sound;
     private:
-        bool is_alive = true;
+        EnemyState state = EnemyState::active;
+        float time_unable = 0;
+        float time_dissappearing = 0;
     };
 }
 

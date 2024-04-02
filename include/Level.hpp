@@ -28,8 +28,13 @@ struct Level {
     sf::Texture brickTexture;
     sf::Texture floorTexture;
     sf::Texture enemyTexture;
+    sf::Texture liveTexture;
+    sf::Texture deathTexure;
     sf::RectangleShape coinCounterBack{};
     sf::RectangleShape coinCounterFront{};
+    int level_lives = 3;
+    std::vector<sf::Sprite> lives;
+    void get_textures();
     int allCoins = 0;
     const float frameSpeed = 0.004;
     float currentFrameColumn = 0;
@@ -37,7 +42,9 @@ struct Level {
         {"coin", coinTexture},
         {"brick", brickTexture},
         {"floor", floorTexture},
-        {"enemy", enemyTexture}};
+        {"enemy", enemyTexture},
+        {"live", liveTexture}, 
+        {"death", deathTexure}};
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,
@@ -51,7 +58,7 @@ struct Level {
 
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
-    void update(sf::Time &dTime, Position player_pos);
+    void update(sf::Time &dTime, Position player_pos, int player_lives);
 };
 
 struct LevelInfo;

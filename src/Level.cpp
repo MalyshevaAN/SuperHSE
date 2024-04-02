@@ -29,16 +29,23 @@ Level::Level(std::string filename) {
     view.setCenter(Game::windowWidth / 2 - 90, Game::windowHeight / 3);
 }
 
+void Level::get_textures(){
+    get_texture_from_file("HSEcoin.png", coinTexture);
+    get_texture_from_file("bricks.png", textures.at("brick"));
+    get_texture_from_file("floor.png", textures.at("floor"));
+    get_texture_from_file("enemy.png", textures.at("enemy"));
+    get_texture_from_file("live.png", textures.at("live"));
+    get_texture_from_file("death.png", textures.at("death"));
+}
+
 void Level::init(
     std::vector<std::string> &tileLayerName,
     std::vector<std::string> &entityLayerNames,
     std::vector<std::string> &colliderNames
 ) {
+    get_textures();
     coin::init();
-    get_texture_from_file("HSEcoin.png", coinTexture);
-    get_texture_from_file("bricks.png", textures.at("brick"));
-    get_texture_from_file("floor.png", textures.at("floor"));
-    get_texture_from_file("enemy.png", textures.at("enemy"));
+    enemy::init();
     auto &world = project.allWorlds().at(0);
     auto &ldtk_first_level =
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
@@ -82,11 +89,17 @@ void Level::init(
     }
 
     coinCounterBack.setSize({(float)Game::windowWidth / 10, (float)Game::windowHeight / 20});
-    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.5), (float)Game::windowHeight / 40});
+    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.7), (float)Game::windowHeight / 40});
     coinCounterBack.setFillColor(sf::Color::White);
     coinCounterFront.setPosition(coinCounterBack.getPosition());
     coinCounterFront.setFillColor(sf::Color::Green);
     coinCounterFront.setSize({0, coinCounterBack.getSize().y});
+    for (int i = 0; i < 3; ++i){
+        sf::Sprite new_live;
+        new_live.setTexture(textures.at("live"));
+        new_live.setPosition(Game::windowWidth / 1.4 + i * 35, Game::windowHeight / 40);
+        lives.push_back(new_live);
+    }
 }
 
 sf::RectangleShape
@@ -98,12 +111,24 @@ Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
     return r;
 }
 
-void Level::update(sf::Time &dTime, Position player_pos) {
+void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
+    if (player_lives == 0){
+        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
+        return;
+    }
     int diff = Game::windowWidth / 2 - Player::start_position_x - 90;
     if (player_pos.x + diff >= Game::windowWidth / 2 - 90 && player_pos.x + diff < 2065){
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
-        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.5, coinCounterBack.getPosition().y);
+        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.7, coinCounterBack.getPosition().y);
         coinCounterFront.setPosition(coinCounterBack.getPosition());
+        for (int i = 0; i < 3; ++i){
+            lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.4 + i*35, lives[i].getPosition().y);
+            if (i < player_lives){
+                lives[i].setTexture(textures.at("live"));
+            }else{
+                lives[i].setTexture(textures.at("death"));
+            }
+        }
     }
     currentFrameColumn += frameSpeed * dTime.asMilliseconds();
     if (currentFrameColumn >= 5) {
@@ -116,11 +141,19 @@ void Level::update(sf::Time &dTime, Position player_pos) {
         }else {
             if (elem.get_status() == CoinStatus::dieing){
                 elem.changeFrame(currentFrameColumn);
-                elem.dissappear();
+                elem.disappear();
             }
             gatheredCoins++;
         };
+    }
+    for (auto &enemy : enemies){
+        if (enemy.get_state() == EnemyState::dieing){
+            enemy.disappear();
         }
+        if (enemy.get_state() == EnemyState::not_active){
+            enemy.unable();
+        }
+    }
     coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
 }
 
@@ -141,9 +174,13 @@ void Level::render(
         }
     }
     for (auto &elem : enemies){
-        if (elem.get_status()){
+        if (elem.get_state() != EnemyState::dead){
             target.draw(elem.enemySprite);
         }
+    }
+    for (auto &live : lives){
+        target.draw(live);
+
     }
     target.draw(coinCounterBack);
     target.draw(coinCounterFront);

@@ -2,6 +2,7 @@
 #define PLAYER_HPP_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 namespace super_hse {
@@ -20,7 +21,9 @@ private:
 
     Position position = {200, 10};
     const float speed = 70.f;
+    float verticalVelocity = 0;
     PlayerState state = PlayerState::STAND;
+    PlayerState prevState = PlayerState::STAND;
 
     float currentFrameColumn = 0;
     int currentFrameRow = 11;
@@ -28,6 +31,9 @@ private:
     const int frameWidth = 64;
     const int frameHeight = 64;
     const float frameSpeed = 0.008;
+    int active_lives = 4;
+    static inline sf::SoundBuffer buffer;
+    static inline sf::Sound sound;
 
 public:
     Player();
@@ -39,7 +45,8 @@ public:
     sf::Vector2f calcMovement(const sf::Time &dTime);
     static const int start_position_x = 200;
     static const int start_position_y = 10;
-
+    void lose_live();
+    int get_active_lives();
     float getSpeed() const {
         return speed;
     }
