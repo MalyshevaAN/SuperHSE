@@ -17,4 +17,4 @@ set(SRC_LIST src/main.cpp src/game.cpp src/scene.cpp src/level_map_scene.cpp
 include_directories(main include)
 
 add_executable(main ${SRC_LIST})
-target_link_libraries(main LDtkLoader sfml-graphics sfml-window sfml-system)
+target_link_libraries(main LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio)

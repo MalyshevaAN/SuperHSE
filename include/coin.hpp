@@ -2,19 +2,31 @@
 #define COIN_HPP_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace super_hse{
+    enum class CoinStatus {
+        active,
+        dieing,
+        dead
+    };
+
     struct coin{
         sf::Sprite coin_sprite;
         static const int coinHeight = 16;
         static const int coinWidth = 16;
         void disable();
-        bool get_status();
-        void spin_and_dissappear();
+        CoinStatus get_status();
+        void dissappear();
+        void changeFrame(int frame);
+        void setStatus(CoinStatus status_);
+        static void init();
+        static inline sf::SoundBuffer buffer;
+        static inline sf::Sound sound;
 
     private:
-        bool is_active = true;
-
+        CoinStatus status = CoinStatus::active;
+        float height_change = 0;
     };
 }
 

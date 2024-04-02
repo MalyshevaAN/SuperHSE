@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "hse_utils.hpp"
 namespace super_hse {
+
     struct enemy{
         sf::Sprite enemySprite;
         sf::Texture enemyTexture;

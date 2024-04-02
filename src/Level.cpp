@@ -34,6 +34,7 @@ void Level::init(
     std::vector<std::string> &entityLayerNames,
     std::vector<std::string> &colliderNames
 ) {
+    coin::init();
     get_texture_from_file("HSEcoin.png", coinTexture);
     get_texture_from_file("bricks.png", textures.at("brick"));
     get_texture_from_file("floor.png", textures.at("floor"));
@@ -65,6 +66,7 @@ void Level::init(
     auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
     for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
         coin new_coin;
+        new_coin.setStatus(CoinStatus::active);
         new_coin.coin_sprite.setTexture(coinTexture);
         new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
         new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
@@ -109,12 +111,13 @@ void Level::update(sf::Time &dTime, Position player_pos) {
     }
     int gatheredCoins = 0;
     for (auto &elem : coins) {
-        if (elem.get_status()){
-            elem.coin_sprite.setTextureRect(sf::IntRect(
-            static_cast<int>(currentFrameColumn) * coin::coinWidth, 0, coin::coinWidth,
-            coin::coinHeight
-        ));
+        if (elem.get_status() == CoinStatus::active){
+            elem.changeFrame(currentFrameColumn);
         }else {
+            if (elem.get_status() == CoinStatus::dieing){
+                elem.changeFrame(currentFrameColumn);
+                elem.dissappear();
+            }
             gatheredCoins++;
         };
         }
@@ -126,18 +129,18 @@ void Level::render(
     std::vector<std::string> &tileLayerName
 ) {
     target.setView(view);
-    for (auto elem : tileLayerName) {
+    for (auto &elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
     for (size_t i = 0; i < colliders.size(); i++) {
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
-    for (auto elem : coins) {
-        if (elem.get_status()){
+    for (auto &elem : coins) {
+        if (elem.get_status() != CoinStatus::dead){
             target.draw(elem.coin_sprite);
         }
     }
-    for (auto elem : enemies){
+    for (auto &elem : enemies){
         if (elem.get_status()){
             target.draw(elem.enemySprite);
         }
