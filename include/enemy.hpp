@@ -15,13 +15,15 @@ namespace super_hse {
 
     struct enemy{
         sf::Sprite enemySprite;
-        sf::Texture enemyTexture;
+        static inline sf::Texture enemyTexture;
+        static inline sf::Texture enemyUnactiveTexture;
         float posX;
         float posY;
 
         enemy(float x_, float y_);
         EnemyState get_state();
         void disable();
+        void change_pos();
         void unable();
         void disappear();
         static void init();
@@ -31,6 +33,8 @@ namespace super_hse {
         EnemyState state = EnemyState::active;
         float time_unable = 0;
         float time_dissappearing = 0;
+        float pos_diff;
+        int path = 1;
     };
 }
 

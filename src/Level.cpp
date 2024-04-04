@@ -153,6 +153,9 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         if (enemy.get_state() == EnemyState::not_active){
             enemy.unable();
         }
+        if (enemy.get_state() == EnemyState::active || enemy.get_state() == EnemyState::not_active){
+            enemy.change_pos();
+        }
     }
     coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
 }

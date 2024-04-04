@@ -9,6 +9,7 @@
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
 #include "game.hpp"
+#include "lose_scene.hpp"
 
 namespace super_hse {
 
@@ -43,7 +44,8 @@ void LevelScene::updateSceneSize() {
 
 void LevelScene::update(sf::Time &dTime) {
     if (player.get_active_lives() == 0){
-        SceneManager::changeScene(std::make_unique<LevelMapScene>());
+        SceneManager::changeScene(std::make_unique<LoseScene>());
+        std::cerr << 1;
         return;
     }
     level.update(dTime, player.get_position(), player.get_active_lives());

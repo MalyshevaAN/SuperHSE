@@ -13,11 +13,23 @@ EnemyState enemy::get_state(){
 void enemy::init(){
     enemy::buffer.loadFromFile("../assets/audio/enemy.wav");
     enemy::sound.setBuffer(buffer);
+    get_texture_from_file("enemy_unactive.png", enemy::enemyUnactiveTexture);
+    get_texture_from_file("enemy.png", enemy::enemyTexture);
 }
 
 void enemy::disable(){
     state = EnemyState::dieing;
     enemy::sound.play();
+}
+
+void enemy::change_pos(){
+    if (pos_diff < 40){
+        enemySprite.move(0.5*path, 0);
+        pos_diff+=0.2;
+    }else{
+        path*=-1;
+        pos_diff = 0;
+    }
 }
 
 void enemy::disappear(){
@@ -30,10 +42,12 @@ void enemy::disappear(){
 }
 
 void enemy::unable(){
-    if (time_unable < 10){
+    if (time_unable < 20){
+        enemySprite.setTexture(enemy::enemyUnactiveTexture);
         state = EnemyState::not_active;
         time_unable += 0.1;
     }else {
+        enemySprite.setTexture(enemy::enemyTexture);
         time_unable = 0;
         state = EnemyState::active;
     }
