@@ -3,6 +3,7 @@
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
+#include "authentication_scene.hpp"
 #include "sql.hpp"
 
 namespace super_hse {
@@ -44,7 +45,7 @@ LoginScene::LoginScene() {
 
     // buttons init
     get_texture_from_file(
-        "authentication_login_button.png", loginButtonPicture
+        "login_button.png", loginButtonPicture
     );
     loginButton.setTexture(loginButtonPicture);
 
@@ -98,6 +99,11 @@ void LoginScene::handleInput(sf::Event &event) {
                 activeInputText = &passwordInputText;
                 usernameInputBox.setFillColor(sf::Color::White);
                 passwordInputBox.setFillColor(activeInputBoxColor);
+            }
+            if (Game::backButton.getGlobalBounds().contains(
+                event.mouseButton.x, event.mouseButton.y
+            )) {
+                SceneManager::changeScene(std::make_unique<AuthenticationScene>());
             }
         }
     }
@@ -161,6 +167,7 @@ void LoginScene::draw(sf::RenderWindow &window) {
     window.draw(passwordLabel);
 
     window.draw(loginButton);
+    window.draw(Game::backButton);
     window.display();
 }
 

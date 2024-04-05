@@ -13,7 +13,9 @@ Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
     get_texture_from_file(skinPath, playerPicture);
     sprite.setTexture(playerPicture);
-    sprite.setPosition(220, 10);
+    sprite.setPosition(200, 10);
+    Player::buffer.loadFromFile("../assets/audio/death.wav");
+    Player::sound.setBuffer(buffer);
 }
 
 sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
@@ -35,7 +37,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
         if (isGrounded) {
-            verticalVelocity -= 150;
+            verticalVelocity -= 170;
             isGrounded = false;
         }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -86,6 +88,19 @@ void Player::move(int dx, int dy) {
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
     );
+}
+
+Position Player::get_position(){
+    return {sprite.getPosition().x, sprite.getPosition().y};
+}
+
+void Player::lose_live(){
+    Player::sound.play();
+    active_lives--;
+}
+
+int Player::get_active_lives(){
+    return active_lives;
 }
 
 sf::FloatRect Player::getCollider() {
