@@ -87,7 +87,7 @@ void LevelScene::update(sf::Time &dTime) {
     }
     if (!isCollidingWithFloor) {
         player.move(0, movement.y);
-    } 
+    }
 
     // обновление фрейма
     player.update(dTime);

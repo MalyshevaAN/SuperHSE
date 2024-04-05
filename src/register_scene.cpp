@@ -1,6 +1,7 @@
 #include "register_scene.hpp"
 #include "authentication_scene.hpp"
 #include "game.hpp"
+#include "sql.hpp"
 
 namespace super_hse {
 
@@ -71,6 +72,11 @@ void RegisterScene::handleInput(sf::Event &event) {
                 // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
                 const std::string username = usernameInputText.getString();
                 const std::string password = passwordInputText.getString();
+                if (!registerUser(username, password)) {
+                    std::cerr << "Error registering user\n";
+                    return;
+                }
+                registerUser(username, password);
                 SceneManager::changeScene(std::make_unique<AuthenticationScene>(
                 ));
                 return;

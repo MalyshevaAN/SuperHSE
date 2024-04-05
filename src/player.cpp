@@ -1,14 +1,17 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
 #include "player.hpp"
 #include <iostream>
+#include "game.hpp"
 #include "hse_utils.hpp"
+#include "sql.hpp"
 
 namespace super_hse {
 
 const float GRAVITY = 200.f;
 
 Player::Player() {
-    get_texture_from_file("ivankalinin.png", playerPicture);
+    const char *skinPath = getCurrentSkin(Game::player_id).c_str();
+    get_texture_from_file(skinPath, playerPicture);
     sprite.setTexture(playerPicture);
     sprite.setPosition(220, 10);
 }

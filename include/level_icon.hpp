@@ -3,19 +3,17 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace super_hse{
-    struct levelIcon{
+namespace super_hse {
+struct levelIcon {
+    sf::Sprite levelIconSprite;
+    sf::Texture levelIconTextureAvailable;
+    sf::Texture levelIconTextureUnavailable;
+    bool available = false;
+    int number;
 
-        sf::Sprite levelIconSprite;
-        sf::Texture levelIconTextureAvailable;
-        sf::Texture levelIconTextureUnavailable;
-        bool available = false;
-        int number;
-
-        levelIcon() = default;
-        levelIcon(int num);
-    };
-}
-
+    levelIcon() = default;
+    levelIcon(int num);
+};
+}  // namespace super_hse
 
 #endif

@@ -1,10 +1,8 @@
 #include "game.hpp"
-#include <memory>
-#include "scene.hpp"
-#include "authentication_scene.hpp"
-
-
 #include <iostream>
+#include <memory>
+#include "authentication_scene.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -18,23 +16,25 @@ int Game::player_id = -1;
 std::string Game::player_name = "NULL";
 
 Game::Game()
-    : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"), sceneManager() {
-        window.setFramerateLimit(60);
-        window.setVerticalSyncEnabled(true);
+    : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"),
+      sceneManager() {
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
 
-        // set icon
-        const std::filesystem::path p = std::filesystem::current_path();
-        const std::string texture_path = p.parent_path().string() + "/assets/images/logo2.png";
+    // set icon
+    const std::filesystem::path p = std::filesystem::current_path();
+    const std::string texture_path =
+        p.parent_path().string() + "/assets/images/logo2.png";
 
-        if (!icon.loadFromFile(texture_path)){
-            std::cerr << "Error loading texture file logo2.png" << '\n';
-        }
-        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-
-        get_texture_from_file("back_button.png", backButtonTexture);
-        backButton.setTexture(backButtonTexture);
-        backButton.setScale(0.8, 0.8);
+    if (!icon.loadFromFile(texture_path)) {
+        std::cerr << "Error loading texture file logo2.png" << '\n';
     }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
+    get_texture_from_file("back_button.png", backButtonTexture);
+    backButton.setTexture(backButtonTexture);
+    backButton.setScale(0.8, 0.8);
+}
 
 void Game::run() {
     SceneManager::changeScene(std::make_unique<AuthenticationScene>());
@@ -52,15 +52,18 @@ void Game::run() {
                 windowWidth = window.getSize().x;
                 windowHeight = window.getSize().y;
 
-                const sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                const sf::FloatRect visibleArea(
+                    0, 0, event.size.width, event.size.height
+                );
                 window.setView(sf::View(visibleArea));
 
                 SceneManager::updateSceneSize();
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
+            if (event.type == sf::Event::KeyPressed &&
+                event.key.code == sf::Keyboard::Escape) {
                 changeFullScreenMode();
             }
-            
+
             SceneManager::handleInput(event);
         }
 
@@ -69,16 +72,22 @@ void Game::run() {
         SceneManager::draw(window);
     }
 }
+
 void Game::changeFullScreenMode() {
     window.close();
 
     if (isFullScreen) {
         windowWidth = defaultWindowWidth;
         windowHeight = defaultWindowHeight;
-        window.create(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE", sf::Style::Default);
+        window.create(
+            sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE",
+            sf::Style::Default
+        );
 
     } else {
-        window.create(sf::VideoMode::getDesktopMode(), "Super HSE", sf::Style::Fullscreen);
+        window.create(
+            sf::VideoMode::getDesktopMode(), "Super HSE", sf::Style::Fullscreen
+        );
         windowWidth = window.getSize().x;
         windowHeight = window.getSize().y;
     }

@@ -11,6 +11,11 @@
 sudo apt-get install libsfml-dev
 ```
 
+- SQLite3 - команда для установки:
+```
+sudo apt-get install sqlite3 libsqlite3-dev
+```
+
 - LDtkLoader
     - скачать репозиторий: https://github.com/Madour/LDtkLoader
     - установить на wsl с помощью:
