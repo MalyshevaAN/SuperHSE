@@ -15,10 +15,10 @@ set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_s
  src/TileMap.cpp src/hse_utils.cpp src/coin.cpp src/level_icon.cpp src/authentication_scene.cpp
  src/login_scene.cpp src/register_scene.cpp src/enemy.cpp src/lose_scene.cpp src/win_scene.cpp)
 
-include_directories(main include)
+include_directories(super_hse include)
 
-add_executable(main ${SRC_LIST})
-target_link_libraries(main LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio ${SQLite3_LIBRARIES})
+add_executable(super_hse ${SRC_LIST})
+target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio ${SQLite3_LIBRARIES})
 
 if (SQLITE3_FOUND)
     include_directories(${SQLITE3_INCLUDE_DIRS})
