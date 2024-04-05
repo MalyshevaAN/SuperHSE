@@ -18,6 +18,7 @@ struct Level {
         ldtk_filename;  // файл на основе которого всё строем теперь как поле
     TileMap tilemap;  // сама карта тайлов для этого уровня
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
+    int level_number;
 
     std::vector<sf::FloatRect> colliders;
     std::vector<coin> coins;
@@ -48,7 +49,8 @@ struct Level {
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,
-        std::vector<std::string> &colliderNames
+        std::vector<std::string> &colliderNames,
+        int level_number_
     );
 
     void init_enemies();

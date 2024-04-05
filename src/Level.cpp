@@ -13,6 +13,8 @@
 #include "coin.hpp"
 #include "game.hpp"
 #include "player.hpp"
+#include "lose_scene.hpp"
+#include "win_scene.hpp"
 
 namespace super_hse {
 
@@ -41,11 +43,13 @@ void Level::get_textures(){
 void Level::init(
     std::vector<std::string> &tileLayerName,
     std::vector<std::string> &entityLayerNames,
-    std::vector<std::string> &colliderNames
+    std::vector<std::string> &colliderNames,
+    int level_number_
 ) {
     get_textures();
     coin::init();
     enemy::init();
+    level_number = level_number_;
     auto &world = project.allWorlds().at(0);
     auto &ldtk_first_level =
         world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
@@ -114,6 +118,18 @@ Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
 void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     if (player_lives == 0){
         view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
+        return;
+    }
+
+    if (player_pos.x >= 2500){
+        int gatheredCoins = 0;
+        for (auto &elem : coins) {
+            if (elem.get_status() != CoinStatus::active){
+                gatheredCoins++;
+            }
+        };
+    
+        SceneManager::changeScene(std::make_unique<WinScene>(gatheredCoins, level_number + 1, player_lives));
         return;
     }
     int diff = Game::windowWidth / 2 - Player::start_position_x - 90;

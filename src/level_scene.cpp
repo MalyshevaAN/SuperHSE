@@ -22,7 +22,8 @@ LevelScene::LevelScene(int levelN) {
     level.init(
         storage.storage.at(levelNumber)->tileLayerName,
         storage.storage.at(levelNumber)->entityLayerName,
-        storage.storage.at(levelNumber)->colliderName
+        storage.storage.at(levelNumber)->colliderName,
+        levelN
     );
 }
 
