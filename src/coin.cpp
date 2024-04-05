@@ -3,16 +3,15 @@
 
 #include "coin.hpp"
 
-namespace super_hse{
+namespace super_hse {
 
-void coin::disable(){
+void coin::disable() {
     is_active = false;
 }
 
-bool coin::get_status(){
+bool coin::get_status() {
     return is_active;
 }
-}
-
+}  // namespace super_hse
 
 #endif

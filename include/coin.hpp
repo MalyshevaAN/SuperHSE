@@ -3,17 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace super_hse{
-    struct coin{
-        sf::Sprite coin_sprite;
-        void disable();
-        bool get_status();
+namespace super_hse {
+struct coin {
+    sf::Sprite coin_sprite;
+    void disable();
+    bool get_status();
 
-    private:
-        bool is_active = true;
-
-    };
-}
-
+private:
+    bool is_active = true;
+};
+}  // namespace super_hse
 
 #endif

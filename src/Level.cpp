@@ -9,8 +9,8 @@
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
-#include "hse_utils.hpp"
 #include "coin.hpp"
+#include "hse_utils.hpp"
 
 namespace super_hse {
 
@@ -67,8 +67,12 @@ void Level::init(
         // );
         coin new_coin;
         new_coin.coin_sprite.setTexture(coinTexture);
-        new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coinWidth,coinHeight));
-        new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+        new_coin.coin_sprite.setTextureRect(
+            sf::IntRect(0, 0, coinWidth, coinHeight)
+        );
+        new_coin.coin_sprite.setPosition(
+            sf::Vector2f(entity.getPosition().x, entity.getPosition().y)
+        );
         coins.emplace_back(new_coin);
     }
 }
@@ -88,11 +92,11 @@ void Level::update(sf::Time &dTime) {
         currentFrameColumn -= 5;
     }
     for (auto &elem : coins) {
-        if (elem.get_status()){
+        if (elem.get_status()) {
             elem.coin_sprite.setTextureRect(sf::IntRect(
-            static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth,
-            coinHeight
-        ));
+                static_cast<int>(currentFrameColumn) * coinWidth, 0, coinWidth,
+                coinHeight
+            ));
         }
     }
 }
@@ -108,7 +112,7 @@ void Level::render(
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
     for (auto elem : coins) {
-        if (elem.get_status()){
+        if (elem.get_status()) {
             target.draw(elem.coin_sprite);
         }
     }

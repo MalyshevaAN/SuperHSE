@@ -2,9 +2,9 @@
 #define LEVEL_MAP_SCENE_HPP_
 
 #include <SFML/Graphics.hpp>
-#include "scene.hpp"
 #include <vector>
 #include "level_icon.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -17,7 +17,6 @@ private:
     sf::Sprite levelMap;
 
     std::vector<levelIcon> levelIcons;
-
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 

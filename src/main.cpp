@@ -2,9 +2,9 @@
 #include "sql.hpp"
 
 int main() {
-    executeQuery();
+    super_hse::executeQuery();
     auto game = super_hse::Game();
     game.run();
-    closeDB();
+    super_hse::closeDB();
     return 0;
 }

@@ -1,8 +1,8 @@
 // NOLINTNEXTLINE [clang-diagnostic-error]
+#include "player.hpp"
 #include <iostream>
 #include "game.hpp"
 #include "hse_utils.hpp"
-#include "player.hpp"
 #include "sql.hpp"
 
 namespace super_hse {

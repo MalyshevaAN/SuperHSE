@@ -1,7 +1,7 @@
+#include "game.hpp"
 #include <iostream>
 #include <memory>
 #include "authentication_scene.hpp"
-#include "game.hpp"
 #include "scene.hpp"
 
 namespace super_hse {

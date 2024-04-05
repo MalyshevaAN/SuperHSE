@@ -1,8 +1,8 @@
+#include "sql.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "../../sqlite/sqlite3.h"
-#include "../include/sql.hpp"
+#include "../sqlite/sqlite3.h"
 
 namespace super_hse {
 sqlite3 *db;
@@ -10,13 +10,13 @@ int levelsCount = 4;
 
 void executeQuery() {
     char *err = 0;
-    int rc = sqlite3_open("../SuperHSE.db", &db);
+    int rc = sqlite3_open("SuperHSE.db", &db);
     if (rc != SQLITE_OK) {
         std::cerr << "Can't open database: " << sqlite3_errmsg(db) << '\n';
         sqlite3_close(db);
         return;
     }
-    std::ifstream sqlFile("sqlQuery.sql");
+    std::ifstream sqlFile("../sqlQuery.sql");
     std::string sqlQueries(
         (std::istreambuf_iterator<char>(sqlFile)),
         std::istreambuf_iterator<char>()
