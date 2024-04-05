@@ -28,8 +28,8 @@ Level::Level(std::string filename) {
     } catch (std::exception &ex) {
         std::cerr << ex.what() << std::endl;
     }
-    view.reset(sf::FloatRect(0.0f, 0.0f, Game::windowWidth, Game::windowHeight));
-    view.setCenter(Game::windowWidth / 2 - 90, Game::windowHeight / 3);
+    view.setSize(Game::windowWidth, Game::windowHeight);
+    view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
 }
 
 void Level::get_textures(){
@@ -94,7 +94,7 @@ void Level::init(
     }
 
     coinCounterBack.setSize({(float)Game::windowWidth / 10, (float)Game::windowHeight / 20});
-    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.7), (float)Game::windowHeight / 40});
+    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.3), (float)Game::windowHeight / 40});
     coinCounterBack.setFillColor(sf::Color::White);
     coinCounterFront.setPosition(coinCounterBack.getPosition());
     coinCounterFront.setFillColor(sf::Color::Green);
@@ -102,7 +102,7 @@ void Level::init(
     for (int i = 0; i < 3; ++i){
         sf::Sprite new_live;
         new_live.setTexture(textures.at("live"));
-        new_live.setPosition(Game::windowWidth / 1.4 + i * 35, Game::windowHeight / 40);
+        new_live.setPosition(Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40);
         lives.push_back(new_live);
     }
 }
@@ -118,7 +118,7 @@ Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
 
 void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     if (player_lives == 0){
-        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
+        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
         return;
     }
 
@@ -133,13 +133,14 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         SceneManager::changeScene(std::make_unique<WinScene>(gatheredCoins, level_number + 1, player_lives));
         return;
     }
-    int diff = Game::windowWidth / 2 - Player::start_position_x - 90;
-    if (player_pos.x + diff >= Game::windowWidth / 2 - 90 && player_pos.x + diff < 2065){
+    int diff = Game::windowWidth / 2 - Player::start_position_x;
+    if (player_pos.x + diff >= Game::windowWidth / 2  && player_pos.x + diff < 1980){
+        view.setSize(Game::windowWidth, Game::windowHeight);
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
-        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.7, coinCounterBack.getPosition().y);
+        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.3, coinCounterBack.getPosition().y);
         coinCounterFront.setPosition(coinCounterBack.getPosition());
         for (int i = 0; i < 3; ++i){
-            lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.4 + i*35, lives[i].getPosition().y);
+            lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.1 + i*35, lives[i].getPosition().y);
             if (i < player_lives){
                 lives[i].setTexture(textures.at("live"));
             }else{
