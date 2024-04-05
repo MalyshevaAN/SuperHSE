@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
+#include "coin.hpp"
 #include "hse_utils.hpp"
 #include "coin.hpp"
 #include "game.hpp"

@@ -3,6 +3,8 @@
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
+#include "authentication_scene.hpp"
+#include "sql.hpp"
 
 namespace super_hse {
 
@@ -75,6 +77,12 @@ void LoginScene::handleInput(sf::Event &event) {
                 // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
                 const std::string username = usernameInputText.getString();
                 const std::string password = passwordInputText.getString();
+                if (loginUser(username, password) == -1) {
+                    std::cerr << "User not found\n";
+                    return;
+                }
+                Game::player_id = loginUser(username, password);
+                Game::player_name = username;
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
@@ -91,6 +99,11 @@ void LoginScene::handleInput(sf::Event &event) {
                 activeInputText = &passwordInputText;
                 usernameInputBox.setFillColor(sf::Color::White);
                 passwordInputBox.setFillColor(activeInputBoxColor);
+            }
+            if (Game::backButton.getGlobalBounds().contains(
+                event.mouseButton.x, event.mouseButton.y
+            )) {
+                SceneManager::changeScene(std::make_unique<AuthenticationScene>());
             }
         }
     }
@@ -154,6 +167,7 @@ void LoginScene::draw(sf::RenderWindow &window) {
     window.draw(passwordLabel);
 
     window.draw(loginButton);
+    window.draw(Game::backButton);
     window.display();
 }
 
