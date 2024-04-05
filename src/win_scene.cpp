@@ -90,6 +90,7 @@ void WinScene::updateSceneSize(){
 
 void WinScene::draw(sf::RenderWindow &window){
     sf::View view;
+    view.setSize(Game::windowWidth, Game::windowHeight);
     view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
     window.clear(backgroundColor);
     window.setView(view);
