@@ -120,9 +120,6 @@ void LevelScene::update(sf::Time &dTime) {
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
-    sf::View view;
-    view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
-    window.setView(view);
     window.clear(windowFillColor);
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);

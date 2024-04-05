@@ -53,4 +53,5 @@ cmake ../ && make
 ./super_hse
 ```
 
-**перед запуском прогоните папку files через dos2unix с помощью команды `find ./assets/files -type f -exec dos2unix {} \;`
+**Перед запуском прогоните папку files через dos2unix с помощью команды 
+`find ./assets/files -type f -exec dos2unix {} \;`
