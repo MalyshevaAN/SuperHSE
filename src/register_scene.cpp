@@ -41,7 +41,7 @@ RegisterScene::RegisterScene() {
     passwordLabel.setString("Password: ");
 
     // buttons init
-    get_texture_from_file("create_user.png", createPlayerButtonPicture);
+    get_texture_from_file("create_user_button.png", createPlayerButtonPicture);
     createPlayerButton.setTexture(createPlayerButtonPicture);
 
     updateSceneSize();
@@ -94,6 +94,11 @@ void RegisterScene::handleInput(sf::Event &event) {
                 activeInputText = &passwordInputText;
                 usernameInputBox.setFillColor(sf::Color::White);
                 passwordInputBox.setFillColor(activeInputBoxColor);
+            }
+            if (Game::backButton.getGlobalBounds().contains(
+                event.mouseButton.x, event.mouseButton.y
+            )) {
+                SceneManager::changeScene(std::make_unique<AuthenticationScene>());
             }
         }
     }
@@ -157,6 +162,7 @@ void RegisterScene::draw(sf::RenderWindow &window) {
     window.draw(passwordLabel);
 
     window.draw(createPlayerButton);
+    window.draw(Game::backButton);
     window.display();
 }
 

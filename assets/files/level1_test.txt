@@ -1,0 +1,12 @@
+../assets/tilemaps/first_level2.ldtk
+
+Background
+Ground
+Clouds
+Grass
+Texture_bricks
+
+Bricks
+
+OrangeBrick
+WhiteBrick

@@ -14,12 +14,12 @@ AuthenticationScene::AuthenticationScene() {
 
     // buttons init
     get_texture_from_file(
-        "authentication_login_button.png", loginButtonPicture
+        "login_button.png", loginButtonPicture
     );
     loginButton.setTexture(loginButtonPicture);
 
     get_texture_from_file(
-        "authentication_register_button.png", registerButtonPicture
+        "register_button.png", registerButtonPicture
     );
     registerButton.setTexture(registerButtonPicture);
 
