@@ -13,8 +13,10 @@ private:
 
     sf::Texture buttonSingleplayerPicture;
     sf::Texture buttonMultiplayerPicture;
+    sf::Texture buttonChangeSkinPicture;
     sf::Sprite buttonSingleplayer;
     sf::Sprite buttonMultiplayer;
+    sf::Sprite buttonChangeSkin;
 
     sf::Font font;
     sf::Text text;

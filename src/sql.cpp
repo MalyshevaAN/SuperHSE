@@ -218,7 +218,7 @@ void addLevelsForUser(int id, int levelsCount) {
     }
 }
 
-[[nodiscard]] std::string updateSkin(int id, int newSkin) {
+void updateSkin(int id, int newSkin) {
     sqlite3_stmt *stmt;
     std::string sql =
         "UPDATE USERS SET CURRENT_SKIN = " + std::to_string(newSkin) +
@@ -229,14 +229,7 @@ void addLevelsForUser(int id, int levelsCount) {
         std::cerr << "Update skin error: " << err << '\n';
         sqlite3_free(err);
     }
-    sql = "SELECT PATH FROM ITEMS WHERE ITEM_ID = " + std::to_string(newSkin);
-    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    sqlite3_step(stmt);
-    const char *pathText =
-        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
-    std::string path = pathText ? pathText : "";
     sqlite3_finalize(stmt);
-    return path;
 }
 
 }  // namespace super_hse

@@ -27,7 +27,7 @@ void updateLevel(int id, int level, int newTime, int newCash);
 
 void addLevelsForUser(int id, int levelsCount);
 
-[[nodiscard]] std::string updateSkin(int id, int newSkin);
+void updateSkin(int id, int newSkin);
 
 }  // namespace super_hse
 
