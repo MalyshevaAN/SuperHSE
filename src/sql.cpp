@@ -218,4 +218,18 @@ void addLevelsForUser(int id, int levelsCount) {
     }
 }
 
+void updateSkin(int id, int newSkin) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "UPDATE USERS SET CURRENT_SKIN = " + std::to_string(newSkin) +
+        " WHERE USER_ID = " + std::to_string(id);
+    char *err = 0;
+    int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Update skin error: " << err << '\n';
+        sqlite3_free(err);
+    }
+    sqlite3_finalize(stmt);
+}
+
 }  // namespace super_hse

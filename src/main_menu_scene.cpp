@@ -2,6 +2,7 @@
 #include <memory>
 #include "game.hpp"
 #include "level_map_scene.hpp"
+#include "wardrobe_scene.hpp"
 #include "scene.hpp"
 
 namespace super_hse {
@@ -18,6 +19,9 @@ MainMenuScene::MainMenuScene() {
     get_texture_from_file("multiplayer_button.png", buttonMultiplayerPicture);
     buttonMultiplayer.setTexture(buttonMultiplayerPicture);
 
+    get_texture_from_file("change_skin_button.png", buttonChangeSkinPicture);
+    buttonChangeSkin.setTexture(buttonChangeSkinPicture);
+
     updateSceneSize();
 }
 
@@ -28,6 +32,12 @@ void MainMenuScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 SceneManager::changeScene(std::make_unique<LevelMapScene>());
+                return;
+            }
+            if (buttonChangeSkin.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<WardrobeScene>());
                 return;
             }
         }
@@ -53,6 +63,11 @@ void MainMenuScene::updateSceneSize() {
         (Game::windowWidth - buttonMultiplayerPicture.getSize().x) / 2,
         (Game::windowHeight - buttonMultiplayerPicture.getSize().y) / 2 + 150
     );
+
+    buttonChangeSkin.setPosition(
+        (Game::windowWidth - buttonChangeSkinPicture.getSize().x) / 2,
+        (Game::windowHeight - buttonChangeSkinPicture.getSize().y) / 2 + 250
+    );
 }
 
 void MainMenuScene::draw(sf::RenderWindow &window) {
@@ -61,6 +76,7 @@ void MainMenuScene::draw(sf::RenderWindow &window) {
     window.draw(text);
     window.draw(buttonSingleplayer);
     window.draw(buttonMultiplayer);
+    window.draw(buttonChangeSkin);
     window.display();
 }
 

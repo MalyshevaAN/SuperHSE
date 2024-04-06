@@ -27,6 +27,8 @@ void updateLevel(int id, int level, int newTime, int newCash);
 
 void addLevelsForUser(int id, int levelsCount);
 
+void updateSkin(int id, int newSkin);
+
 }  // namespace super_hse
 
 #endif  // SQL_HPP_
