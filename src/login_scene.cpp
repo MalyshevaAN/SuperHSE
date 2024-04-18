@@ -106,19 +106,7 @@ void LoginScene::updateSceneSize() {
     );
 
     usernameInput.setPosition();
-
-    passwordInput.box.setPosition(
-        (Game::windowWidth - passwordInput.box.getSize().x) / 2,
-        (Game::windowHeight - passwordInput.box.getSize().y) / 2 + 100
-    );
-    passwordInput.inputText.setPosition(
-        (Game::windowWidth - passwordInput.box.getSize().x) / 2 + 10,
-        (Game::windowHeight - passwordInput.box.getSize().y) / 2 + 110
-    );
-    passwordInput.label.setPosition(
-        (Game::windowWidth - passwordInput.box.getSize().x) / 2 - 125,
-        (Game::windowHeight - passwordInput.box.getSize().y) / 2 + 110
-    );
+    passwordInput.setPosition();
 
     loginButton.setPosition(
         (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
