@@ -16,29 +16,10 @@ RegisterScene::RegisterScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // input boxes init
-    usernameInputBox.setSize(sf::Vector2f(200, 50));
-    usernameInputBox.setFillColor(activeInputBoxColor);
+    usernameInput.init(font, InputBoxType::Username);
+    passwordInput.init(font, InputBoxType::Password);
 
-    usernameInputText.setFont(font);
-    usernameInputText.setCharacterSize(24);
-    usernameInputText.setFillColor(sf::Color::Black);
-
-    usernameLabel.setFont(font);
-    usernameLabel.setCharacterSize(24);
-    usernameLabel.setFillColor(sf::Color::Black);
-    usernameLabel.setString("Username: ");
-
-    passwordInputBox.setSize(sf::Vector2f(200, 50));
-    passwordInputBox.setFillColor(sf::Color::White);
-
-    passwordInputText.setFont(font);
-    passwordInputText.setCharacterSize(24);
-    passwordInputText.setFillColor(sf::Color::Black);
-
-    passwordLabel.setFont(font);
-    passwordLabel.setCharacterSize(24);
-    passwordLabel.setFillColor(sf::Color::Black);
-    passwordLabel.setString("Password: ");
+    usernameInput.box.setFillColor(activeInputBoxColor);
 
     // buttons init
     get_texture_from_file("create_user_button.png", createPlayerButtonPicture);
@@ -52,7 +33,7 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
         return;
     }
 
-    std::string text = activeInputText->getString();
+    std::string text = activeInputBox->inputText.getString();
     if (unicode == 8) {  // backspace
         if (!text.empty()) {
             text.pop_back();
@@ -60,7 +41,7 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     } else {
         text += static_cast<char>(unicode);
     }
-    activeInputText->setString(text);
+    activeInputBox->inputText.setString(text);
 }
 
 void RegisterScene::handleInput(sf::Event &event) {
@@ -70,8 +51,8 @@ void RegisterScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
-                const std::string username = usernameInputText.getString();
-                const std::string password = passwordInputText.getString();
+                const std::string username = usernameInput.inputText.getString();
+                const std::string password = passwordInput.inputText.getString();
                 if (!registerUser(username, password)) {
                     std::cerr << "Error registering user\n";
                     return;
@@ -81,19 +62,20 @@ void RegisterScene::handleInput(sf::Event &event) {
                 ));
                 return;
             }
-            if (usernameInputBox.getGlobalBounds().contains(
+
+            if (usernameInput.box.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                activeInputText = &usernameInputText;
-                usernameInputBox.setFillColor(activeInputBoxColor);
-                passwordInputBox.setFillColor(sf::Color::White);
+                activeInputBox = &usernameInput;
+                usernameInput.box.setFillColor(activeInputBoxColor);
+                passwordInput.box.setFillColor(sf::Color::White);
             }
-            if (passwordInputBox.getGlobalBounds().contains(
+            if (passwordInput.box.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                activeInputText = &passwordInputText;
-                usernameInputBox.setFillColor(sf::Color::White);
-                passwordInputBox.setFillColor(activeInputBoxColor);
+                activeInputBox = &passwordInput;
+                usernameInput.box.setFillColor(sf::Color::White);
+                passwordInput.box.setFillColor(activeInputBoxColor);
             }
             if (Game::backButton.getGlobalBounds().contains(
                 event.mouseButton.x, event.mouseButton.y
@@ -117,31 +99,8 @@ void RegisterScene::updateSceneSize() {
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
     );
 
-    usernameInputBox.setPosition(
-        (Game::windowWidth - usernameInputBox.getSize().x) / 2,
-        (Game::windowHeight - usernameInputBox.getSize().y) / 2
-    );
-    usernameInputText.setPosition(
-        (Game::windowWidth - usernameInputBox.getSize().x) / 2 + 10,
-        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
-    );
-    usernameLabel.setPosition(
-        (Game::windowWidth - usernameInputBox.getSize().x) / 2 - 125,
-        (Game::windowHeight - usernameInputBox.getSize().y) / 2 + 10
-    );
-
-    passwordInputBox.setPosition(
-        (Game::windowWidth - passwordInputBox.getSize().x) / 2,
-        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 100
-    );
-    passwordInputText.setPosition(
-        (Game::windowWidth - passwordInputBox.getSize().x) / 2 + 10,
-        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 110
-    );
-    passwordLabel.setPosition(
-        (Game::windowWidth - passwordInputBox.getSize().x) / 2 - 125,
-        (Game::windowHeight - passwordInputBox.getSize().y) / 2 + 110
-    );
+    usernameInput.setPosition();
+    passwordInput.setPosition();
 
     createPlayerButton.setPosition(
         (Game::windowWidth - createPlayerButtonPicture.getSize().x) / 2,
@@ -153,13 +112,8 @@ void RegisterScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);
 
-    window.draw(usernameInputBox);
-    window.draw(usernameInputText);
-    window.draw(usernameLabel);
-
-    window.draw(passwordInputBox);
-    window.draw(passwordInputText);
-    window.draw(passwordLabel);
+    usernameInput.draw(window);
+    passwordInput.draw(window);
 
     window.draw(createPlayerButton);
     window.draw(Game::backButton);

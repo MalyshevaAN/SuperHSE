@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
+#include "input_box.hpp"
 
 namespace super_hse {
 
@@ -11,18 +12,12 @@ private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
-    sf::RectangleShape usernameInputBox;
-    sf::Text usernameInputText;
-    sf::Text usernameLabel;
-
-    sf::RectangleShape passwordInputBox;
-    sf::Text passwordInputText;
-    sf::Text passwordLabel;
+    InputBox usernameInput;
+    InputBox passwordInput;
+    InputBox *activeInputBox = &usernameInput;
 
     // TODO после предзащиты добавить подтверждение пароля
-
-    sf::Text *activeInputText = &usernameInputText;
-
+    
     sf::Texture createPlayerButtonPicture;
     sf::Sprite createPlayerButton;
 
