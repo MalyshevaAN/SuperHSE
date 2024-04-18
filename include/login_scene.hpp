@@ -3,38 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
+#include "input_box.hpp"
 
 namespace super_hse {
-
-enum class InputBoxType { Username, Password };
-
-class InputBox {
-public:
-    sf::RectangleShape box;
-    sf::Text inputText;
-    sf::Text label;
-    bool mustBeHidden = false;
-
-    void init(const sf::Font &font, const InputBoxType type) {
-        box.setSize(sf::Vector2f(200, 50));
-        box.setFillColor(sf::Color::White);
-
-        inputText.setCharacterSize(24);
-        inputText.setFillColor(sf::Color::Black);
-        inputText.setFont(font);
-
-        label.setCharacterSize(24);
-        label.setFillColor(sf::Color::Black);
-        label.setFont(font);
-
-        if (type == InputBoxType::Username) {
-            label.setString("Username: ");
-        } else {
-            label.setString("Password: ");
-            mustBeHidden = true;
-        }
-    }
-};
 
 class LoginScene : public Scene {
 private:
