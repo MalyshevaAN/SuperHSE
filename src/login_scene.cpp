@@ -99,23 +99,13 @@ void LoginScene::update(sf::Time &dTime) {
 
 void LoginScene::updateSceneSize() {
     // update positions of all objects
+
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
     );
 
-    usernameInput.box.setPosition(
-        (Game::windowWidth - usernameInput.box.getSize().x) / 2,
-        (Game::windowHeight - usernameInput.box.getSize().y) / 2
-    );
-    usernameInput.inputText.setPosition(
-        (Game::windowWidth - usernameInput.box.getSize().x) / 2 + 10,
-        (Game::windowHeight - usernameInput.box.getSize().y) / 2 + 10
-    );
-    usernameInput.label.setPosition(
-        (Game::windowWidth - usernameInput.box.getSize().x) / 2 - 125,
-        (Game::windowHeight - usernameInput.box.getSize().y) / 2 + 10
-    );
+    usernameInput.setPosition();
 
     passwordInput.box.setPosition(
         (Game::windowWidth - passwordInput.box.getSize().x) / 2,
@@ -140,16 +130,12 @@ void LoginScene::draw(sf::RenderWindow &window) {
     window.clear(backgroundColor);
     window.draw(bigRectangle);
 
-    window.draw(usernameInput.box);
-    window.draw(usernameInput.inputText);
-    window.draw(usernameInput.label);
-
-    window.draw(passwordInput.box);
-    window.draw(passwordInput.inputText);
-    window.draw(passwordInput.label);
+    usernameInput.draw(window);
+    passwordInput.draw(window);
 
     window.draw(loginButton);
     window.draw(Game::backButton);
+
     window.display();
 }
 

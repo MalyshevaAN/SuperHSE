@@ -16,6 +16,8 @@ public:
     InputBoxType type;
 
     void init(const sf::Font &font, const InputBoxType box_type);
+    void draw(sf::RenderWindow &window);
+    void setPosition();
 };
 
 }
