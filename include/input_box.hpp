@@ -20,6 +20,6 @@ public:
     void setPosition();
 };
 
-}
+}  // namespace super_hse
 
 #endif  // INPUT_BOX_HPP_

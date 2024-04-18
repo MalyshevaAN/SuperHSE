@@ -26,20 +26,13 @@ void InputBox::init(const sf::Font &font, const InputBoxType box_type) {
 }
 
 void InputBox::setPosition() {
-    int type_offset = (type == InputBoxType::Username ? 0 : 100);
+    const int type_offset = (type == InputBoxType::Username ? 0 : 100);
+    const int center_x = (Game::windowWidth - box.getSize().x) / 2;
+    const int center_y = (Game::windowHeight - box.getSize().y) / 2;
 
-    box.setPosition(
-        (Game::windowWidth - box.getSize().x) / 2,
-        (Game::windowHeight - box.getSize().y) / 2 + type_offset
-    );
-    inputText.setPosition(
-        (Game::windowWidth - box.getSize().x) / 2 + 10,
-        (Game::windowHeight - box.getSize().y) / 2 + 10 + type_offset
-    );
-    label.setPosition(
-        (Game::windowWidth - box.getSize().x) / 2 - 125,
-        (Game::windowHeight - box.getSize().y) / 2 + 10 + type_offset
-    );
+    box.setPosition(center_x, center_y + type_offset);
+    inputText.setPosition(center_x + 10, center_y + 10 + type_offset);
+    label.setPosition(center_x - 125, center_y + 10 + type_offset);
 }
 
 void InputBox::draw(sf::RenderWindow &window) {
@@ -48,4 +41,4 @@ void InputBox::draw(sf::RenderWindow &window) {
     window.draw(label);
 }
 
-}
+}  // namespace super_hse
