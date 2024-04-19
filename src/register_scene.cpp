@@ -41,7 +41,11 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     } else {
         text += static_cast<char>(unicode);
     }
-    activeInputBox->inputText.setString(text);
+    if (activeInputBox->mustBeHidden) {
+        activeInputBox->inputText.setString(std::string(text.size(), '*'));
+    } else {
+        activeInputBox->inputText.setString(text);
+    }
 }
 
 void RegisterScene::updateInputBoxes(sf::Event &event) {
@@ -77,7 +81,7 @@ void RegisterScene::handleInput(sf::Event &event) {
                     std::cerr << "Error registering user\n";
                     return;
                 }
-                
+
                 registerUser(username, password);
                 SceneManager::changeScene(std::make_unique<AuthenticationScene>(
                 ));

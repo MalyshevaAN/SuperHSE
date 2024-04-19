@@ -36,7 +36,7 @@ void LoginScene::updateActiveInputText(const sf::Uint32 unicode) {
         return;
     }
 
-    std::string text = activeInputBox->inputText.getString();
+    std::string &text = activeInputBox->textString;
     if (unicode == 8) {  // backspace
         if (!text.empty()) {
             text.pop_back();
@@ -44,7 +44,11 @@ void LoginScene::updateActiveInputText(const sf::Uint32 unicode) {
     } else {
         text += static_cast<char>(unicode);
     }
-    activeInputBox->inputText.setString(text);
+    if (activeInputBox->mustBeHidden) {
+        activeInputBox->inputText.setString(std::string(text.size(), '*'));
+    } else {
+        activeInputBox->inputText.setString(text);
+    }
 }
 
 void LoginScene::updateInputBoxes(sf::Event &event) {
@@ -102,8 +106,6 @@ void LoginScene::update(sf::Time &dTime) {
 }
 
 void LoginScene::updateSceneSize() {
-    // update positions of all objects
-
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125

@@ -9,6 +9,7 @@ enum class InputBoxType { Username, Password };
 
 class InputBox {
 public:
+    std::string textString;
     sf::RectangleShape box;
     sf::Text inputText;
     sf::Text label;
