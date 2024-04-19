@@ -14,6 +14,7 @@ private:
 
     InputBox usernameInput;
     InputBox passwordInput;
+    InputBox passwordAgainInput;
     InputBox *activeInputBox = &usernameInput;
 
     // TODO после предзащиты добавить подтверждение пароля

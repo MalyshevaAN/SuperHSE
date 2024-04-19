@@ -19,22 +19,33 @@ void InputBox::init(const sf::Font &font, const InputBoxType box_type) {
 
     if (type == InputBoxType::Username) {
         label.setString("Username: ");
-    } else {
+    } else if (type == InputBoxType::Password) {
         label.setString("Password: ");
+        mustBeHidden = true;
+    } else {
+        label.setString("Password again: ");
         mustBeHidden = true;
     }
 }
 
 void InputBox::setPosition() {
-    const int type_offset = (type == InputBoxType::Username ? 0 : 100);
+    int type_offset;
+    if (type == InputBoxType::Username) {
+        type_offset = 0;
+    } else if (type == InputBoxType::Password) {
+        type_offset = 75;
+    } else {
+        type_offset = 150;
+    }
     const int center_x = (Game::windowWidth - box.getSize().x) / 2;
     const int center_y = (Game::windowHeight - box.getSize().y) / 2;
 
     const int padding = 10;
+    const int leftMarginLabel = label.getGlobalBounds().width;
 
     box.setPosition(center_x, center_y + type_offset);
     inputText.setPosition(center_x + padding, center_y + padding + type_offset);
-    label.setPosition(center_x - 125, center_y + padding + type_offset);
+    label.setPosition(center_x - leftMarginLabel, center_y + padding + type_offset);
 }
 
 void InputBox::draw(sf::RenderWindow &window) {

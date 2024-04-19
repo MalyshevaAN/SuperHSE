@@ -18,6 +18,7 @@ RegisterScene::RegisterScene() {
     // input boxes init
     usernameInput.init(font, InputBoxType::Username);
     passwordInput.init(font, InputBoxType::Password);
+    passwordAgainInput.init(font, InputBoxType::PasswordAgain);
 
     usernameInput.box.setFillColor(activeInputBoxColor);
 
@@ -55,6 +56,7 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
         activeInputBox = &usernameInput;
         usernameInput.box.setFillColor(activeInputBoxColor);
         passwordInput.box.setFillColor(sf::Color::White);
+        passwordAgainInput.box.setFillColor(sf::Color::White);
     }
     if (passwordInput.box.getGlobalBounds().contains(
             event.mouseButton.x, event.mouseButton.y
@@ -62,6 +64,15 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
         activeInputBox = &passwordInput;
         usernameInput.box.setFillColor(sf::Color::White);
         passwordInput.box.setFillColor(activeInputBoxColor);
+        passwordAgainInput.box.setFillColor(sf::Color::White);
+    }
+    if (passwordAgainInput.box.getGlobalBounds().contains(
+            event.mouseButton.x, event.mouseButton.y
+        )) {
+        activeInputBox = &passwordAgainInput;
+        usernameInput.box.setFillColor(sf::Color::White);
+        passwordInput.box.setFillColor(sf::Color::White);
+        passwordAgainInput.box.setFillColor(activeInputBoxColor);
     }
 }
 
@@ -115,10 +126,11 @@ void RegisterScene::updateSceneSize() {
 
     usernameInput.setPosition();
     passwordInput.setPosition();
+    passwordAgainInput.setPosition();
 
     createPlayerButton.setPosition(
         (Game::windowWidth - createPlayerButtonPicture.getSize().x) / 2,
-        (Game::windowHeight - createPlayerButtonPicture.getSize().y) / 2 + 200
+        (Game::windowHeight - createPlayerButtonPicture.getSize().y) / 2 + 300
     );
 }
 
@@ -128,6 +140,7 @@ void RegisterScene::draw(sf::RenderWindow &window) {
 
     usernameInput.draw(window);
     passwordInput.draw(window);
+    passwordAgainInput.draw(window);
 
     window.draw(createPlayerButton);
     window.draw(Game::backButton);
