@@ -45,7 +45,9 @@ void InputBox::setPosition() {
 
     box.setPosition(center_x, center_y + type_offset);
     inputText.setPosition(center_x + padding, center_y + padding + type_offset);
-    label.setPosition(center_x - leftMarginLabel, center_y + padding + type_offset);
+    label.setPosition(
+        center_x - leftMarginLabel, center_y + padding + type_offset
+    );
 }
 
 void InputBox::draw(sf::RenderWindow &window) {

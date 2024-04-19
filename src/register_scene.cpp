@@ -76,26 +76,28 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
     }
 }
 
+void RegisterScene::checkAndChangeScene() {
+    const std::string username = usernameInput.textString;
+    const std::string password = passwordInput.textString;
+    const std::string passwordAgain = passwordAgainInput.textString;
+
+    // TODO: выводить ошибки на окне
+    if (!registerUser(username, password)) {
+        std::cerr << "Error registering user\n";
+        return;
+    }
+
+    registerUser(username, password);
+    SceneManager::changeScene(std::make_unique<AuthenticationScene>());
+}
+
 void RegisterScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (createPlayerButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
-                const std::string username =
-                    usernameInput.inputText.getString();
-                const std::string password =
-                    passwordInput.inputText.getString();
-
-                if (!registerUser(username, password)) {
-                    std::cerr << "Error registering user\n";
-                    return;
-                }
-
-                registerUser(username, password);
-                SceneManager::changeScene(std::make_unique<AuthenticationScene>(
-                ));
+                checkAndChangeScene();
                 return;
             }
 
@@ -107,6 +109,11 @@ void RegisterScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<AuthenticationScene>(
                 ));
             }
+        }
+    }
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Enter) {
+            checkAndChangeScene();
         }
     }
     if (event.type == sf::Event::TextEntered) {
