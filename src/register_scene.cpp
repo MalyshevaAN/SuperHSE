@@ -44,6 +44,23 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     activeInputBox->inputText.setString(text);
 }
 
+void RegisterScene::updateInputBoxes(sf::Event &event) {
+    if (usernameInput.box.getGlobalBounds().contains(
+            event.mouseButton.x, event.mouseButton.y
+        )) {
+        activeInputBox = &usernameInput;
+        usernameInput.box.setFillColor(activeInputBoxColor);
+        passwordInput.box.setFillColor(sf::Color::White);
+    }
+    if (passwordInput.box.getGlobalBounds().contains(
+            event.mouseButton.x, event.mouseButton.y
+        )) {
+        activeInputBox = &passwordInput;
+        usernameInput.box.setFillColor(sf::Color::White);
+        passwordInput.box.setFillColor(activeInputBoxColor);
+    }
+}
+
 void RegisterScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
@@ -51,36 +68,29 @@ void RegisterScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
-                const std::string username = usernameInput.inputText.getString();
-                const std::string password = passwordInput.inputText.getString();
+                const std::string username =
+                    usernameInput.inputText.getString();
+                const std::string password =
+                    passwordInput.inputText.getString();
+
                 if (!registerUser(username, password)) {
                     std::cerr << "Error registering user\n";
                     return;
                 }
+                
                 registerUser(username, password);
                 SceneManager::changeScene(std::make_unique<AuthenticationScene>(
                 ));
                 return;
             }
 
-            if (usernameInput.box.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                activeInputBox = &usernameInput;
-                usernameInput.box.setFillColor(activeInputBoxColor);
-                passwordInput.box.setFillColor(sf::Color::White);
-            }
-            if (passwordInput.box.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                activeInputBox = &passwordInput;
-                usernameInput.box.setFillColor(sf::Color::White);
-                passwordInput.box.setFillColor(activeInputBoxColor);
-            }
+            updateInputBoxes(event);
+
             if (Game::backButton.getGlobalBounds().contains(
-                event.mouseButton.x, event.mouseButton.y
-            )) {
-                SceneManager::changeScene(std::make_unique<AuthenticationScene>());
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<AuthenticationScene>(
+                ));
             }
         }
     }

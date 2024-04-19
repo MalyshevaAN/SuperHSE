@@ -30,9 +30,11 @@ void InputBox::setPosition() {
     const int center_x = (Game::windowWidth - box.getSize().x) / 2;
     const int center_y = (Game::windowHeight - box.getSize().y) / 2;
 
+    const int padding = 10;
+
     box.setPosition(center_x, center_y + type_offset);
-    inputText.setPosition(center_x + 10, center_y + 10 + type_offset);
-    label.setPosition(center_x - 125, center_y + 10 + type_offset);
+    inputText.setPosition(center_x + padding, center_y + padding + type_offset);
+    label.setPosition(center_x - 125, center_y + padding + type_offset);
 }
 
 void InputBox::draw(sf::RenderWindow &window) {

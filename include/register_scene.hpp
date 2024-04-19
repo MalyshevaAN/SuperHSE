@@ -2,8 +2,8 @@
 #define REGISTER_SCENE_HPP_
 
 #include <SFML/Graphics.hpp>
-#include "scene.hpp"
 #include "input_box.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -17,7 +17,7 @@ private:
     InputBox *activeInputBox = &usernameInput;
 
     // TODO после предзащиты добавить подтверждение пароля
-    
+
     sf::Texture createPlayerButtonPicture;
     sf::Sprite createPlayerButton;
 
@@ -36,6 +36,7 @@ public:
     void updateSceneSize() override;
 
     void updateActiveInputText(const sf::Uint32 unicode);
+    void updateInputBoxes(sf::Event &event);
 };
 
 }  // namespace super_hse

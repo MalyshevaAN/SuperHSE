@@ -1,9 +1,9 @@
 #include "login_scene.hpp"
 #include <iostream>
+#include "authentication_scene.hpp"
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
-#include "authentication_scene.hpp"
 #include "sql.hpp"
 
 namespace super_hse {
@@ -25,9 +25,7 @@ LoginScene::LoginScene() {
     usernameInput.box.setFillColor(activeInputBoxColor);
 
     // buttons init
-    get_texture_from_file(
-        "login_button.png", loginButtonPicture
-    );
+    get_texture_from_file("login_button.png", loginButtonPicture);
     loginButton.setTexture(loginButtonPicture);
 
     updateSceneSize();
@@ -49,6 +47,22 @@ void LoginScene::updateActiveInputText(const sf::Uint32 unicode) {
     activeInputBox->inputText.setString(text);
 }
 
+void LoginScene::updateInputBoxes(sf::Event &event) {
+    if (usernameInput.box.getGlobalBounds().contains(
+            event.mouseButton.x, event.mouseButton.y
+        )) {
+        activeInputBox = &usernameInput;
+        usernameInput.box.setFillColor(activeInputBoxColor);
+        passwordInput.box.setFillColor(sf::Color::White);
+    }
+    if (passwordInput.box.getGlobalBounds().contains(
+            event.mouseButton.x, event.mouseButton.y
+        )) {
+        activeInputBox = &passwordInput;
+        usernameInput.box.setFillColor(sf::Color::White);
+        passwordInput.box.setFillColor(activeInputBoxColor);
+    }
+}
 
 void LoginScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
@@ -56,8 +70,10 @@ void LoginScene::handleInput(sf::Event &event) {
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                const std::string username = usernameInput.inputText.getString();
-                const std::string password = passwordInput.inputText.getString();
+                const std::string username =
+                    usernameInput.inputText.getString();
+                const std::string password =
+                    passwordInput.inputText.getString();
                 if (loginUser(username, password) == -1) {
                     std::cerr << "User not found\n";
                     return;
@@ -67,25 +83,13 @@ void LoginScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
+            updateInputBoxes(event);
 
-            if (usernameInput.box.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                activeInputBox = &usernameInput;
-                usernameInput.box.setFillColor(activeInputBoxColor);
-                passwordInput.box.setFillColor(sf::Color::White);
-            }
-            if (passwordInput.box.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                activeInputBox = &passwordInput;
-                usernameInput.box.setFillColor(sf::Color::White);
-                passwordInput.box.setFillColor(activeInputBoxColor);
-            }
             if (Game::backButton.getGlobalBounds().contains(
-                event.mouseButton.x, event.mouseButton.y
-            )) {
-                SceneManager::changeScene(std::make_unique<AuthenticationScene>());
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<AuthenticationScene>(
+                ));
             }
         }
     }
