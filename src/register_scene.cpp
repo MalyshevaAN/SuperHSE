@@ -34,7 +34,7 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
         return;
     }
 
-    std::string text = activeInputBox->inputText.getString();
+    std::string &text = activeInputBox->textString;
     if (unicode == 8) {  // backspace
         if (!text.empty()) {
             text.pop_back();
