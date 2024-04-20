@@ -32,18 +32,9 @@ LoginScene::LoginScene() {
 }
 
 void LoginScene::updateActiveInputText(const sf::Uint32 unicode) {
-    if (unicode >= 128) {
-        return;
-    }
-
+    activeInputBox->updateText(unicode);
     std::string &text = activeInputBox->textString;
-    if (unicode == 8) {  // backspace
-        if (!text.empty()) {
-            text.pop_back();
-        }
-    } else {
-        text += static_cast<char>(unicode);
-    }
+
     if (activeInputBox->mustBeHidden) {
         activeInputBox->inputText.setString(std::string(text.size(), '*'));
     } else {
@@ -75,9 +66,9 @@ void LoginScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 const std::string username =
-                    usernameInput.inputText.getString();
+                    usernameInput.textString;
                 const std::string password =
-                    passwordInput.inputText.getString();
+                    passwordInput.textString;
                 if (loginUser(username, password) == -1) {
                     std::cerr << "User not found\n";
                     return;

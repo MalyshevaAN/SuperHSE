@@ -19,6 +19,8 @@ public:
     void init(const sf::Font &font, const InputBoxType box_type);
     void draw(sf::RenderWindow &window);
     void setPosition();
+
+    void updateText(const sf::Uint32 unicode);
 };
 
 }  // namespace super_hse

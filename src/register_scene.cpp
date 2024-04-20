@@ -30,18 +30,9 @@ RegisterScene::RegisterScene() {
 }
 
 void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
-    if (unicode >= 128) {
-        return;
-    }
-
+    activeInputBox->updateText(unicode);
     std::string &text = activeInputBox->textString;
-    if (unicode == 8) {  // backspace
-        if (!text.empty()) {
-            text.pop_back();
-        }
-    } else {
-        text += static_cast<char>(unicode);
-    }
+    
     if (activeInputBox->mustBeHidden) {
         activeInputBox->inputText.setString(std::string(text.size(), '*'));
     } else {

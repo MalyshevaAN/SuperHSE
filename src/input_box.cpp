@@ -50,6 +50,20 @@ void InputBox::setPosition() {
     );
 }
 
+void InputBox::updateText(const sf::Uint32 unicode) {
+    if (unicode >= 128) {
+        return;
+    }
+
+    if (unicode == 8) {  // backspace
+        if (!textString.empty()) {
+            textString.pop_back();
+        }
+    } else {
+        textString += static_cast<char>(unicode);
+    }
+}
+
 void InputBox::draw(sf::RenderWindow &window) {
     window.draw(box);
     window.draw(inputText);
