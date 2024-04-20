@@ -34,6 +34,7 @@ public:
 
     void updateActiveInputText(const sf::Uint32 unicode);
     void updateInputBoxes(sf::Event &event);
+    void checkAndChangeScene();
 };
 
 }  // namespace super_hse

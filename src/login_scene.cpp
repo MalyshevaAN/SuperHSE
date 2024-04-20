@@ -59,23 +59,27 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
     }
 }
 
+void LoginScene::checkAndChangeScene() {
+    const std::string username =
+        usernameInput.textString;
+    const std::string password =
+        passwordInput.textString;
+    if (loginUser(username, password) == -1) {
+        std::cerr << "User not found\n";
+        return;
+    }
+    Game::player_id = loginUser(username, password);
+    Game::player_name = username;
+    SceneManager::changeScene(std::make_unique<MainMenuScene>());
+}
+
 void LoginScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (loginButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                const std::string username =
-                    usernameInput.textString;
-                const std::string password =
-                    passwordInput.textString;
-                if (loginUser(username, password) == -1) {
-                    std::cerr << "User not found\n";
-                    return;
-                }
-                Game::player_id = loginUser(username, password);
-                Game::player_name = username;
-                SceneManager::changeScene(std::make_unique<MainMenuScene>());
+
                 return;
             }
             updateInputBoxes(event);
@@ -86,6 +90,11 @@ void LoginScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<AuthenticationScene>(
                 ));
             }
+        }
+    }
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Enter) {
+            checkAndChangeScene();
         }
     }
     if (event.type == sf::Event::TextEntered) {
