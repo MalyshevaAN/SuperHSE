@@ -40,33 +40,6 @@ void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     }
 }
 
-void RegisterScene::updateInputBoxes(sf::Event &event) {
-    if (usernameInput.box.getGlobalBounds().contains(
-            event.mouseButton.x, event.mouseButton.y
-        )) {
-        activeInputBox = &usernameInput;
-        usernameInput.box.setFillColor(activeInputBoxColor);
-        passwordInput.box.setFillColor(sf::Color::White);
-        passwordAgainInput.box.setFillColor(sf::Color::White);
-    }
-    if (passwordInput.box.getGlobalBounds().contains(
-            event.mouseButton.x, event.mouseButton.y
-        )) {
-        activeInputBox = &passwordInput;
-        usernameInput.box.setFillColor(sf::Color::White);
-        passwordInput.box.setFillColor(activeInputBoxColor);
-        passwordAgainInput.box.setFillColor(sf::Color::White);
-    }
-    if (passwordAgainInput.box.getGlobalBounds().contains(
-            event.mouseButton.x, event.mouseButton.y
-        )) {
-        activeInputBox = &passwordAgainInput;
-        usernameInput.box.setFillColor(sf::Color::White);
-        passwordInput.box.setFillColor(sf::Color::White);
-        passwordAgainInput.box.setFillColor(activeInputBoxColor);
-    }
-}
-
 void RegisterScene::checkAndChangeScene() {
     const std::string username = usernameInput.textString;
     const std::string password = passwordInput.textString;
@@ -82,7 +55,37 @@ void RegisterScene::checkAndChangeScene() {
     SceneManager::changeScene(std::make_unique<AuthenticationScene>());
 }
 
+void RegisterScene::updateInputBoxes(sf::Event &event) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Down) {
+            activeInputBoxIndex = (activeInputBoxIndex + 1) % inputBoxes.size();
+        }
+        if (event.key.code == sf::Keyboard::Up) {
+            activeInputBoxIndex =
+                (activeInputBoxIndex - 1 + inputBoxes.size()) %
+                inputBoxes.size();
+        }
+    } else if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            for (int index = 0; index < inputBoxes.size(); index++) {
+                if (inputBoxes[index]->box.getGlobalBounds().contains(
+                        event.mouseButton.x, event.mouseButton.y
+                    )) {
+                    activeInputBoxIndex = index;
+                }
+            }
+        }
+    }
+    for (auto &inputBox : inputBoxes) {
+        inputBox->box.setFillColor(sf::Color::White);
+    }
+    activeInputBox = inputBoxes[activeInputBoxIndex];
+    activeInputBox->box.setFillColor(activeInputBoxColor);
+}
+
 void RegisterScene::handleInput(sf::Event &event) {
+    updateInputBoxes(event);
+    
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (createPlayerButton.getGlobalBounds().contains(

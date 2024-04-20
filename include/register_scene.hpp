@@ -16,8 +16,8 @@ private:
     InputBox passwordInput;
     InputBox passwordAgainInput;
     InputBox *activeInputBox = &usernameInput;
-
-    // TODO после предзащиты добавить подтверждение пароля
+    std::vector<InputBox *> inputBoxes = {&usernameInput, &passwordInput, &passwordAgainInput};
+    int activeInputBoxIndex = 0;
 
     sf::Texture createPlayerButtonPicture;
     sf::Sprite createPlayerButton;
