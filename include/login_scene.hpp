@@ -15,6 +15,8 @@ private:
     InputBox usernameInput;
     InputBox passwordInput;
     InputBox *activeInputBox = &usernameInput;
+    std::vector<InputBox *> inputBoxes = {&usernameInput, &passwordInput};
+    int activeInputBoxIndex = 0;
 
     sf::Texture loginButtonPicture;
     sf::Sprite loginButton;
