@@ -22,6 +22,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     get_texture_from_file("next_level_button.png", NextLevelTexture);
     get_texture_from_file("HSEcoin.png", CoinTexture);
     get_texture_from_file("live.png", LivesTexture);
+    get_texture_from_file("graduated.png", GraduateTexture);
 
     background.setTexture(BackgroundTexture);
     mainMenu.setTexture(MainMenuTexture);
@@ -29,14 +30,24 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     nextLevel.setTexture(NextLevelTexture);
     coin.setTexture(CoinTexture);
     lives.setTexture(LivesTexture);
+    graduate.setTexture(GraduateTexture);
     coin.setTextureRect({0,0,16,16});
 
-    mainMenu.setPosition((Game::windowWidth - mainMenu.getTexture()->getSize().x)/2, Game::windowHeight / 2);
-    tryAgain.setPosition((Game::windowWidth - tryAgain.getTexture()->getSize().x)/2, Game::windowHeight / 1.5);
-    nextLevel.setPosition((Game::windowWidth - nextLevel.getTexture()->getSize().x)/2, Game::windowHeight / 1.2);
+    graduate.setOrigin(graduate.getTexture()->getSize().x/2, graduate.getTexture()->getSize().x/2);
+
+    int drop = 0;
+    if (level_numb == all_levels){
+        drop = 100;
+    }
+
+    mainMenu.setPosition((Game::windowWidth - mainMenu.getTexture()->getSize().x)/2, Game::windowHeight / 2 + drop);
+    tryAgain.setPosition((Game::windowWidth - tryAgain.getTexture()->getSize().x)/2, Game::windowHeight / 1.5 + drop);
+    nextLevel.setPosition((Game::windowWidth - nextLevel.getTexture()->getSize().x)/2, Game::windowHeight / 1.2 + drop);
     coin.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.2, Game::windowHeight / 3);
     lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.8, Game::windowHeight / 3);
+    graduate.setPosition(Game::windowWidth / 2, Game::windowHeight / 2);
 
+    graduate.setScale(0.01, 0.01);
     coin.setScale(3, 3);
     lives.setScale(1.5, 1.5);
 
@@ -87,7 +98,11 @@ void WinScene::handleInput(sf::Event &event){
 }
 
 void WinScene::update(sf::Time &dTime){
-
+    if (level_numb == all_levels){
+        if (graduate.getScale().x <= 0.3f){
+            graduate.setScale(graduate.getScale().x + 0.01f, graduate.getScale().y + 0.01f);
+        }
+    }
 }
 
 void WinScene::updateSceneSize(){
@@ -105,6 +120,10 @@ void WinScene::draw(sf::RenderWindow &window){
     window.draw(tryAgain);
     if (level_numb < all_levels){
         window.draw(nextLevel);
+    }
+
+    if (level_numb == all_levels){
+        window.draw(graduate);
     }
     window.draw(coin);
     window.draw(lives);

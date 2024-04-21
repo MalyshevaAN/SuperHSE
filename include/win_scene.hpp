@@ -14,6 +14,7 @@ private:
     sf::Texture TryAgainTexture;
     sf::Texture CoinTexture;
     sf::Texture LivesTexture;
+    sf::Texture GraduateTexture;
 
     sf::Sprite background;
     sf::Sprite nextLevel;
@@ -21,6 +22,7 @@ private:
     sf::Sprite tryAgain;
     sf::Sprite coin;
     sf::Sprite lives;
+    sf::Sprite graduate;
 
     sf::Font font;
 
