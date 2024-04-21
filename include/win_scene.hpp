@@ -27,7 +27,7 @@ private:
     sf::Font font;
 
     sf::Text saved_lives_count;
-    sf::Text gathered_coins;
+    sf::Text collected_coins;
     sf::Text records_txt;
     sf::Text best_lives;
     sf::Text best_coins;

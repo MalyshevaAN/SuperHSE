@@ -7,7 +7,7 @@ namespace super_hse {
 
 struct LvlRecords {
   int lives;
-  int cash;
+  int coins;
 };
 
 void executeQuery();
@@ -29,7 +29,7 @@ loginUser(const std::string &username, const std::string &password);
 
 [[nodiscard]] bool isLevelAvailable(int id, int level);
 
-void updateLevel(int id, int level, int newLives, int newCash);
+void updateLevel(int id, int level, int newLives, int newCoins);
 
 void addLevelsForUser(int id, int levelsCount);
 

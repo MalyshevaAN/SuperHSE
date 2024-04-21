@@ -37,7 +37,7 @@ void Level::get_textures(){
     get_texture_from_file("bricks.png", textures.at("brick"));
     get_texture_from_file("floor.png", textures.at("floor"));
     get_texture_from_file("enemy.png", textures.at("enemy"));
-    get_texture_from_file("live.png", textures.at("live"));
+    get_texture_from_file("life.png", textures.at("life"));
     get_texture_from_file("death.png", textures.at("death"));
 }
 
@@ -100,10 +100,10 @@ void Level::init(
     coinCounterFront.setFillColor(sf::Color::Green);
     coinCounterFront.setSize({0, coinCounterBack.getSize().y});
     for (int i = 0; i < 3; ++i){
-        sf::Sprite new_live;
-        new_live.setTexture(textures.at("live"));
-        new_live.setPosition(Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40);
-        lives.push_back(new_live);
+        sf::Sprite new_life;
+        new_life.setTexture(textures.at("life"));
+        new_life.setPosition(Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40);
+        lives.push_back(new_life);
     }
 }
 
@@ -142,7 +142,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         for (int i = 0; i < 3; ++i){
             lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.1 + i*35, lives[i].getPosition().y);
             if (i < player_lives){
-                lives[i].setTexture(textures.at("live"));
+                lives[i].setTexture(textures.at("life"));
             }else{
                 lives[i].setTexture(textures.at("death"));
             }
@@ -199,8 +199,8 @@ void Level::render(
             target.draw(elem.enemySprite);
         }
     }
-    for (auto &live : lives){
-        target.draw(live);
+    for (auto &life : lives){
+        target.draw(life);
 
     }
     target.draw(coinCounterBack);

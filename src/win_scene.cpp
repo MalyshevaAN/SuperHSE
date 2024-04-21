@@ -22,7 +22,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     get_texture_from_file("try_again_button.png", TryAgainTexture);
     get_texture_from_file("next_level_button.png", NextLevelTexture);
     get_texture_from_file("HSEcoin.png", CoinTexture);
-    get_texture_from_file("live.png", LivesTexture);
+    get_texture_from_file("life.png", LivesTexture);
     get_texture_from_file("graduated.png", GraduateTexture);
 
     background.setTexture(BackgroundTexture);
@@ -55,11 +55,11 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
         std::cerr << "Error loading font\n";
     }
-    gathered_coins.setFont(font);
-    gathered_coins.setCharacterSize(30);
-    gathered_coins.setFillColor(sf::Color::Black);
-    gathered_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 3);
-    gathered_coins.setString(std::to_string(coins_));
+    collected_coins.setFont(font);
+    collected_coins.setCharacterSize(30);
+    collected_coins.setFillColor(sf::Color::Black);
+    collected_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 3);
+    collected_coins.setString(std::to_string(coins_));
     saved_lives_count.setFont(font);
     saved_lives_count.setCharacterSize(30);
     saved_lives_count.setFillColor(sf::Color::Black);
@@ -79,7 +79,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     best_coins.setCharacterSize(30);
     best_coins.setFillColor(sf::Color::Black);
     best_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 2.3);
-    best_coins.setString(std::to_string(info.cash));
+    best_coins.setString(std::to_string(info.coins));
     best_lives.setFont(font);
     best_lives.setCharacterSize(30);
     best_lives.setFillColor(sf::Color::Black);
@@ -146,7 +146,7 @@ void WinScene::draw(sf::RenderWindow &window){
     }
     window.draw(coin);
     window.draw(lives);
-    window.draw(gathered_coins);
+    window.draw(collected_coins);
     window.draw(saved_lives_count);
     window.display();
 }
