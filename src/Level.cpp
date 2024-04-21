@@ -67,7 +67,7 @@ void Level::init(
                     (float)entity.getSize().y
                 );
                 colliders.emplace_back(rect);
-                if (name != "Floor") {
+                if (name != "Floor" && name != "FloorSmall") {
                     textureColliders.emplace_back("brick");
                 } else {
                     textureColliders.emplace_back("floor");
@@ -129,7 +129,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
                 gatheredCoins++;
             }
         };
-    
+
         SceneManager::changeScene(std::make_unique<WinScene>(gatheredCoins, level_number + 1, player_lives));
         return;
     }
@@ -239,7 +239,12 @@ LevelsStorage::LevelsStorage() {
     auto level1 = std::make_unique<LevelInfo>(
         p.parent_path().string() + "/assets/files/level2.txt"
     );
+
+    auto level2 = std::make_unique<LevelInfo>(
+        p.parent_path().string() + "/assets/files/level3.txt"
+    );
     storage.push_back(std::move(level1));
+    storage.push_back(std::move(level2));
 }
 }  // namespace super_hse
 #endif
