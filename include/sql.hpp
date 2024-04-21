@@ -4,6 +4,12 @@
 #include <string>
 
 namespace super_hse {
+
+struct LvlRecords {
+  int lives;
+  int cash;
+};
+
 void executeQuery();
 
 void closeDB();
@@ -23,11 +29,13 @@ loginUser(const std::string &username, const std::string &password);
 
 [[nodiscard]] bool isLevelAvailable(int id, int level);
 
-void updateLevel(int id, int level, int newTime, int newCash);
+void updateLevel(int id, int level, int newLives, int newCash);
 
 void addLevelsForUser(int id, int levelsCount);
 
 void updateSkin(int id, int newSkin);
+
+LvlRecords getLevelRecords(int id, int level);
 
 }  // namespace super_hse
 

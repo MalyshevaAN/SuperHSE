@@ -7,6 +7,7 @@
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "level_scene.hpp"
+#include "sql.hpp"
 #include <string>
 
 namespace super_hse{
@@ -65,7 +66,25 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     saved_lives_count.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 3);
     saved_lives_count.setString(std::to_string(saved_lives_));
 
-    // тут очень надо подрубаться к бд, чтобы сохранять результат по новому уровню и открывать в доступ следующий уровень 
+    updateLevel(Game::player_id, level_numb_, saved_lives_, coins_);
+    updateBalance(Game::player_id, getBalance(Game::player_id) + coins_);
+    LvlRecords info = getLevelRecords(Game::player_id, level_numb_);
+
+    /* records_txt.setFont(font);
+    records_txt.setCharacterSize(30);
+    records_txt.setFillColor(sf::Color::Black);
+    records_txt.setPosition(Game::windowWidth / 2.5, Game::windowHeight / 2.5);
+    records_txt.setString("Best results:");
+    best_coins.setFont(font);
+    best_coins.setCharacterSize(30);
+    best_coins.setFillColor(sf::Color::Black);
+    best_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 2.3);
+    best_coins.setString(std::to_string(info.cash));
+    best_lives.setFont(font);
+    best_lives.setCharacterSize(30);
+    best_lives.setFillColor(sf::Color::Black);
+    best_lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 2.3);
+    best_lives.setString(std::to_string(info.lives)); */
 }
 
 void WinScene::handleInput(sf::Event &event){

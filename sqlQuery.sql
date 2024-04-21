@@ -24,17 +24,34 @@ CREATE TABLE IF NOT EXISTS "WARDROBE" (
 );
 
 CREATE TABLE IF NOT EXISTS "LEVELS" (
-    "USER_ID"	INTEGER NOT NULL,
-    "LVL_NUM"	INTEGER NOT NULL,
-    "STATUS"	INTEGER NOT NULL DEFAULT 0,
-    "BEST_TIME"	NUMERIC,
-    "BEST_CASH"	INTEGER,
+    "USER_ID"	    INTEGER NOT NULL,
+    "LVL_NUM"	    INTEGER NOT NULL,
+    "STATUS"	    INTEGER NOT NULL DEFAULT 0,
+    "BEST_LIVES"    INTEGER,
+    "BEST_CASH"	    INTEGER,
     FOREIGN KEY("USER_ID") REFERENCES "USERS"("USER_ID")
 );
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Ivan Kalinin', 0, 'ivankalinin.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Khrabroff', 0, 'khrabrov.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Mr. Antipoff', 0, 'antipov.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Anna Gladkaya', 0, 'annaglad.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Egor', 0, 'egor.png');
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") VALUES (0, 'Sergey Kopel Kopeliovich', 0, 'kopel.png');
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Ivan Kalinin', 0, 'ivankalinin.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Ivan Kalinin');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Mr. Khrabroff', 0, 'khrabrov.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Khrabroff');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Mr. Antipoff', 0, 'antipov.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Antipoff');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Anna Gladkaya', 0, 'annaglad.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Anna Gladkaya');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Egor', 0, 'egor.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
+SELECT 0, 'Sergey Kopel Kopeliovich', 0, 'kopel.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Sergey Kopel Kopeliovich');

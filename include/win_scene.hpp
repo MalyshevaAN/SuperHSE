@@ -28,6 +28,9 @@ private:
 
     sf::Text saved_lives_count;
     sf::Text gathered_coins;
+    sf::Text records_txt;
+    sf::Text best_lives;
+    sf::Text best_coins;
 
     int coins;
     int level_numb;

@@ -69,7 +69,7 @@ void RegisterScene::handleInput(sf::Event &event) {
             if (createPlayerButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                // TODO ВОТ ТУТ НАДО ПРИКРУТИТЬ РАБОТУ С БДШКОЙ
+                
                 const std::string username = usernameInputText.getString();
                 const std::string password = passwordInputText.getString();
                 if (!registerUser(username, password)) {
