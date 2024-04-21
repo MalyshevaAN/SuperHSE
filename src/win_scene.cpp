@@ -53,6 +53,8 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     saved_lives_count.setFillColor(sf::Color::Black);
     saved_lives_count.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 3);
     saved_lives_count.setString(std::to_string(saved_lives_));
+
+    // тут очень надо подрубаться к бд, чтобы сохранять результат по новому уровню и открывать в доступ следующий уровень 
 }
 
 void WinScene::handleInput(sf::Event &event){
@@ -73,7 +75,11 @@ void WinScene::handleInput(sf::Event &event){
             }
             // не работает почему-то ((
             if (tryAgain.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
-                SceneManager::changeScene(std::make_unique<LevelScene>(0));
+                SceneManager::changeScene(std::make_unique<LevelScene>(level_numb - 1));
+                return;
+            }
+            if (nextLevel.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y) && level_numb < all_levels){
+                SceneManager::changeScene(std::make_unique<LevelScene>(level_numb));
                 return;
             }
         }
@@ -97,7 +103,9 @@ void WinScene::draw(sf::RenderWindow &window){
     window.draw(background);
     window.draw(mainMenu);
     window.draw(tryAgain);
-    window.draw(nextLevel);
+    if (level_numb < all_levels){
+        window.draw(nextLevel);
+    }
     window.draw(coin);
     window.draw(lives);
     window.draw(gathered_coins);
