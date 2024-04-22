@@ -169,17 +169,17 @@ loginUser(const std::string &username, const std::string &password) {
     return isAvailable;
 }
 
-void updateLeveL(int id, int level, int newTime, int newCash) {
+void updateLevel(int id, int level, int newLives, int newCoins) {
     sqlite3_stmt *stmt;
     std::string sql =
-        "SELECT BEST_TIME, BEST_CASH FROM LEVELS WHERE USER_ID = " +
+        "SELECT BEST_LIVES, BEST_COINS FROM LEVELS WHERE USER_ID = " +
         std::to_string(id) + " AND LVL_NUM = " + std::to_string(level);
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     sqlite3_step(stmt);
-    int bestTime = std::max(sqlite3_column_int(stmt, 0), newTime);
-    int bestCash = std::max(sqlite3_column_int(stmt, 1), newCash);
-    sql = "UPDATE LEVELS SET BEST_TIME = " + std::to_string(bestTime) +
-          ", BEST_CASH = " + std::to_string(bestCash) +
+    int bestLives = std::max(sqlite3_column_int(stmt, 0), newLives);
+    int bestCoins = std::max(sqlite3_column_int(stmt, 1), newCoins);
+    sql = "UPDATE LEVELS SET BEST_LIVES = " + std::to_string(bestLives) +
+          ", BEST_COINS = " + std::to_string(bestCoins) +
           " WHERE USER_ID = " + std::to_string(id) +
           " AND LVL_NUM = " + std::to_string(level);
     char *err = 0;
@@ -230,6 +230,20 @@ void updateSkin(int id, int newSkin) {
         sqlite3_free(err);
     }
     sqlite3_finalize(stmt);
+}
+
+LvlRecords getLevelRecords(int id, int level) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "SELECT BEST_LIVES, BEST_COINS FROM LEVELS WHERE USER_ID = " +
+        std::to_string(id) + " AND LVL_NUM = " + std::to_string(level);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    LvlRecords info;
+    info.lives = sqlite3_column_int(stmt, 0);
+    info.coins = sqlite3_column_int(stmt, 1);
+    sqlite3_finalize(stmt);
+    return info;
 }
 
 }  // namespace super_hse

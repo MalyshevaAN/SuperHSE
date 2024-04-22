@@ -7,6 +7,7 @@
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "level_scene.hpp"
+#include "sql.hpp"
 #include <string>
 
 namespace super_hse{
@@ -21,7 +22,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     get_texture_from_file("try_again_button.png", TryAgainTexture);
     get_texture_from_file("next_level_button.png", NextLevelTexture);
     get_texture_from_file("HSEcoin.png", CoinTexture);
-    get_texture_from_file("live.png", LivesTexture);
+    get_texture_from_file("life.png", LivesTexture);
     get_texture_from_file("graduated.png", GraduateTexture);
 
     background.setTexture(BackgroundTexture);
@@ -40,11 +41,12 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
         drop = 100;
     }
 
+    background.setPosition((Game::windowWidth - background.getTexture()->getSize().x)/2, Game::windowHeight / 5.5);
     mainMenu.setPosition((Game::windowWidth - mainMenu.getTexture()->getSize().x)/2, Game::windowHeight / 2 + drop);
     tryAgain.setPosition((Game::windowWidth - tryAgain.getTexture()->getSize().x)/2, Game::windowHeight / 1.5 + drop);
     nextLevel.setPosition((Game::windowWidth - nextLevel.getTexture()->getSize().x)/2, Game::windowHeight / 1.2 + drop);
-    coin.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.2, Game::windowHeight / 3);
-    lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.8, Game::windowHeight / 3);
+    coin.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.2, Game::windowHeight / 2.85);
+    lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.8, Game::windowHeight / 2.85);
     graduate.setPosition(Game::windowWidth / 2, Game::windowHeight / 2);
 
     graduate.setScale(0.01, 0.01);
@@ -54,18 +56,41 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
         std::cerr << "Error loading font\n";
     }
-    gathered_coins.setFont(font);
-    gathered_coins.setCharacterSize(30);
-    gathered_coins.setFillColor(sf::Color::Black);
-    gathered_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 3);
-    gathered_coins.setString(std::to_string(coins_));
+    collected_coins.setFont(font);
+    collected_coins.setCharacterSize(30);
+    collected_coins.setFillColor(sf::Color::Black);
+    collected_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 3);
+    collected_coins.setString(std::to_string(coins_));
     saved_lives_count.setFont(font);
     saved_lives_count.setCharacterSize(30);
     saved_lives_count.setFillColor(sf::Color::Black);
     saved_lives_count.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 3);
     saved_lives_count.setString(std::to_string(saved_lives_));
 
-    // тут очень надо подрубаться к бд, чтобы сохранять результат по новому уровню и открывать в доступ следующий уровень 
+    updateLevel(Game::player_id, level_numb_, saved_lives_, coins_);
+    updateBalance(Game::player_id, getBalance(Game::player_id) + coins_);
+    LvlRecords info = getLevelRecords(Game::player_id, level_numb_);
+
+    records_txt.setFont(font);
+    records_txt.setCharacterSize(30);
+    records_txt.setFillColor(sf::Color::Black);
+    records_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 2.7);
+    records_txt.setString("Best results:");
+    result_txt.setFont(font);
+    result_txt.setCharacterSize(30);
+    result_txt.setFillColor(sf::Color::Black);
+    result_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 3);
+    result_txt.setString("Your results:");
+    best_coins.setFont(font);
+    best_coins.setCharacterSize(30);
+    best_coins.setFillColor(sf::Color::Black);
+    best_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 2.7);
+    best_coins.setString(std::to_string(info.coins));
+    best_lives.setFont(font);
+    best_lives.setCharacterSize(30);
+    best_lives.setFillColor(sf::Color::Black);
+    best_lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 2.7);
+    best_lives.setString(std::to_string(info.lives));
 }
 
 void WinScene::handleInput(sf::Event &event){
@@ -127,8 +152,12 @@ void WinScene::draw(sf::RenderWindow &window){
     }
     window.draw(coin);
     window.draw(lives);
-    window.draw(gathered_coins);
+    window.draw(collected_coins);
     window.draw(saved_lives_count);
+    window.draw(records_txt);
+    window.draw(result_txt);
+    window.draw(best_coins);
+    window.draw(best_lives);
     window.display();
 }
 }
