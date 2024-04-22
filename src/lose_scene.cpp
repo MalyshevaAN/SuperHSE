@@ -11,12 +11,12 @@
 namespace super_hse {
 
 LoseScene::LoseScene() {
-    get_texture_from_file("lose_scene.png", BackGroundTexture);
-    get_texture_from_file("main_menu_button.png", MainMenuTexture);
-    get_texture_from_file("try_again_button.png", TryAgainTexture);
-    background.setTexture(BackGroundTexture);
-    mainMenu.setTexture(MainMenuTexture);
-    tryAgain.setTexture(TryAgainTexture);
+    get_texture_from_file("lose_scene.png", backgroundTexture);
+    get_texture_from_file("main_menu_button.png", mainMenuTexture);
+    get_texture_from_file("try_again_button.png", tryAgainTexture);
+    background.setTexture(backgroundTexture);
+    mainMenu.setTexture(mainMenuTexture);
+    tryAgain.setTexture(tryAgainTexture);
     mainMenu.setPosition(
         (Game::windowWidth - mainMenu.getTexture()->getSize().x) / 2,
         Game::windowHeight / 2
@@ -24,6 +24,10 @@ LoseScene::LoseScene() {
     tryAgain.setPosition(
         (Game::windowWidth - tryAgain.getTexture()->getSize().x) / 2,
         Game::windowHeight / 1.5
+    );
+    background.setPosition(
+        (Game::windowWidth - background.getTexture()->getSize().x) / 2,
+        Game::windowHeight / 4
     );
 }
 

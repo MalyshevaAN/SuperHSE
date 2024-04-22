@@ -41,11 +41,12 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
         drop = 100;
     }
 
+    background.setPosition((Game::windowWidth - background.getTexture()->getSize().x)/2, Game::windowHeight / 5.5);
     mainMenu.setPosition((Game::windowWidth - mainMenu.getTexture()->getSize().x)/2, Game::windowHeight / 2 + drop);
     tryAgain.setPosition((Game::windowWidth - tryAgain.getTexture()->getSize().x)/2, Game::windowHeight / 1.5 + drop);
     nextLevel.setPosition((Game::windowWidth - nextLevel.getTexture()->getSize().x)/2, Game::windowHeight / 1.2 + drop);
-    coin.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.2, Game::windowHeight / 3);
-    lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.8, Game::windowHeight / 3);
+    coin.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.2, Game::windowHeight / 2.85);
+    lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.8, Game::windowHeight / 2.85);
     graduate.setPosition(Game::windowWidth / 2, Game::windowHeight / 2);
 
     graduate.setScale(0.01, 0.01);
@@ -70,21 +71,26 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     updateBalance(Game::player_id, getBalance(Game::player_id) + coins_);
     LvlRecords info = getLevelRecords(Game::player_id, level_numb_);
 
-    /* records_txt.setFont(font);
+    records_txt.setFont(font);
     records_txt.setCharacterSize(30);
     records_txt.setFillColor(sf::Color::Black);
-    records_txt.setPosition(Game::windowWidth / 2.5, Game::windowHeight / 2.5);
+    records_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 2.7);
     records_txt.setString("Best results:");
+    result_txt.setFont(font);
+    result_txt.setCharacterSize(30);
+    result_txt.setFillColor(sf::Color::Black);
+    result_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 3);
+    result_txt.setString("Your results:");
     best_coins.setFont(font);
     best_coins.setCharacterSize(30);
     best_coins.setFillColor(sf::Color::Black);
-    best_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 2.3);
+    best_coins.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/2.3, Game::windowHeight / 2.7);
     best_coins.setString(std::to_string(info.coins));
     best_lives.setFont(font);
     best_lives.setCharacterSize(30);
     best_lives.setFillColor(sf::Color::Black);
-    best_lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 2.3);
-    best_lives.setString(std::to_string(info.lives)); */
+    best_lives.setPosition((Game::windowWidth - lives.getTexture()->getSize().x)/1.9, Game::windowHeight / 2.7);
+    best_lives.setString(std::to_string(info.lives));
 }
 
 void WinScene::handleInput(sf::Event &event){
@@ -148,6 +154,10 @@ void WinScene::draw(sf::RenderWindow &window){
     window.draw(lives);
     window.draw(collected_coins);
     window.draw(saved_lives_count);
+    window.draw(records_txt);
+    window.draw(result_txt);
+    window.draw(best_coins);
+    window.draw(best_lives);
     window.display();
 }
 }
