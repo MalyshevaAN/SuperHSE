@@ -2,26 +2,21 @@
 #define LOGIN_SCENE_HPP_
 
 #include <SFML/Graphics.hpp>
+#include "input_box.hpp"
 #include "scene.hpp"
 
 namespace super_hse {
-
-enum class InputBoxType { Username, Password };
 
 class LoginScene : public Scene {
 private:
     sf::Texture bigRectanglePicture;
     sf::Sprite bigRectangle;
 
-    sf::RectangleShape usernameInputBox;
-    sf::Text usernameInputText;
-    sf::Text usernameLabel;
-
-    sf::RectangleShape passwordInputBox;
-    sf::Text passwordInputText;
-    sf::Text passwordLabel;
-
-    sf::Text *activeInputText = &usernameInputText;
+    InputBox usernameInput;
+    InputBox passwordInput;
+    InputBox *activeInputBox = &usernameInput;
+    std::vector<InputBox *> inputBoxes = {&usernameInput, &passwordInput};
+    int activeInputBoxIndex = 0;
 
     sf::Texture loginButtonPicture;
     sf::Sprite loginButton;
@@ -40,6 +35,8 @@ public:
     void updateSceneSize() override;
 
     void updateActiveInputText(const sf::Uint32 unicode);
+    void updateInputBoxes(sf::Event &event);
+    void checkAndChangeScene();
 };
 
 }  // namespace super_hse
