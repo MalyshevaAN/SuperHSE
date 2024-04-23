@@ -99,7 +99,7 @@ void LevelScene::update(sf::Time &dTime) {
                 enemy.disable();
             }else{
                 if (enemy.get_state() == EnemyState::active){
-                    player.lose_live();
+                    player.lose_life();
                 }
                 enemy.unable();
             }

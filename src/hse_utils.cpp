@@ -1,4 +1,6 @@
 #include "hse_utils.hpp"
+#include "game.hpp"
+#include "sql.hpp"
 #include <filesystem>
 #include <iostream>
 
@@ -14,10 +16,7 @@ void get_texture_from_file(std::string filename, sf::Texture &texture) {
 }
 
 bool is_level_available(int num) {
-    if (num == 1) {  // тут запрос к бд в будущем
-        return true;
-    }
-    return false;
+    return isLevelAvailable(Game::player_id, num);
 }
 
 }  // namespace super_hse

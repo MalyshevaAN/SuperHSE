@@ -94,7 +94,7 @@ Position Player::get_position(){
     return {sprite.getPosition().x, sprite.getPosition().y};
 }
 
-void Player::lose_live(){
+void Player::lose_life(){
     Player::sound.play();
     active_lives--;
 }
