@@ -19,7 +19,11 @@ set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_s
 include_directories(super_hse include)
 
 add_executable(super_hse ${SRC_LIST})
-target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio ${SQLite3_LIBRARIES})
+target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio sfml-network ${SQLite3_LIBRARIES})
+
+
+add_executable(server network/game_server.cpp)
+target_link_libraries(server sfml-system sfml-graphics sfml-network)
 
 if (SQLITE3_FOUND)
     include_directories(${SQLITE3_INCLUDE_DIRS})
