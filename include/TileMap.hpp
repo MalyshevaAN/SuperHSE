@@ -9,7 +9,9 @@
 class TileMap {
 public:
     static std::string path;  // путь к папке проекта
-
+    int width = 0;
+    int height = 0;
+    int cell_size = 0;
     class Textures {
         Textures() = default;
         std::map<std::string, sf::Texture> data;
@@ -22,6 +24,7 @@ public:
         Textures operator=(const Textures &) = delete;
         Textures operator=(Textures &&other) = delete;
         static auto get(const std::string &name) -> sf::Texture &;
+
     };
 
     class Layer : public sf::Drawable {  // класс слоя в карте

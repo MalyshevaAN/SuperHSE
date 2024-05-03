@@ -26,7 +26,7 @@ Level::Level(std::string filename) {
         std::cout << "LDtk World \"" << project.getFilePath()
                   << "\" was loaded successfully." << std::endl;
     } catch (std::exception &ex) {
-        std::cerr << ex.what() << std::endl;
+        throw noSuchLdtkProject(ldtk_filename);
     }
     view.setSize(Game::windowWidth, Game::windowHeight);
     view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
@@ -52,45 +52,57 @@ void Level::init(
     enemy::init();
     level_number = level_number_;
     auto &world = project.allWorlds().at(0);
-    auto &ldtk_first_level =
-        world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
-    TileMap::path = project.getFilePath().directory(
-    );  // достали папку где лежит проект, чтобы потом там искать текстуры
-    tilemap.load(ldtk_first_level);  // загружаем слои конкретного уровня
-    for (auto elem : entityLayerNames) {
-        auto &entitiesLayer = ldtk_first_level.getLayer(elem);
-        for (auto name : colliderNames) {
-            for (ldtk::Entity &entity : entitiesLayer.getEntitiesByName(name)) {
-                sf::FloatRect rect(
-                    (float)entity.getPosition().x,
-                    (float)entity.getPosition().y, (float)entity.getSize().x,
-                    (float)entity.getSize().y
-                );
-                colliders.emplace_back(rect);
-                if (name != "Floor" && name != "FloorSmall" && name != "FloorMedium") {
-                    textureColliders.emplace_back("brick");
-                } else {
-                    textureColliders.emplace_back("floor");
+    try{
+        auto &ldtk_first_level =
+            world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
+        TileMap::path = project.getFilePath().directory(
+        );  // достали папку где лежит проект, чтобы потом там искать текстуры
+        tilemap.load(ldtk_first_level);  // загружаем слои конкретного уровня
+        for (auto elem : entityLayerNames) {
+            auto &entitiesLayer = ldtk_first_level.getLayer(elem);
+            for (auto name : colliderNames) {
+                for (ldtk::Entity &entity : entitiesLayer.getEntitiesByName(name)) {
+                    sf::FloatRect rect(
+                        (float)entity.getPosition().x,
+                        (float)entity.getPosition().y, (float)entity.getSize().x,
+                        (float)entity.getSize().y
+                    );
+                    colliders.emplace_back(rect);
+                    if (name != "Floor" && name != "FloorSmall" && name != "FloorMedium") {
+                        textureColliders.emplace_back("brick");
+                    } else {
+                        textureColliders.emplace_back("floor");
+                    }
                 }
             }
         }
-    }
-    auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
-    for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
-        coin new_coin;
-        new_coin.setStatus(CoinStatus::active);
-        new_coin.coin_sprite.setTexture(coinTexture);
-        new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
-        new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-        coins.emplace_back(new_coin);
-    }
-    allCoins = coins.size();
-    auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
-    for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
-        enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
-        new_enemy.enemySprite.setTexture(textures.at("enemy"));
-        new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-        enemies.push_back(new_enemy);
+        try {
+            auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
+            for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
+                coin new_coin;
+                new_coin.setStatus(CoinStatus::active);
+                new_coin.coin_sprite.setTexture(coinTexture);
+                new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
+                new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                coins.emplace_back(new_coin);
+            }
+            allCoins = coins.size();
+        }catch(...){
+            throw noSuchLayer("HSEcoin");
+        }
+        try{
+            auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
+            for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
+                enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
+                new_enemy.enemySprite.setTexture(textures.at("enemy"));
+                new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                enemies.push_back(new_enemy);
+            }
+        }catch(...){
+            throw noSuchLayer("Enemies");
+        }
+    }catch(...){
+        throw noSuchLevel("Level_1");
     }
 
     coinCounterBack.setSize({(float)Game::windowWidth / 10, (float)Game::windowHeight / 20});
@@ -230,7 +242,7 @@ LevelInfo::LevelInfo(std::string file) {
             std::getline(in, line);
         }
     } else {
-        throw 1;
+        throw noSuchDescriptionFile(file);
     }
 }
 
