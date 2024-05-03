@@ -43,6 +43,22 @@ public:
     explicit textureException(const std::string &texture_name);
 };
 
+class serverException : public std::runtime_error{
+public:
+    explicit serverException(const std::string &message);
+};
+
+class connectionException : public serverException {
+public: 
+    explicit connectionException(const std::string &socket_address);
+};
+
+class sendingException : public serverException {
+public: 
+    explicit sendingException();
+};
+
+
 }  // namespace super_hse
 
 #endif
