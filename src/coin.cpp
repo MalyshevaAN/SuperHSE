@@ -25,7 +25,7 @@ void coin::changeFrame(int frame){
 void coin::disable(){
     if (status == CoinStatus::active){
         coin::sound.play();
-        status = CoinStatus::dieing;
+        setStatus(CoinStatus::dieing);
     }
 }
 
@@ -38,7 +38,7 @@ void coin::disappear(){
         coin_sprite.setPosition(sf::Vector2f(coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2));
         height_change += 0.1;
     }else {
-        status = CoinStatus::dead;
+        setStatus(CoinStatus::dead);
     }
 }
 

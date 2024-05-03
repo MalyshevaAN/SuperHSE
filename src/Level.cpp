@@ -67,7 +67,7 @@ void Level::init(
                     (float)entity.getSize().y
                 );
                 colliders.emplace_back(rect);
-                if (name != "Floor" && name != "FloorSmall") {
+                if (name != "Floor" && name != "FloorSmall" && name != "FloorMedium") {
                     textureColliders.emplace_back("brick");
                 } else {
                     textureColliders.emplace_back("floor");
@@ -122,7 +122,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         return;
     }
 
-    if (player_pos.x >= 2500){
+    if (player_pos.x >= tilemap.width - 60){
         int gatheredCoins = 0;
         for (auto &elem : coins) {
             if (elem.get_status() != CoinStatus::active){
@@ -134,7 +134,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         return;
     }
     int diff = Game::windowWidth / 2 - Player::start_position_x;
-    if (player_pos.x + diff >= Game::windowWidth / 2  && player_pos.x + diff < 1980){
+    if (player_pos.x + diff >= Game::windowWidth / 2  && player_pos.x + diff < tilemap.width - 580){
         view.setSize(Game::windowWidth, Game::windowHeight);
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
         coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.3, coinCounterBack.getPosition().y);

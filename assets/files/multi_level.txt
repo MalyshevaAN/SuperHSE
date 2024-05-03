@@ -1,0 +1,17 @@
+../assets/tilemaps/multi_level.ldtk
+
+BackGround
+Ground
+StartEnd
+Trees
+Clouds
+
+Bricks
+
+LongPlatform64
+LongPlatform128
+HighPlatform128
+LongMovingPlatform64
+Floor
+FloorSmall
+FloorMedium
