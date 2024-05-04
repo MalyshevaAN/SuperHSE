@@ -2,6 +2,7 @@
 #define INPUT_BOX_HPP_
 
 #include <SFML/Graphics.hpp>
+#include <string>
 
 namespace super_hse {
 
@@ -19,8 +20,23 @@ public:
     void init(const sf::Font &font, const InputBoxType box_type);
     void draw(sf::RenderWindow &window);
     void setPosition();
-
     void updateText(const sf::Uint32 unicode);
+};
+
+class ErrorBox {
+public:
+    sf::Text errorText;
+    sf::RectangleShape box;
+
+    const sf::Color defautColor = sf::Color(154, 217, 234);
+    const sf::Color errorColor = sf::Color::Red;
+    sf::Color currentColor = defaultColor;
+
+    void init(const sf::Font &font);
+    void draw(sf::RenderWindow &window);
+    void setPosition();
+    void clear();
+    void setError(const std::string &error);
 };
 
 }  // namespace super_hse

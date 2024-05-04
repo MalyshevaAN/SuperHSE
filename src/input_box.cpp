@@ -70,4 +70,37 @@ void InputBox::draw(sf::RenderWindow &window) {
     window.draw(label);
 }
 
+void ErrorBox::init(const sf::Font &font) {
+    errorText.setCharacterSize(24);
+    errorText.setFillColor(sf::Color::Black);
+    errorText.setFont(font);
+
+    box.setSize(sf::Vector2f(200, 50));
+    box.setFillColor(defaultColor);
+}
+
+void ErrorBox::setPosition() {
+    const int center_x = (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
+    const int center_y = (Game::windowHeight - errorText.getGlobalBounds().height) / 2;
+    box.setPosition(center_x, center_y);
+
+    const int padding = 10;
+    errorText.setPosition(center_x + padding, center_y + padding);
+}
+
+void ErrorBox::clear() {
+    errorText.setString("");
+    box.setFillColor(defaultColor);
+}
+
+void ErrorBox::draw(sf::RenderWindow &window) {
+    window.draw(box);
+    window.draw(errorText);
+}
+
+void ErrorBox::setError(const std::string &error) {
+    errorText.setString(error);
+    box.setFillColor(errorColor);
+}
+
 }  // namespace super_hse
