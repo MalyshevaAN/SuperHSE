@@ -84,9 +84,9 @@ void Level::init(
                 new_coin->entity_sprite.setTexture(coinTexture);
                 new_coin->entity_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
                 new_coin->entity_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                coins.emplace_back(std::move(new_coin));
+                entityes.emplace_back(std::move(new_coin));
             }
-            allCoins = coins.size();
+            allCoins = entityes.size();
         }catch(...){
             throw noSuchLayer("HSEcoin");
         }
@@ -96,7 +96,7 @@ void Level::init(
                 std::unique_ptr<enemy> new_enemy = std::make_unique<enemy>(entity.getPosition().x, entity.getPosition().y);
                 new_enemy->entity_sprite.setTexture(textures.at("enemy"));
                 new_enemy->entity_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                enemies.emplace_back(std::move(new_enemy));
+                entityes.emplace_back(std::move(new_enemy));
             }
         }catch(...){
             throw noSuchLayer("Enemies");
@@ -136,7 +136,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
 
     if (player_pos.x >= tilemap.width - 60){
         int gatheredCoins = 0;
-        for (auto &elem : coins) {
+        for (auto &elem : entityes) {
             if (elem->getStatus() != EntityStatus::ACTIVE){
                 gatheredCoins++;
             }
@@ -165,26 +165,39 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         currentFrameColumn -= 5;
     }
     int gatheredCoins = 0;
-    for (auto &elem : coins) {
-        if (elem->getStatus() == EntityStatus::ACTIVE){
+    // for (auto &elem : coins) {
+    //     if (elem->getStatus() == EntityStatus::ACTIVE){
+    //         elem->change(currentFrameColumn);
+    //     }else {
+    //         if (elem->getStatus() == EntityStatus::DIEING){
+    //             elem->change(currentFrameColumn);
+    //             elem->disappear();
+    //         }
+    //         gatheredCoins++;
+    //     };
+    // }
+    // for (auto &enemy : enemies){
+    //     if (enemy->getStatus() == EntityStatus::DIEING){
+    //         enemy->disappear();
+    //     }
+    //     if (enemy->getStatus() == EntityStatus::NOT_ACTIVE){
+    //         enemy->unable();
+    //     }
+    //     if (enemy->getStatus() == EntityStatus::ACTIVE || enemy->getStatus() == EntityStatus::NOT_ACTIVE){
+    //         enemy->change(0);
+    //     }
+    // }
+    for (auto &elem : entityes){
+        if (elem->getStatus() == EntityStatus::ACTIVE || elem->getStatus() == EntityStatus::NOT_ACTIVE){
             elem->change(currentFrameColumn);
-        }else {
-            if (elem->getStatus() == EntityStatus::DIEING){
-                elem->change(currentFrameColumn);
-                elem->disappear();
+        }else if (elem->getStatus() == EntityStatus::DIEING){
+            elem->change(currentFrameColumn);
+            elem->disappear();
+            if (elem->type==EntityType::COIN){
+                gatheredCoins++;
             }
-            gatheredCoins++;
-        };
-    }
-    for (auto &enemy : enemies){
-        if (enemy->getStatus() == EntityStatus::DIEING){
-            enemy->disappear();
-        }
-        if (enemy->getStatus() == EntityStatus::NOT_ACTIVE){
-            enemy->unable();
-        }
-        if (enemy->getStatus() == EntityStatus::ACTIVE || enemy->getStatus() == EntityStatus::NOT_ACTIVE){
-            enemy->change(0);
+        }else if (elem->getStatus() == EntityStatus::NOT_ACTIVE){
+            elem->unable();
         }
     }
     coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
@@ -201,12 +214,7 @@ void Level::render(
     for (size_t i = 0; i < colliders.size(); i++) {
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
-    for (auto &elem : coins) {
-        if (elem->getStatus() != EntityStatus::DEAD){
-            target.draw(elem->entity_sprite);
-        }
-    }
-    for (auto &elem : enemies){
+    for (auto &elem : entityes){
         if (elem->getStatus() != EntityStatus::DEAD){
             target.draw(elem->entity_sprite);
         }

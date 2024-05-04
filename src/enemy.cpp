@@ -13,6 +13,7 @@ void enemy::init(){
     enemy::sound.setBuffer(buffer);
     get_texture_from_file("enemy_unactive.png", enemy::enemyUnactiveTexture);
     get_texture_from_file("enemy.png", enemy::enemyTexture);
+    type = EntityType::ENEMY;
 }
 
 void enemy::disable(){

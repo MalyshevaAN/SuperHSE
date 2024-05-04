@@ -18,6 +18,8 @@ namespace super_hse{
         static inline sf::SoundBuffer buffer;
         static inline sf::Sound sound;
 
+        static inline EntityType type;
+
     private:
         float height_change = 0;
     };

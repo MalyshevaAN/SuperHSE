@@ -10,6 +10,7 @@ namespace super_hse{
 void coin::init(){
     coin::buffer.loadFromFile("../assets/audio/coin.wav");
     coin::sound.setBuffer(buffer);
+    type = EntityType::COIN;
 }
 
 void coin::change(int frame){
@@ -22,7 +23,6 @@ void coin::disable(){
     if (status == EntityStatus::ACTIVE){
         coin::sound.play();
         setStatus(EntityStatus::DIEING);
-        // status = EntityStatus::DIEING;
     }
 }
 
@@ -33,12 +33,11 @@ void coin::disappear(){
         height_change += 0.1;
     }else {
         setStatus(EntityStatus::DEAD);
-        // status = EntityStatus::DEAD;
     }
 }
 
 void coin::unable(){
-    
+
 }
 
 }

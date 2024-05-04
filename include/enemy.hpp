@@ -23,6 +23,8 @@ namespace super_hse {
         static void init();
         static inline sf::SoundBuffer buffer;
         static inline sf::Sound sound;
+        static inline EntityType type;
+
     private:
         float time_unable = 0;
         float time_dissappearing = 0;

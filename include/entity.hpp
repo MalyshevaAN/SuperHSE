@@ -13,6 +13,11 @@ namespace super_hse{
         DEAD
     };
 
+    enum class EntityType{
+        COIN,
+        ENEMY
+    };
+
     struct entity {
         sf::Sprite entity_sprite;
         virtual void disable() = 0;
@@ -21,6 +26,8 @@ namespace super_hse{
         virtual void unable() = 0;
         virtual void setStatus(EntityStatus status_);
         virtual EntityStatus getStatus();
+
+        EntityType type;
 
     protected:
         EntityStatus status = EntityStatus::ACTIVE;
