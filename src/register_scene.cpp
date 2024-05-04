@@ -19,7 +19,9 @@ RegisterScene::RegisterScene() {
     usernameInput.init(font, InputBoxType::Username);
     passwordInput.init(font, InputBoxType::Password);
     passwordAgainInput.init(font, InputBoxType::PasswordAgain);
+
     usernameInput.box.setFillColor(activeInputBoxColor);
+    usernameInput.cursorVisible = true;
 
     errorBox.init(font);
 
@@ -91,9 +93,11 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
     }
     for (auto &inputBox : inputBoxes) {
         inputBox->box.setFillColor(sf::Color::White);
+        inputBox->cursorVisible = false;
     }
     activeInputBox = inputBoxes[activeInputBoxIndex];
     activeInputBox->box.setFillColor(activeInputBoxColor);
+    activeInputBox->cursorVisible = true;
 }
 
 void RegisterScene::handleInput(sf::Event &event) {
@@ -128,6 +132,7 @@ void RegisterScene::handleInput(sf::Event &event) {
 }
 
 void RegisterScene::update(sf::Time &dTime) {
+    activeInputBox->update(dTime);
 }
 
 void RegisterScene::updateSceneSize() {

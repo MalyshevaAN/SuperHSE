@@ -17,10 +17,18 @@ public:
     bool mustBeHidden = false;
     InputBoxType type;
 
+    sf::RectangleShape cursor;
+    int cursorPosition = 0;
+    float cursorTimer = 0;
+    float cursorSpeed = 0.001f;
+    const float cursorResetTime = 0.5f;
+    bool cursorVisible = false;
+
     void init(const sf::Font &font, const InputBoxType box_type);
     void draw(sf::RenderWindow &window);
     void setPosition();
     void updateText(const sf::Uint32 unicode);
+    void update(sf::Time &dTime);
 };
 
 class ErrorBox {
