@@ -23,6 +23,9 @@ LoginScene::LoginScene() {
     passwordInput.init(font, InputBoxType::Password);
 
     usernameInput.box.setFillColor(activeInputBoxColor);
+    usernameInput.cursorVisible = true;
+
+    errorBox.init(font);
 
     // buttons init
     get_texture_from_file("login_button.png", loginButtonPicture);
@@ -65,9 +68,11 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
     }
     for (auto &inputBox : inputBoxes) {
         inputBox->box.setFillColor(sf::Color::White);
+        inputBox->cursorVisible = false;
     }
     activeInputBox = inputBoxes[activeInputBoxIndex];
     activeInputBox->box.setFillColor(activeInputBoxColor);
+    activeInputBox->cursorVisible = true;
 }
 
 void LoginScene::checkAndChangeScene() {
@@ -123,6 +128,7 @@ void LoginScene::handleInput(sf::Event &event) {
 }
 
 void LoginScene::update(sf::Time &dTime) {
+    activeInputBox->update(dTime);
 }
 
 void LoginScene::updateSceneSize() {
@@ -133,6 +139,7 @@ void LoginScene::updateSceneSize() {
 
     usernameInput.setPosition();
     passwordInput.setPosition();
+    errorBox.setPosition();
 
     loginButton.setPosition(
         (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
@@ -146,6 +153,7 @@ void LoginScene::draw(sf::RenderWindow &window) {
 
     usernameInput.draw(window);
     passwordInput.draw(window);
+    errorBox.draw(window);
 
     window.draw(loginButton);
     window.draw(Game::backButton);
