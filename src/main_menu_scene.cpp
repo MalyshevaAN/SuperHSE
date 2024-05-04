@@ -44,7 +44,7 @@ void MainMenuScene::handleInput(sf::Event &event) {
             if (buttonMultiplayer.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                SceneManager::changeScene(std::make_unique<MultiLevelScene>("127.0.0.1", 8000));
+                SceneManager::changeScene(std::make_unique<MultiLevelScene>("127.0.0.1", 8000, 1));
                 return;
             }
         }

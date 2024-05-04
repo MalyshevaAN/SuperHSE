@@ -6,6 +6,12 @@
 #include <string>
 
 namespace super_hse{
+    enum class CONNECTION_STATE {
+        IS_NOT_CONNECTED,
+        WAITING_FOR_PARTER,
+        READY_TO_PLAY
+    };
+
     class client {
         sf::IpAddress serverIp;
         unsigned int serverPort;
@@ -14,6 +20,8 @@ namespace super_hse{
         client() = default;
         void init(const std::string &server_ip_, const unsigned int server_port_);
 
+
+        CONNECTION_STATE get_connection_state();
         void send();
         void get();
     };

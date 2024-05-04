@@ -21,6 +21,23 @@ void client::init(const std::string &server_ip_, const unsigned int server_port_
     std::cout << "Data sent to server\n";
 }
 
+CONNECTION_STATE client::get_connection_state(){
+    sf::Packet send_packet, get_packet;
+    send_packet << "q";
+    socket.send(send_packet);
+    if(socket.receive(get_packet) == sf::Socket::Done){
+        int kol;
+        get_packet >> kol;
+        if (kol == 2){
+            return CONNECTION_STATE::READY_TO_PLAY;
+        }else{
+            return CONNECTION_STATE::WAITING_FOR_PARTER;
+        }
+    }else{
+        return CONNECTION_STATE::IS_NOT_CONNECTED;
+    }
+}
+
 void client::send(){
 
 }

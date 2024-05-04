@@ -15,9 +15,8 @@ namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
     levelNumber = levelN;
-    // player = Player();
     std::string filename = storage.storage.at(levelNumber)->filename;
-    level.ldtk_filename = storage.storage.at(levelNumber)->filename;
+    level.ldtk_filename = filename;
     level.project.loadFromFile(filename);
     level.init(
         storage.storage.at(levelNumber)->tileLayerName,
