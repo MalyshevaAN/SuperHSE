@@ -12,33 +12,28 @@ void coin::init(){
     coin::sound.setBuffer(buffer);
 }
 
-void coin::setStatus(CoinStatus status_){
-    status = status_;
-}
-
-void coin::changeFrame(int frame){
-    coin_sprite.setTextureRect(sf::IntRect(
+void coin::change(int frame){
+    entity_sprite.setTextureRect(sf::IntRect(
     static_cast<int>(frame) * coin::coinWidth, 0, coin::coinWidth,
     coin::coinHeight));
 }
 
 void coin::disable(){
-    if (status == CoinStatus::active){
+    if (status == EntityStatus::ACTIVE){
         coin::sound.play();
-        setStatus(CoinStatus::dieing);
+        setStatus(EntityStatus::DIEING);
+        // status = EntityStatus::DIEING;
     }
 }
 
-CoinStatus coin::get_status(){
-    return status;
-}
 
 void coin::disappear(){
     if (height_change <= 3){
-        coin_sprite.setPosition(sf::Vector2f(coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2));
+        entity_sprite.setPosition(sf::Vector2f(entity_sprite.getPosition().x, entity_sprite.getPosition().y - 2));
         height_change += 0.1;
     }else {
-        setStatus(CoinStatus::dead);
+        setStatus(EntityStatus::DEAD);
+        // status = EntityStatus::DEAD;
     }
 }
 

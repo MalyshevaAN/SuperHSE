@@ -79,12 +79,12 @@ void Level::init(
         try {
             auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
             for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
-                coin new_coin;
-                new_coin.setStatus(CoinStatus::active);
-                new_coin.coin_sprite.setTexture(coinTexture);
-                new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
-                new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                coins.emplace_back(new_coin);
+                std::unique_ptr<coin> new_coin = std::make_unique<coin>();
+                new_coin->setStatus(EntityStatus::ACTIVE);
+                new_coin->entity_sprite.setTexture(coinTexture);
+                new_coin->entity_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
+                new_coin->entity_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                coins.emplace_back(std::move(new_coin));
             }
             allCoins = coins.size();
         }catch(...){
@@ -137,7 +137,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     if (player_pos.x >= tilemap.width - 60){
         int gatheredCoins = 0;
         for (auto &elem : coins) {
-            if (elem.get_status() != CoinStatus::active){
+            if (elem->getStatus() != EntityStatus::ACTIVE){
                 gatheredCoins++;
             }
         };
@@ -166,12 +166,12 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     }
     int gatheredCoins = 0;
     for (auto &elem : coins) {
-        if (elem.get_status() == CoinStatus::active){
-            elem.changeFrame(currentFrameColumn);
+        if (elem->getStatus() == EntityStatus::ACTIVE){
+            elem->change(currentFrameColumn);
         }else {
-            if (elem.get_status() == CoinStatus::dieing){
-                elem.changeFrame(currentFrameColumn);
-                elem.disappear();
+            if (elem->getStatus() == EntityStatus::DIEING){
+                elem->change(currentFrameColumn);
+                elem->disappear();
             }
             gatheredCoins++;
         };
@@ -202,8 +202,8 @@ void Level::render(
         target.draw(getColliderShape(colliders[i], textureColliders[i]));
     }
     for (auto &elem : coins) {
-        if (elem.get_status() != CoinStatus::dead){
-            target.draw(elem.coin_sprite);
+        if (elem->getStatus() != EntityStatus::DEAD){
+            target.draw(elem->entity_sprite);
         }
     }
     for (auto &elem : enemies){

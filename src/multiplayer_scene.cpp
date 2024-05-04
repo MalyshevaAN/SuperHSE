@@ -74,6 +74,7 @@ void MultiLevelScene::update(sf::Time &dTime){
     }
 
     player1.update(dTime);
+    player2.update(dTime);
 }
 
 void MultiLevelScene::draw(sf::RenderWindow &window){
@@ -82,7 +83,7 @@ void MultiLevelScene::draw(sf::RenderWindow &window){
     if (actual_connection_state == CONNECTION_STATE::READY_TO_PLAY){
         level.render(window, info.tileLayerName);
         player1.draw(window);
-        //player2.draw(window);
+        player2.draw(window);
     }else if (actual_connection_state == CONNECTION_STATE::WAITING_FOR_PARTER){
 
     }

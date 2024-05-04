@@ -3,29 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "entity.hpp"
 
 namespace super_hse{
-    enum class CoinStatus {
-        active,
-        dieing,
-        dead
-    };
-
-    struct coin{
-        sf::Sprite coin_sprite;
+    struct coin : public entity{
         static const int coinHeight = 16;
         static const int coinWidth = 16;
-        void disable();
-        CoinStatus get_status();
-        void disappear();
-        void changeFrame(int frame);
-        void setStatus(CoinStatus status_);
+        void disable() override;
+        EntityStatus get_status();
+        void disappear() override;
+        void change(int frame) override;
         static void init();
         static inline sf::SoundBuffer buffer;
         static inline sf::Sound sound;
 
     private:
-        CoinStatus status = CoinStatus::active;
         float height_change = 0;
     };
 }

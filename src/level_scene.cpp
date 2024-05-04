@@ -87,8 +87,8 @@ void LevelScene::update(sf::Time &dTime) {
     }
 
     for (auto &coin : level.coins){
-        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds())){
-            coin.disable();
+        if (nextPositionCollider.intersects(coin->entity_sprite.getGlobalBounds())){
+            coin->disable();
         }
     }
 

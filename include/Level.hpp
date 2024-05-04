@@ -8,6 +8,7 @@
 #include "coin.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
+#include "entity.hpp"
 
 namespace super_hse {
 
@@ -21,7 +22,7 @@ struct Level {
     int level_number;
 
     std::vector<sf::FloatRect> colliders;
-    std::vector<coin> coins;
+    std::vector<std::unique_ptr<entity>> coins;
     std::vector<enemy> enemies;
     std::vector<std::string> textureColliders;
     sf::View view;
