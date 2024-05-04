@@ -29,7 +29,7 @@ struct Level {
     sf::Texture brickTexture;
     sf::Texture floorTexture;
     sf::Texture enemyTexture;
-    sf::Texture liveTexture;
+    sf::Texture lifeTexture;
     sf::Texture deathTexure;
     sf::RectangleShape coinCounterBack{};
     sf::RectangleShape coinCounterFront{};
@@ -44,7 +44,7 @@ struct Level {
         {"brick", brickTexture},
         {"floor", floorTexture},
         {"enemy", enemyTexture},
-        {"live", liveTexture}, 
+        {"life", lifeTexture}, 
         {"death", deathTexure}};
     void init(
         std::vector<std::string> &tileLayerName,

@@ -45,7 +45,7 @@ public:
     sf::Vector2f calcMovement(const sf::Time &dTime);
     static const int start_position_x = 200;
     static const int start_position_y = 10;
-    void lose_live();
+    void lose_life();
     int get_active_lives();
     float getSpeed() const {
         return speed;

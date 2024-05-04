@@ -14,6 +14,7 @@ private:
     sf::Texture TryAgainTexture;
     sf::Texture CoinTexture;
     sf::Texture LivesTexture;
+    sf::Texture GraduateTexture;
 
     sf::Sprite background;
     sf::Sprite nextLevel;
@@ -21,11 +22,16 @@ private:
     sf::Sprite tryAgain;
     sf::Sprite coin;
     sf::Sprite lives;
+    sf::Sprite graduate;
 
     sf::Font font;
 
     sf::Text saved_lives_count;
-    sf::Text gathered_coins;
+    sf::Text collected_coins;
+    sf::Text records_txt;
+    sf::Text best_lives;
+    sf::Text best_coins;
+    sf::Text result_txt;
 
     int coins;
     int level_numb;

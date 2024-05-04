@@ -7,9 +7,9 @@
 namespace super_hse{
 class LoseScene : public Scene {
 private:
-    sf::Texture BackGroundTexture;
-    sf::Texture MainMenuTexture;
-    sf::Texture TryAgainTexture;
+    sf::Texture backgroundTexture;
+    sf::Texture mainMenuTexture;
+    sf::Texture tryAgainTexture;
     sf::Sprite mainMenu;
     sf::Sprite tryAgain;
     sf::Sprite background;

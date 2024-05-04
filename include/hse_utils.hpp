@@ -9,6 +9,8 @@ void get_texture_from_file(std::string filename, sf::Texture &texture);
 
 bool is_level_available(int num);
 
+static inline int all_levels = 2;
+
 }  // namespace super_hse
 
 #endif
