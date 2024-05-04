@@ -46,6 +46,15 @@ void RegisterScene::checkAndChangeScene() {
     const std::string password = passwordInput.textString;
     const std::string passwordAgain = passwordAgainInput.textString;
 
+
+    if (username.empty()) {
+        errorBox.setError("Username cannot be empty!");
+        return;
+    }
+    if (password.empty()) {
+        errorBox.setError("Password cannot be empty!");
+        return;
+    }
     if (password != passwordAgain) {
         errorBox.setError("Passwords do not match!");
         return;

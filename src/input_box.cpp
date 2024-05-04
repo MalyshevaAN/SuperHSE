@@ -94,6 +94,7 @@ void ErrorBox::setPosition() {
 void ErrorBox::clear() {
     errorText.setString("");
     box.setFillColor(defaultColor);
+    setPosition();
 }
 
 void ErrorBox::draw(sf::RenderWindow &window) {

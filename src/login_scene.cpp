@@ -73,10 +73,20 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
 void LoginScene::checkAndChangeScene() {
     const std::string username = usernameInput.textString;
     const std::string password = passwordInput.textString;
-    if (loginUser(username, password) == -1) {
-        std::cerr << "User not found\n";
+
+    if (username.empty()) {
+        errorBox.setError("Username cannot be empty!");
         return;
     }
+    if (password.empty()) {
+        errorBox.setError("Password cannot be empty!");
+        return;
+    }
+    if (loginUser(username, password) == -1) {
+        errorBox.setError("Username or password is incorrect!");
+        return;
+    }
+
     Game::player_id = loginUser(username, password);
     Game::player_name = username;
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
