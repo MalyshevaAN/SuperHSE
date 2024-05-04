@@ -72,20 +72,23 @@ void InputBox::draw(sf::RenderWindow &window) {
 
 void ErrorBox::init(const sf::Font &font) {
     errorText.setCharacterSize(24);
-    errorText.setFillColor(sf::Color::Black);
+    errorText.setFillColor(errorTextColor);
     errorText.setFont(font);
 
-    box.setSize(sf::Vector2f(200, 50));
+    box.setSize(sf::Vector2f(400, 50));
     box.setFillColor(defaultColor);
 }
 
 void ErrorBox::setPosition() {
-    const int center_x = (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
-    const int center_y = (Game::windowHeight - errorText.getGlobalBounds().height) / 2;
-    box.setPosition(center_x, center_y);
+    const int height = 225;
+
+    const int box_x = (Game::windowWidth - box.getSize().x) / 2;
+    const int box_y = (Game::windowHeight - box.getSize().y) / 2;
+    box.setPosition(box_x, box_y + height);
 
     const int padding = 10;
-    errorText.setPosition(center_x + padding, center_y + padding);
+    const int text_x = (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
+    errorText.setPosition(text_x, box_y + padding + height);
 }
 
 void ErrorBox::clear() {
@@ -101,6 +104,7 @@ void ErrorBox::draw(sf::RenderWindow &window) {
 void ErrorBox::setError(const std::string &error) {
     errorText.setString(error);
     box.setFillColor(errorColor);
+    setPosition();
 }
 
 }  // namespace super_hse

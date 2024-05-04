@@ -28,8 +28,9 @@ public:
     sf::Text errorText;
     sf::RectangleShape box;
 
-    const sf::Color defautColor = sf::Color(154, 217, 234);
-    const sf::Color errorColor = sf::Color::Red;
+    const sf::Color defaultColor = sf::Color(154, 217, 234);
+    const sf::Color errorColor = sf::Color(255, 152, 179);
+    const sf::Color errorTextColor = sf::Color(57, 8, 18);
     sf::Color currentColor = defaultColor;
 
     void init(const sf::Font &font);

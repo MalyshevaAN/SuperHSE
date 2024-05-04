@@ -19,8 +19,9 @@ RegisterScene::RegisterScene() {
     usernameInput.init(font, InputBoxType::Username);
     passwordInput.init(font, InputBoxType::Password);
     passwordAgainInput.init(font, InputBoxType::PasswordAgain);
-
     usernameInput.box.setFillColor(activeInputBoxColor);
+
+    errorBox.init(font);
 
     // buttons init
     get_texture_from_file("create_user_button.png", createPlayerButtonPicture);
@@ -45,9 +46,12 @@ void RegisterScene::checkAndChangeScene() {
     const std::string password = passwordInput.textString;
     const std::string passwordAgain = passwordAgainInput.textString;
 
-    // TODO: выводить ошибки на окне
+    if (password != passwordAgain) {
+        errorBox.setError("Passwords do not match!");
+        return;
+    }
     if (!registerUser(username, password)) {
-        std::cerr << "Error registering user\n";
+        errorBox.setError("Username already exists!");
         return;
     }
 
@@ -94,7 +98,6 @@ void RegisterScene::handleInput(sf::Event &event) {
                 checkAndChangeScene();
                 return;
             }
-
             updateInputBoxes(event);
 
             if (Game::backButton.getGlobalBounds().contains(
@@ -128,6 +131,7 @@ void RegisterScene::updateSceneSize() {
     usernameInput.setPosition();
     passwordInput.setPosition();
     passwordAgainInput.setPosition();
+    errorBox.setPosition();
 
     createPlayerButton.setPosition(
         (Game::windowWidth - createPlayerButtonPicture.getSize().x) / 2,
@@ -142,6 +146,7 @@ void RegisterScene::draw(sf::RenderWindow &window) {
     usernameInput.draw(window);
     passwordInput.draw(window);
     passwordAgainInput.draw(window);
+    errorBox.draw(window);
 
     window.draw(createPlayerButton);
     window.draw(Game::backButton);
