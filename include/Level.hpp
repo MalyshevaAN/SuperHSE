@@ -23,7 +23,7 @@ struct Level {
 
     std::vector<sf::FloatRect> colliders;
     std::vector<std::unique_ptr<entity>> coins;
-    std::vector<enemy> enemies;
+    std::vector<std::unique_ptr<entity>> enemies;
     std::vector<std::string> textureColliders;
     sf::View view;
     sf::Texture coinTexture;

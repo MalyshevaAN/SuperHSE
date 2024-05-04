@@ -93,14 +93,14 @@ void LevelScene::update(sf::Time &dTime) {
     }
 
     for (auto &enemy : level.enemies){
-        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()) && enemy.get_state() == EnemyState::active){
-            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemy.enemySprite.getPosition().y && movement.y > 0){
-                enemy.disable();
+        if (nextPositionCollider.intersects(enemy->entity_sprite.getGlobalBounds()) && enemy->getStatus() == EntityStatus::ACTIVE){
+            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemy->entity_sprite.getPosition().y && movement.y > 0){
+                enemy->disable();
             }else{
-                if (enemy.get_state() == EnemyState::active){
+                if (enemy->getStatus() == EntityStatus::ACTIVE){
                     player.lose_life();
                 }
-                enemy.unable();
+                enemy->unable();
             }
         }
     }

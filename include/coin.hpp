@@ -13,6 +13,7 @@ namespace super_hse{
         EntityStatus get_status();
         void disappear() override;
         void change(int frame) override;
+        void unable() override;
         static void init();
         static inline sf::SoundBuffer buffer;
         static inline sf::Sound sound;

@@ -37,6 +37,10 @@ void coin::disappear(){
     }
 }
 
+void coin::unable(){
+    
+}
+
 }
 
 

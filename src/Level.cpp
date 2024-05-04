@@ -93,10 +93,10 @@ void Level::init(
         try{
             auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
             for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
-                enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
-                new_enemy.enemySprite.setTexture(textures.at("enemy"));
-                new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                enemies.push_back(new_enemy);
+                std::unique_ptr<enemy> new_enemy = std::make_unique<enemy>(entity.getPosition().x, entity.getPosition().y);
+                new_enemy->entity_sprite.setTexture(textures.at("enemy"));
+                new_enemy->entity_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                enemies.emplace_back(std::move(new_enemy));
             }
         }catch(...){
             throw noSuchLayer("Enemies");
@@ -177,14 +177,14 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         };
     }
     for (auto &enemy : enemies){
-        if (enemy.get_state() == EnemyState::dieing){
-            enemy.disappear();
+        if (enemy->getStatus() == EntityStatus::DIEING){
+            enemy->disappear();
         }
-        if (enemy.get_state() == EnemyState::not_active){
-            enemy.unable();
+        if (enemy->getStatus() == EntityStatus::NOT_ACTIVE){
+            enemy->unable();
         }
-        if (enemy.get_state() == EnemyState::active || enemy.get_state() == EnemyState::not_active){
-            enemy.change_pos();
+        if (enemy->getStatus() == EntityStatus::ACTIVE || enemy->getStatus() == EntityStatus::NOT_ACTIVE){
+            enemy->change(0);
         }
     }
     coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
@@ -207,8 +207,8 @@ void Level::render(
         }
     }
     for (auto &elem : enemies){
-        if (elem.get_state() != EnemyState::dead){
-            target.draw(elem.enemySprite);
+        if (elem->getStatus() != EntityStatus::DEAD){
+            target.draw(elem->entity_sprite);
         }
     }
     for (auto &life : lives){

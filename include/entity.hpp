@@ -18,6 +18,7 @@ namespace super_hse{
         virtual void disable() = 0;
         virtual void disappear() = 0;
         virtual void change(int frame) = 0;
+        virtual void unable() = 0;
         virtual void setStatus(EntityStatus status_);
         virtual EntityStatus getStatus();
 
