@@ -38,8 +38,15 @@ CONNECTION_STATE client::get_connection_state(){
     }
 }
 
-void client::send(){
-
+std::pair<int, int> client::send(int x, int y){
+    sf::Packet newPacket, sendPacket;
+    newPacket << x << y;
+    socket.send(newPacket);
+    socket.receive(sendPacket);
+    if (sendPacket >> x >> y){
+        return {x, y};
+    }
+    throw sendingException();
 }
 
 void client::get(){

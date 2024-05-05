@@ -22,7 +22,7 @@ namespace super_hse{
 
 
         CONNECTION_STATE get_connection_state();
-        void send();
+        std::pair<int, int> send(int x, int y);
         void get();
     };
 }

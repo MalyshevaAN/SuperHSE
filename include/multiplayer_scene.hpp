@@ -11,7 +11,6 @@ class MultiLevelScene : public Scene {
 private:
     std::string ldtk_filename;
     Player player1;
-    Player player2;
     LevelInfo info;
     Level level; 
     client current_client{};
