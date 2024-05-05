@@ -89,6 +89,8 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
     window.draw(skin4);
     window.draw(skin5);
     window.draw(skin6);
+
+    window.draw(Game::backButton);
     window.display();
 }
 
