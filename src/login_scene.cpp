@@ -55,7 +55,7 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
             activeInputBoxIndex =
                 (activeInputBoxIndex - 1 + inputBoxes.size()) %
                 inputBoxes.size();
-                
+
         } else {
             activeInputBox->updateCursorPosition(event);
         }

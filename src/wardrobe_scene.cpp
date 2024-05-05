@@ -73,12 +73,29 @@ void WardrobeScene::updateSceneSize() {
     float buttonHeight = 126.0f;
     float distanceBetweenButtons = (Game::windowWidth - 3 * buttonWidth) / 4;
 
-    skin1.setPosition(distanceBetweenButtons, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin2.setPosition(2 * distanceBetweenButtons + buttonWidth, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin3.setPosition(3 * distanceBetweenButtons + 2 * buttonWidth, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin4.setPosition(distanceBetweenButtons, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
-    skin5.setPosition(2 * distanceBetweenButtons + buttonWidth, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
-    skin6.setPosition(3 * distanceBetweenButtons + 2 * buttonWidth, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
+    skin1.setPosition(
+        distanceBetweenButtons, (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin2.setPosition(
+        2 * distanceBetweenButtons + buttonWidth,
+        (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin3.setPosition(
+        3 * distanceBetweenButtons + 2 * buttonWidth,
+        (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin4.setPosition(
+        distanceBetweenButtons,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
+    skin5.setPosition(
+        2 * distanceBetweenButtons + buttonWidth,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
+    skin6.setPosition(
+        3 * distanceBetweenButtons + 2 * buttonWidth,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
 }
 
 void WardrobeScene::draw(sf::RenderWindow &window) {

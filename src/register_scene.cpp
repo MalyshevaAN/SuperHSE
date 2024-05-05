@@ -36,7 +36,7 @@ RegisterScene::RegisterScene() {
 void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     activeInputBox->updateText(unicode);
     std::string &text = activeInputBox->textString;
-    
+
     if (activeInputBox->mustBeHidden) {
         activeInputBox->inputText.setString(std::string(text.size(), '*'));
     } else {
@@ -48,7 +48,6 @@ void RegisterScene::checkAndChangeScene() {
     const std::string username = usernameInput.textString;
     const std::string password = passwordInput.textString;
     const std::string passwordAgain = passwordAgainInput.textString;
-
 
     if (username.empty()) {
         errorBox.setError("Username cannot be empty!");
@@ -95,8 +94,7 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
                 }
             }
         }
-    }
-    else {
+    } else {
         return;
     }
     for (auto &inputBox : inputBoxes) {
@@ -110,7 +108,7 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
 
 void RegisterScene::handleInput(sf::Event &event) {
     updateInputBoxes(event);
-    
+
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (createPlayerButton.getGlobalBounds().contains(

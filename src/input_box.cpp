@@ -91,8 +91,7 @@ void InputBox::update(sf::Time &dTime) {
 
     // cursor must be after first cursorPosition characters
     cursor.setPosition(
-        inputText.findCharacterPos(cursorPosition).x,
-        inputText.getPosition().y
+        inputText.findCharacterPos(cursorPosition).x, inputText.getPosition().y
     );
 }
 
@@ -101,13 +100,12 @@ void InputBox::updateCursorPosition(sf::Event &event) {
         cursorPosition = std::max(0, cursorPosition - 1);
 
     } else if (event.key.code == sf::Keyboard::Right) {
-        cursorPosition = std::min(
-            static_cast<int>(textString.size()), cursorPosition + 1
-        );
+        cursorPosition =
+            std::min(static_cast<int>(textString.size()), cursorPosition + 1);
 
     } else if (event.key.code == sf::Keyboard::Home) {
         cursorPosition = 0;
-        
+
     } else if (event.key.code == sf::Keyboard::End) {
         cursorPosition = textString.size();
     }
@@ -132,7 +130,8 @@ void ErrorBox::setPosition() {
     box.setPosition(box_x, box_y + heightOffset);
 
     const int padding = 10;
-    const int text_x = (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
+    const int text_x =
+        (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
     errorText.setPosition(text_x, box_y + padding + heightOffset);
 }
 
