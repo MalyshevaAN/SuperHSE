@@ -50,11 +50,14 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Down) {
             activeInputBoxIndex = (activeInputBoxIndex + 1) % inputBoxes.size();
-        }
-        if (event.key.code == sf::Keyboard::Up) {
+
+        } else if (event.key.code == sf::Keyboard::Up) {
             activeInputBoxIndex =
                 (activeInputBoxIndex - 1 + inputBoxes.size()) %
                 inputBoxes.size();
+                
+        } else {
+            activeInputBox->updateCursorPosition(event);
         }
     } else if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {

@@ -29,6 +29,7 @@ public:
     void setPosition();
     void updateText(const sf::Uint32 unicode);
     void update(sf::Time &dTime);
+    void updateCursorPosition(sf::Event &event);
 };
 
 class ErrorBox {

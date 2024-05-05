@@ -63,11 +63,13 @@ void InputBox::updateText(const sf::Uint32 unicode) {
     }
 
     if (unicode == 8) {  // backspace
-        if (!textString.empty()) {
-            textString.pop_back();
+        if (cursorPosition > 0) {
+            textString.erase(cursorPosition - 1, 1);
+            cursorPosition--;
         }
     } else {
-        textString += static_cast<char>(unicode);
+        textString.insert(cursorPosition, 1, static_cast<char>(unicode));
+        cursorPosition++;
     }
 }
 
@@ -87,10 +89,28 @@ void InputBox::update(sf::Time &dTime) {
         cursorTimer = 0;
     }
 
+    // cursor must be after first cursorPosition characters
     cursor.setPosition(
-        inputText.getPosition().x + inputText.getGlobalBounds().width,
+        inputText.findCharacterPos(cursorPosition).x,
         inputText.getPosition().y
     );
+}
+
+void InputBox::updateCursorPosition(sf::Event &event) {
+    if (event.key.code == sf::Keyboard::Left) {
+        cursorPosition = std::max(0, cursorPosition - 1);
+
+    } else if (event.key.code == sf::Keyboard::Right) {
+        cursorPosition = std::min(
+            static_cast<int>(textString.size()), cursorPosition + 1
+        );
+
+    } else if (event.key.code == sf::Keyboard::Home) {
+        cursorPosition = 0;
+        
+    } else if (event.key.code == sf::Keyboard::End) {
+        cursorPosition = textString.size();
+    }
 }
 
 void ErrorBox::init(const sf::Font &font, const int newHeightOffset) {
