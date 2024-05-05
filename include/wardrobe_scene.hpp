@@ -23,6 +23,12 @@ private:
     sf::Sprite skin5;
     sf::Sprite skin6;
 
+    sf::Font font;
+    sf::Text balance;
+
+    sf::Texture CoinTexture;
+    sf::Sprite coin;
+
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public:
