@@ -33,6 +33,7 @@ Game::Game()
 
     get_texture_from_file("back_button.png", backButtonTexture);
     backButton.setTexture(backButtonTexture);
+    backButton.setPosition(20, 20);
     backButton.setScale(0.8, 0.8);
 }
 

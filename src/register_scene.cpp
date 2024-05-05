@@ -21,6 +21,10 @@ RegisterScene::RegisterScene() {
     passwordAgainInput.init(font, InputBoxType::PasswordAgain);
 
     usernameInput.box.setFillColor(activeInputBoxColor);
+    usernameInput.cursorVisible = true;
+
+    const int errorBoxheightOffset = 225;
+    errorBox.init(font, errorBoxheightOffset);
 
     // buttons init
     get_texture_from_file("create_user_button.png", createPlayerButtonPicture);
@@ -32,7 +36,7 @@ RegisterScene::RegisterScene() {
 void RegisterScene::updateActiveInputText(const sf::Uint32 unicode) {
     activeInputBox->updateText(unicode);
     std::string &text = activeInputBox->textString;
-    
+
     if (activeInputBox->mustBeHidden) {
         activeInputBox->inputText.setString(std::string(text.size(), '*'));
     } else {
@@ -45,9 +49,20 @@ void RegisterScene::checkAndChangeScene() {
     const std::string password = passwordInput.textString;
     const std::string passwordAgain = passwordAgainInput.textString;
 
-    // TODO: выводить ошибки на окне
+    if (username.empty()) {
+        errorBox.setError("Username cannot be empty!");
+        return;
+    }
+    if (password.empty()) {
+        errorBox.setError("Password cannot be empty!");
+        return;
+    }
+    if (password != passwordAgain) {
+        errorBox.setError("Passwords do not match!");
+        return;
+    }
     if (!registerUser(username, password)) {
-        std::cerr << "Error registering user\n";
+        errorBox.setError("Username already exists!");
         return;
     }
 
@@ -59,12 +74,16 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Down) {
             activeInputBoxIndex = (activeInputBoxIndex + 1) % inputBoxes.size();
-        }
-        if (event.key.code == sf::Keyboard::Up) {
+
+        } else if (event.key.code == sf::Keyboard::Up) {
             activeInputBoxIndex =
                 (activeInputBoxIndex - 1 + inputBoxes.size()) %
                 inputBoxes.size();
+
+        } else {
+            activeInputBox->updateCursorPosition(event);
         }
+
     } else if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             for (int index = 0; index < inputBoxes.size(); index++) {
@@ -75,17 +94,21 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
                 }
             }
         }
+    } else {
+        return;
     }
     for (auto &inputBox : inputBoxes) {
         inputBox->box.setFillColor(sf::Color::White);
+        inputBox->cursorVisible = false;
     }
     activeInputBox = inputBoxes[activeInputBoxIndex];
     activeInputBox->box.setFillColor(activeInputBoxColor);
+    activeInputBox->cursorVisible = true;
 }
 
 void RegisterScene::handleInput(sf::Event &event) {
     updateInputBoxes(event);
-    
+
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (createPlayerButton.getGlobalBounds().contains(
@@ -94,7 +117,6 @@ void RegisterScene::handleInput(sf::Event &event) {
                 checkAndChangeScene();
                 return;
             }
-
             updateInputBoxes(event);
 
             if (Game::backButton.getGlobalBounds().contains(
@@ -116,6 +138,7 @@ void RegisterScene::handleInput(sf::Event &event) {
 }
 
 void RegisterScene::update(sf::Time &dTime) {
+    activeInputBox->update(dTime);
 }
 
 void RegisterScene::updateSceneSize() {
@@ -128,6 +151,7 @@ void RegisterScene::updateSceneSize() {
     usernameInput.setPosition();
     passwordInput.setPosition();
     passwordAgainInput.setPosition();
+    errorBox.setPosition();
 
     createPlayerButton.setPosition(
         (Game::windowWidth - createPlayerButtonPicture.getSize().x) / 2,
@@ -142,6 +166,7 @@ void RegisterScene::draw(sf::RenderWindow &window) {
     usernameInput.draw(window);
     passwordInput.draw(window);
     passwordAgainInput.draw(window);
+    errorBox.draw(window);
 
     window.draw(createPlayerButton);
     window.draw(Game::backButton);

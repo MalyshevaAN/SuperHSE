@@ -16,8 +16,11 @@ private:
     InputBox passwordInput;
     InputBox passwordAgainInput;
     InputBox *activeInputBox = &usernameInput;
-    std::vector<InputBox *> inputBoxes = {&usernameInput, &passwordInput, &passwordAgainInput};
+    std::vector<InputBox *> inputBoxes = {
+        &usernameInput, &passwordInput, &passwordAgainInput};
     int activeInputBoxIndex = 0;
+
+    ErrorBox errorBox;
 
     sf::Texture createPlayerButtonPicture;
     sf::Sprite createPlayerButton;
