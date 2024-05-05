@@ -93,25 +93,27 @@ void InputBox::update(sf::Time &dTime) {
     );
 }
 
-void ErrorBox::init(const sf::Font &font) {
+void ErrorBox::init(const sf::Font &font, const int newHeightOffset) {
     errorText.setCharacterSize(24);
     errorText.setFillColor(errorTextColor);
     errorText.setFont(font);
 
     box.setSize(sf::Vector2f(400, 50));
     box.setFillColor(defaultColor);
+
+    heightOffset = newHeightOffset;
+
+    setPosition();
 }
 
 void ErrorBox::setPosition() {
-    const int height = 225;
-
     const int box_x = (Game::windowWidth - box.getSize().x) / 2;
     const int box_y = (Game::windowHeight - box.getSize().y) / 2;
-    box.setPosition(box_x, box_y + height);
+    box.setPosition(box_x, box_y + heightOffset);
 
     const int padding = 10;
     const int text_x = (Game::windowWidth - errorText.getGlobalBounds().width) / 2;
-    errorText.setPosition(text_x, box_y + padding + height);
+    errorText.setPosition(text_x, box_y + padding + heightOffset);
 }
 
 void ErrorBox::clear() {

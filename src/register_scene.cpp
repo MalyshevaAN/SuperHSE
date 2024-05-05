@@ -23,7 +23,8 @@ RegisterScene::RegisterScene() {
     usernameInput.box.setFillColor(activeInputBoxColor);
     usernameInput.cursorVisible = true;
 
-    errorBox.init(font);
+    const int errorBoxheightOffset = 225;
+    errorBox.init(font, errorBoxheightOffset);
 
     // buttons init
     get_texture_from_file("create_user_button.png", createPlayerButtonPicture);

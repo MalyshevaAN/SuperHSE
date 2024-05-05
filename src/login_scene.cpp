@@ -25,7 +25,8 @@ LoginScene::LoginScene() {
     usernameInput.box.setFillColor(activeInputBoxColor);
     usernameInput.cursorVisible = true;
 
-    errorBox.init(font);
+    const int errorBoxheightOffset = 150;
+    errorBox.init(font, errorBoxheightOffset);
 
     // buttons init
     get_texture_from_file("login_button.png", loginButtonPicture);
@@ -143,7 +144,7 @@ void LoginScene::updateSceneSize() {
 
     loginButton.setPosition(
         (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
-        (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 200
+        (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 225
     );
 }
 
