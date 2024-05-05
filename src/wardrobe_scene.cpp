@@ -10,17 +10,17 @@
 namespace super_hse {
 
 WardrobeScene::WardrobeScene() {
-    get_texture_from_file("skin1.png", skin1Texture);
+    get_texture_from_file("skin1_available.png", skin1Texture);
     skin1.setTexture(skin1Texture);
-    get_texture_from_file("skin2.png", skin2Texture);
+    get_texture_from_file("skin2_available.png", skin2Texture);
     skin2.setTexture(skin2Texture);
-    get_texture_from_file("skin3.png", skin3Texture);
+    get_texture_from_file("skin3_available.png", skin3Texture);
     skin3.setTexture(skin3Texture);
-    get_texture_from_file("skin4.png", skin4Texture);
+    get_texture_from_file("skin4_available.png", skin4Texture);
     skin4.setTexture(skin4Texture);
-    get_texture_from_file("skin5.png", skin5Texture);
+    get_texture_from_file("skin5_available.png", skin5Texture);
     skin5.setTexture(skin5Texture);
-    get_texture_from_file("skin6.png", skin6Texture);
+    get_texture_from_file("skin6_available.png", skin6Texture);
     skin6.setTexture(skin6Texture);
 
     get_texture_from_file("HSEcoin.png", CoinTexture);
