@@ -92,6 +92,9 @@ void RegisterScene::updateInputBoxes(sf::Event &event) {
             }
         }
     }
+    else {
+        return;
+    }
     for (auto &inputBox : inputBoxes) {
         inputBox->box.setFillColor(sf::Color::White);
         inputBox->cursorVisible = false;
