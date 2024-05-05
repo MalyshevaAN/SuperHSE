@@ -20,7 +20,7 @@ private:
     sf::Sprite sprite;
 
     Position position = {200, 10};
-    const float speed = 70.f;
+    const float speed = 140.f;
     float verticalVelocity = 0;
     PlayerState state = PlayerState::STAND;
     PlayerState prevState = PlayerState::STAND;

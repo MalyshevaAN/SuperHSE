@@ -10,34 +10,36 @@ namespace super_hse{
 void coin::init(){
     coin::buffer.loadFromFile("../assets/audio/coin.wav");
     coin::sound.setBuffer(buffer);
-    type = EntityType::COIN;
 }
 
-void coin::change(int frame){
-    entity_sprite.setTextureRect(sf::IntRect(
+void coin::setStatus(CoinStatus status_){
+    status = status_;
+}
+
+void coin::changeFrame(int frame){
+    coin_sprite.setTextureRect(sf::IntRect(
     static_cast<int>(frame) * coin::coinWidth, 0, coin::coinWidth,
     coin::coinHeight));
 }
 
 void coin::disable(){
-    if (status == EntityStatus::ACTIVE){
+    if (status == CoinStatus::active){
         coin::sound.play();
-        setStatus(EntityStatus::DIEING);
+        setStatus(CoinStatus::dieing);
     }
 }
 
+CoinStatus coin::get_status(){
+    return status;
+}
 
 void coin::disappear(){
     if (height_change <= 3){
-        entity_sprite.setPosition(sf::Vector2f(entity_sprite.getPosition().x, entity_sprite.getPosition().y - 2));
+        coin_sprite.setPosition(sf::Vector2f(coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2));
         height_change += 0.1;
     }else {
-        setStatus(EntityStatus::DEAD);
+        setStatus(CoinStatus::dead);
     }
-}
-
-void coin::unable(){
-
 }
 
 }

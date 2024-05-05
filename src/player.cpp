@@ -37,7 +37,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
         if (isGrounded) {
-            verticalVelocity -= 170;
+            verticalVelocity -= 270;
             isGrounded = false;
         }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -84,7 +84,7 @@ void Player::handleInput(const sf::Event &event) {
 }
 
 void Player::move(int dx, int dy) {
-    sprite.move(dx, dy);
+    //sprite.move(dx, dy);
     sprite.setPosition(
         sprite.getPosition().x + dx, sprite.getPosition().y + dy
     );
