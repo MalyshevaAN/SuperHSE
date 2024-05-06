@@ -90,7 +90,9 @@ void LevelScene::update(sf::Time &dTime) {
     bool isCollidingWithWall = collision.first;
     bool isCollidingWithFloor = collision.second;
     level.entities.check_coin_collision(nextPositionCollider);
-    level.entities.check_enemy_collision(nextPositionCollider, player, movement);
+    if(level.entities.check_enemy_collision(nextPositionCollider, movement)){
+        player.lose_life();
+    }
 
     player.isGrounded = isCollidingWithFloor;
 

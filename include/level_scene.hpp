@@ -2,6 +2,7 @@
 #define LEVEL_SCENE_HPP_
 
 #include "scene.hpp"
+#include "level_info.hpp"
 
 namespace super_hse {
 

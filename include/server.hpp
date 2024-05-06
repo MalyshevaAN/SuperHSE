@@ -7,6 +7,8 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
+#include <LDtkLoader/Project.hpp>
+#include "level_entities.hpp"
 
 namespace super_hse{
 
@@ -21,6 +23,7 @@ class server {
     sf::TcpListener listener;
     sf::TcpSocket socket;
     SERVER_STATE state = SERVER_STATE::WAIT_FOR_CONNECTION;
+    level_entities entities;
 
 public:
     server();

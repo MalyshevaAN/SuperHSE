@@ -35,7 +35,7 @@ void MultiLevelScene::update(sf::Time &dTime){
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
         const float dTimeSeconds = dTime.asSeconds();
-    std::pair<int, int> new_pos = current_client.send(nextPositionCollider.left, nextPositionCollider.top);
+    std::pair<bool , bool> collision = current_client.send(nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y);
     // bool isCollidingWithWall = false;
     // bool isCollidingWithFloor = false;
     // for (auto &entity : level.colliders) {
@@ -63,18 +63,19 @@ void MultiLevelScene::update(sf::Time &dTime){
     //         }
     //     }
     // }
-    
-    // player1.isGrounded = isCollidingWithFloor;
+    bool isCollidingWithWall = collision.first;
+    bool isCollidingWithFloor = collision.second;
+    player1.isGrounded = isCollidingWithFloor;
 
-    // if (!isCollidingWithWall) {
-    //     player1.move(movement.x, 0);
-    // }
-    // if (!isCollidingWithFloor) {
-    //     player1.move(0, movement.y);
-    // }
-    player1.move(0, movement.y);
-    player1.move(movement.x, 0);
+    if (!isCollidingWithWall) {
+        player1.move(movement.x, 0);
+    }
+    if (!isCollidingWithFloor) {
+        player1.move(0, movement.y);
+    }
     player1.update(dTime);
+    // player1.move(0, movement.y);
+    // player1.move(movement.x, 0);
 }
 
 void MultiLevelScene::draw(sf::RenderWindow &window){

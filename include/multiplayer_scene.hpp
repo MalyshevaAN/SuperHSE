@@ -4,6 +4,7 @@
 #include "scene.hpp"
 #include "client.hpp"
 #include <map>
+#include "level_info.hpp"
 
 namespace super_hse {
 

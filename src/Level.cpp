@@ -186,53 +186,26 @@ void Level::render(
     for (auto &elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
-    entities.draw(target);
+    for (auto &elem : entities.colliders){
+        target.draw(elem.brick_sprite);
+    }
+
+    for (auto &elem : entities.coins){
+        if (elem.get_status() != CoinStatus::dead){
+            target.draw(elem.coin_sprite);
+        }
+    }
+    for (auto &elem : entities.enemies){
+        if (elem.get_state() != EnemyState::dead){
+            target.draw(elem.enemySprite);
+        }
+    }
     for (auto &life : lives){
         target.draw(life);
 
     }
     target.draw(coinCounterBack);
     target.draw(coinCounterFront);
-}
-
-LevelInfo::LevelInfo(std::string file) {
-    std::string line;
-    std::ifstream in(file);
-    if (in.is_open()) {
-        std::getline(in, line);
-        filename = line.substr(0, line.size());
-        std::getline(in, line);
-        std::getline(in, line);
-        while (!line.empty()) {
-            tileLayerName.push_back(line);
-            std::getline(in, line);
-        }
-        std::getline(in, line);
-        while (!line.empty()) {
-            entityLayerName.push_back(line);
-            std::getline(in, line);
-        }
-        std::getline(in, line);
-        while (!line.empty()) {
-            colliderName.push_back(line);
-            std::getline(in, line);
-        }
-    } else {
-        throw noSuchDescriptionFile(file);
-    }
-}
-
-LevelsStorage::LevelsStorage() {
-    std::filesystem::path p(std::filesystem::current_path());
-    auto level1 = std::make_unique<LevelInfo>(
-        p.parent_path().string() + "/assets/files/level2.txt"
-    );
-
-    auto level2 = std::make_unique<LevelInfo>(
-        p.parent_path().string() + "/assets/files/level3.txt"
-    );
-    storage.push_back(std::move(level1));
-    storage.push_back(std::move(level2));
 }
 }  // namespace super_hse
 #endif

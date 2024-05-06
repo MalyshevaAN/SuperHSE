@@ -38,13 +38,14 @@ CONNECTION_STATE client::get_connection_state(){
     }
 }
 
-std::pair<int, int> client::send(int x, int y){
+std::pair<bool, bool> client::send(int x, int y, int width, int height, int movement_x, int movement_y){
     sf::Packet newPacket, sendPacket;
-    newPacket << x << y;
+    newPacket << x << y << width << height << movement_x << movement_y;
     socket.send(newPacket);
     socket.receive(sendPacket);
-    if (sendPacket >> x >> y){
-        return {x, y};
+    bool wall, floor;
+    if (sendPacket >> wall >> floor){
+        return {wall, floor};
     }
     throw sendingException();
 }

@@ -4,8 +4,9 @@
 #include "coin.hpp"
 #include "enemy.hpp"
 #include "brick.hpp"
-#include "player.hpp"
 #include <SFML/Graphics.hpp>
+#include <LDtkLoader/Project.hpp>
+#include "level_info.hpp"
 #include <vector>
 
 namespace super_hse{
@@ -13,14 +14,17 @@ struct level_entities{
     std::vector<brick> colliders;
     std::vector<coin> coins;
     std::vector<enemy> enemies;
+    ldtk::Project project;
+    LevelInfo info;
 
-    void draw(sf::RenderTarget &target);
+
+    void init(std::string description_file);
 
     std::pair<bool, bool> check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
 
     void check_coin_collision(sf::FloatRect &nextPositionCollider);
 
-    void check_enemy_collision(sf::FloatRect &nextPositionCollider, Player &player, sf::Vector2f &movement);
+    bool check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
 };
 }
 
