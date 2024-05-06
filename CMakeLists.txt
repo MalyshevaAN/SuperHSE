@@ -14,9 +14,15 @@ set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_s
  src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp 
  src/TileMap.cpp src/hse_utils.cpp src/coin.cpp src/level_icon.cpp src/authentication_scene.cpp
  src/login_scene.cpp src/register_scene.cpp src/enemy.cpp src/lose_scene.cpp src/win_scene.cpp
- src/input_box.cpp src/multiplayer_scene.cpp network/game_client.cpp src/level_entities.cpp src/brick.cpp)
+ src/input_box.cpp src/multiplayer_scene.cpp network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp )
 
 include_directories(super_hse include)
+
+set(SRC_LIST_SERVER src/sql.cpp src/game.cpp src/scene.cpp src/level_map_scene.cpp src/wardrobe_scene.cpp
+ src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp 
+ src/TileMap.cpp src/hse_utils.cpp src/coin.cpp src/level_icon.cpp src/authentication_scene.cpp
+ src/login_scene.cpp src/register_scene.cpp src/enemy.cpp src/lose_scene.cpp src/win_scene.cpp
+ src/input_box.cpp src/multiplayer_scene.cpp network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp network/game_server.cpp network/Server.cpp)
 
 add_executable(super_hse ${SRC_LIST})
 target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio sfml-network ${SQLite3_LIBRARIES})
@@ -24,8 +30,8 @@ target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system
 
 include_directories(server include)
 
-add_executable(server network/game_server.cpp network/server.cpp)
-target_link_libraries(server sfml-system sfml-graphics sfml-network)
+add_executable(server ${SRC_LIST_SERVER})
+target_link_libraries(server LDtkLoader sfml-system sfml-graphics sfml-network sfml-audio sfml-window ${SQLite3_LIBRARIES})
 
 if (SQLITE3_FOUND)
     include_directories(${SQLITE3_INCLUDE_DIRS})
