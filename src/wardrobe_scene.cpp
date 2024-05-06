@@ -23,6 +23,21 @@ WardrobeScene::WardrobeScene() {
     get_texture_from_file("skin6.png", skin6Texture);
     skin6.setTexture(skin6Texture);
 
+    get_texture_from_file("HSEcoin.png", CoinTexture);
+    coin.setTexture(CoinTexture);
+    coin.setTextureRect({0,0,16,16});
+    coin.setPosition(Game::windowWidth - 5 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
+    coin.setScale(3, 3);
+
+    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
+        std::cerr << "Error loading font\n";
+    }
+    balance.setFont(font);
+    balance.setCharacterSize(30);
+    balance.setFillColor(sf::Color::Black);
+    balance.setPosition(Game::windowWidth - 3 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
+    balance.setString(std::to_string(getBalance(Game::player_id)));
+
     updateSceneSize();
 }
 
@@ -73,22 +88,47 @@ void WardrobeScene::updateSceneSize() {
     float buttonHeight = 126.0f;
     float distanceBetweenButtons = (Game::windowWidth - 3 * buttonWidth) / 4;
 
-    skin1.setPosition(distanceBetweenButtons, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin2.setPosition(2 * distanceBetweenButtons + buttonWidth, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin3.setPosition(3 * distanceBetweenButtons + 2 * buttonWidth, (Game::windowHeight - 2 * buttonHeight) / 3);
-    skin4.setPosition(distanceBetweenButtons, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
-    skin5.setPosition(2 * distanceBetweenButtons + buttonWidth, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
-    skin6.setPosition(3 * distanceBetweenButtons + 2 * buttonWidth, 2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight);
+    skin1.setPosition(
+        distanceBetweenButtons, (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin2.setPosition(
+        2 * distanceBetweenButtons + buttonWidth,
+        (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin3.setPosition(
+        3 * distanceBetweenButtons + 2 * buttonWidth,
+        (Game::windowHeight - 2 * buttonHeight) / 3
+    );
+    skin4.setPosition(
+        distanceBetweenButtons,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
+    skin5.setPosition(
+        2 * distanceBetweenButtons + buttonWidth,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
+    skin6.setPosition(
+        3 * distanceBetweenButtons + 2 * buttonWidth,
+        2 * (Game::windowHeight - 2 * buttonHeight) / 3 + buttonHeight
+    );
 }
 
 void WardrobeScene::draw(sf::RenderWindow &window) {
+    sf::View view;
+    view.setSize(Game::windowWidth, Game::windowHeight);
+    view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
     window.clear(backgroundColor);
+    window.setView(view);
     window.draw(skin1);
     window.draw(skin2);
     window.draw(skin3);
     window.draw(skin4);
     window.draw(skin5);
     window.draw(skin6);
+    
+    window.draw(coin);
+    window.draw(balance);
+    window.draw(Game::backButton);
     window.display();
 }
 

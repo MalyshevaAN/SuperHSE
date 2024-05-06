@@ -23,6 +23,10 @@ LoginScene::LoginScene() {
     passwordInput.init(font, InputBoxType::Password);
 
     usernameInput.box.setFillColor(activeInputBoxColor);
+    usernameInput.cursorVisible = true;
+
+    const int errorBoxheightOffset = 150;
+    errorBox.init(font, errorBoxheightOffset);
 
     // buttons init
     get_texture_from_file("login_button.png", loginButtonPicture);
@@ -46,11 +50,14 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Down) {
             activeInputBoxIndex = (activeInputBoxIndex + 1) % inputBoxes.size();
-        }
-        if (event.key.code == sf::Keyboard::Up) {
+
+        } else if (event.key.code == sf::Keyboard::Up) {
             activeInputBoxIndex =
                 (activeInputBoxIndex - 1 + inputBoxes.size()) %
                 inputBoxes.size();
+
+        } else {
+            activeInputBox->updateCursorPosition(event);
         }
     } else if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
@@ -62,21 +69,35 @@ void LoginScene::updateInputBoxes(sf::Event &event) {
                 }
             }
         }
+    } else {
+        return;
     }
     for (auto &inputBox : inputBoxes) {
         inputBox->box.setFillColor(sf::Color::White);
+        inputBox->cursorVisible = false;
     }
     activeInputBox = inputBoxes[activeInputBoxIndex];
     activeInputBox->box.setFillColor(activeInputBoxColor);
+    activeInputBox->cursorVisible = true;
 }
 
 void LoginScene::checkAndChangeScene() {
     const std::string username = usernameInput.textString;
     const std::string password = passwordInput.textString;
-    if (loginUser(username, password) == -1) {
-        std::cerr << "User not found\n";
+
+    if (username.empty()) {
+        errorBox.setError("Username cannot be empty!");
         return;
     }
+    if (password.empty()) {
+        errorBox.setError("Password cannot be empty!");
+        return;
+    }
+    if (loginUser(username, password) == -1) {
+        errorBox.setError("Username or password is incorrect!");
+        return;
+    }
+
     Game::player_id = loginUser(username, password);
     Game::player_name = username;
     SceneManager::changeScene(std::make_unique<MainMenuScene>());
@@ -113,6 +134,7 @@ void LoginScene::handleInput(sf::Event &event) {
 }
 
 void LoginScene::update(sf::Time &dTime) {
+    activeInputBox->update(dTime);
 }
 
 void LoginScene::updateSceneSize() {
@@ -123,10 +145,11 @@ void LoginScene::updateSceneSize() {
 
     usernameInput.setPosition();
     passwordInput.setPosition();
+    errorBox.setPosition();
 
     loginButton.setPosition(
         (Game::windowWidth - loginButtonPicture.getSize().x) / 2,
-        (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 200
+        (Game::windowHeight - loginButtonPicture.getSize().y) / 2 + 225
     );
 }
 
@@ -136,6 +159,7 @@ void LoginScene::draw(sf::RenderWindow &window) {
 
     usernameInput.draw(window);
     passwordInput.draw(window);
+    errorBox.draw(window);
 
     window.draw(loginButton);
     window.draw(Game::backButton);
