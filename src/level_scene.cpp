@@ -63,7 +63,7 @@ void LevelScene::update(sf::Time &dTime) {
     bool isCollidingWithFloor = false;
     for (auto &entity : level.entities.colliders) {
         sf::FloatRect intersect;
-        if (nextPositionCollider.intersects(entity, intersect)) {
+        if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
             // проверить тип объекта, с кем пересеклись (в данном случае -
             // стены/пол)
             // TODO - добавить проверку на тип объекта (тут нужна Настя и её
@@ -71,14 +71,14 @@ void LevelScene::update(sf::Time &dTime) {
 
             // проверка что пересекаемся с полом
             if (nextPositionCollider.top + nextPositionCollider.height >=
-                entity.top) {
+                entity.brickRect.top) {
                 isCollidingWithFloor = true;
                 nextPositionCollider.top -= movement.y;
                 movement.y = 0;
 
                 // если после отката человечка наверх мы всё равно пересекаемся
                 // с блоком - значит он стена
-                if (nextPositionCollider.intersects(entity, intersect)) {
+                if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
                     isCollidingWithWall = true;
                 }
             } else {

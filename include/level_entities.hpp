@@ -3,13 +3,14 @@
 
 #include "coin.hpp"
 #include "enemy.hpp"
+#include "brick.hpp"
 #include "player.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
 namespace super_hse{
 struct level_entities{
-    std::vector<sf::FloatRect> colliders;
+    std::vector<brick> colliders;
     std::vector<coin> coins;
     std::vector<enemy> enemies;
 

@@ -5,6 +5,10 @@
 
 namespace super_hse{
 void level_entities::draw(sf::RenderTarget &target){
+    for (auto &elem : colliders){
+        target.draw(elem.brick_sprite);
+    }
+
     for (auto &elem : coins){
         if (elem.get_status() != CoinStatus::dead){
             target.draw(elem.coin_sprite);

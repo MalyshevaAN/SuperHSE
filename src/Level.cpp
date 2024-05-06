@@ -12,6 +12,7 @@
 #include "coin.hpp"
 #include "hse_utils.hpp"
 #include "coin.hpp"
+#include "brick.hpp"
 #include "game.hpp"
 #include "player.hpp"
 #include "lose_scene.hpp"
@@ -50,6 +51,7 @@ void Level::init(
     get_textures();
     coin::init();
     enemy::init();
+    brick::init();
     level_number = level_number_;
     auto &world = project.allWorlds().at(0);
     try{
@@ -62,17 +64,12 @@ void Level::init(
             auto &entitiesLayer = ldtk_first_level.getLayer(elem);
             for (auto name : colliderNames) {
                 for (ldtk::Entity &entity : entitiesLayer.getEntitiesByName(name)) {
-                    sf::FloatRect rect(
-                        (float)entity.getPosition().x,
-                        (float)entity.getPosition().y, (float)entity.getSize().x,
-                        (float)entity.getSize().y
-                    );
-                    entities.colliders.emplace_back(rect);
-                    if (name != "Floor" && name != "FloorSmall" && name != "FloorMedium") {
-                        textureColliders.emplace_back("brick");
-                    } else {
-                        textureColliders.emplace_back("floor");
+                    std::string texture_name = "brick";
+                    if (name == "Floor" || name == "FloorSmall" || name == "FloorMedium"){
+                        texture_name = "floor";
                     }
+                    brick new_brick(entity.getPosition().x, entity.getPosition().y, entity.getSize().x, entity.getSize().y, texture_name);
+                    entities.colliders.emplace_back(new_brick);
                 }
             }
         }
@@ -117,15 +114,6 @@ void Level::init(
         new_life.setPosition(Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40);
         lives.push_back(new_life);
     }
-}
-
-sf::RectangleShape
-Level::getColliderShape(const sf::FloatRect &rect, std::string texture_name) {
-    sf::RectangleShape r({rect.width, rect.height});
-    r.setPosition(rect.left, rect.top);
-    r.setTexture(&textures.at(texture_name));
-    r.setTextureRect(sf::IntRect(0, 0, rect.width, rect.height));
-    return r;
 }
 
 void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
@@ -197,9 +185,6 @@ void Level::render(
     target.setView(view);
     for (auto &elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
-    }
-    for (size_t i = 0; i < entities.colliders.size(); i++) {
-        target.draw(getColliderShape(entities.colliders[i], textureColliders[i]));
     }
     entities.draw(target);
     for (auto &life : lives){

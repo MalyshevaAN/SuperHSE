@@ -7,6 +7,7 @@
 #include "TileMap.hpp"
 #include "coin.hpp"
 #include "enemy.hpp"
+#include "brick.hpp"
 #include "player.hpp"
 #include "level_entities.hpp"
 
