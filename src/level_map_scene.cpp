@@ -1,6 +1,6 @@
 #include "level_map_scene.hpp"
 #include <filesystem>
-#include <level_icon.hpp>
+#include "level_icon.hpp"
 #include <memory>
 #include "game.hpp"
 #include "hse_utils.hpp"

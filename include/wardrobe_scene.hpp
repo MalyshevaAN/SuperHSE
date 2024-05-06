@@ -3,25 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
+#include <vector>
+#include "skin_icon.hpp"
 
 namespace super_hse {
 
 class WardrobeScene : public Scene {
 private:
-// TODO vectors
-    sf::Texture skin1Texture;
-    sf::Texture skin2Texture;
-    sf::Texture skin3Texture;
-    sf::Texture skin4Texture;
-    sf::Texture skin5Texture;
-    sf::Texture skin6Texture;
-
-    sf::Sprite skin1;
-    sf::Sprite skin2;
-    sf::Sprite skin3;
-    sf::Sprite skin4;
-    sf::Sprite skin5;
-    sf::Sprite skin6;
+    std::vector<skinIcon> skinIcons;
 
     sf::Font font;
     sf::Text balance;

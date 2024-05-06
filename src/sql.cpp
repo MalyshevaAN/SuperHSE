@@ -3,10 +3,10 @@
 #include <iostream>
 #include <string>
 #include "../sqlite/sqlite3.h"
+#include "game.hpp"
 
 namespace super_hse {
 sqlite3 *db;
-int levelsCount = 4;
 
 void executeQuery() {
     char *err = 0;
@@ -107,13 +107,25 @@ bool registerUser(const std::string &username, const std::string &password) {
     sqlite3_finalize(idStmt);
 
     // levels for the new user
-    for (int i = 1; i <= levelsCount; ++i) {
+    for (int i = 1; i <= Game::levelsCount; ++i) {
         sql = "INSERT INTO LEVELS (USER_ID, LVL_NUM, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", " +
               (i == 1 ? "1" : "0") + ")";
         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
         if (rc != SQLITE_OK) {
             std::cerr << "Add levels error: " << err << '\n';
+            sqlite3_free(err);
+        }
+    }
+
+    // skins for the new user
+    for (int i = 1; i <= Game::skinsCount; ++i){
+        sql = "INSERT INTO SKINS (USER_ID, ITEM_ID, STATUS) VALUES (" +
+              std::to_string(id) + ", " + std::to_string(i) + ", " +
+              (i == 1 ? "1" : "0") + ")";
+        rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
+        if (rc != SQLITE_OK) {
+            std::cerr << "Add skins error: " << err << '\n';
             sqlite3_free(err);
         }
     }
@@ -157,6 +169,18 @@ loginUser(const std::string &username, const std::string &password) {
     return path;
 }
 
+[[nodiscard]] int getCurrentSkinNum(int id) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "SELECT CURRENT_SKIN FROM USERS WHERE USER_ID = " + std::to_string(id);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    const char *skinText =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
+    int skinId = std::stoi(skinText);
+    return skinId;
+}
+
 [[nodiscard]] bool isLevelAvailable(int id, int level) {
     sqlite3_stmt *stmt;
     std::string sql =
@@ -188,7 +212,7 @@ void updateLevel(int id, int level, int newLives, int newCoins) {
         std::cerr << "Update records error: " << err << '\n';
         sqlite3_free(err);
     }
-    if (level < levelsCount) {
+    if (level < Game::levelsCount) {
         sql = "UPDATE LEVELS SET STATUS = 1 WHERE USER_ID = " +
               std::to_string(id) +
               " AND LVL_NUM = " + std::to_string(level + 1);
@@ -201,13 +225,13 @@ void updateLevel(int id, int level, int newLives, int newCoins) {
     sqlite3_finalize(stmt);
 }
 
-void addLevelsForUser(int id, int levelsCount) {
+/* void addLevelsForUser(int id, int Game::levelsCount) {
     std::string sql;
     char *err = 0;
     sql = "INSERT INTO LEVELS (USER_ID, LVL_NUM, STATUS) VALUES (" +
           std::to_string(id) + ", 1, 1)";
     int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
-    for (int i = 2; i <= levelsCount; ++i) {
+    for (int i = 2; i <= Game::levelsCount; ++i) {
         sql = "INSERT INTO LEVELS (USER_ID, LVL_NUM, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", 0)";
         int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
@@ -216,7 +240,7 @@ void addLevelsForUser(int id, int levelsCount) {
             sqlite3_free(err);
         }
     }
-}
+} */
 
 void updateSkin(int id, int newSkin) {
     sqlite3_stmt *stmt;
@@ -230,6 +254,40 @@ void updateSkin(int id, int newSkin) {
         sqlite3_free(err);
     }
     sqlite3_finalize(stmt);
+}
+
+[[nodiscard]] bool isSkinAvailable(int id, int skin) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "SELECT STATUS FROM SKINS WHERE USER_ID = " + std::to_string(id) +
+        " AND ITEM_ID = " + std::to_string(skin);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    bool isAvailable = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+    return isAvailable;
+}
+
+[[nodiscard]] bool buySkin(int id, int skin) {
+    sqlite3_stmt *stmt;
+    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    int skinCost = sqlite3_column_int(stmt, 0);
+    if (getBalance(id) < skinCost) {
+        return false;
+    }
+    sql = "UPDATE SKINS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
+          " AND ITEM_ID = " + std::to_string(skin);
+    char *err = 0;
+    int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Buy skin error: " << err << '\n';
+        sqlite3_free(err);
+    }
+    updateBalance(id, getBalance(id) - skinCost);
+    updateSkin(id, skin);
+    return true;
 }
 
 LvlRecords getLevelRecords(int id, int level) {

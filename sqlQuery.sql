@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS "ITEMS" (
     PRIMARY KEY("ITEM_ID" AUTOINCREMENT)
 );
 
-CREATE TABLE IF NOT EXISTS "WARDROBE" (
-    "USER_ID"	INTEGER NOT NULL UNIQUE,
-    "ITEMS_ID"	TEXT NOT NULL,
-    FOREIGN KEY("USER_ID") REFERENCES "USERS"("USER_ID")
+CREATE TABLE IF NOT EXISTS "SKINS" (
+    "USER_ID"	INTEGER NOT NULL,
+    "ITEM_ID"	INTEGER NOT NULL,
+    "STATUS"    INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY("USER_ID") REFERENCES "USERS"("USER_ID"),
+    FOREIGN KEY("ITEM_ID") REFERENCES "iTEMS"(ITEM_ID)
 );
 
 CREATE TABLE IF NOT EXISTS "LEVELS" (
@@ -37,21 +39,21 @@ SELECT 0, 'Ivan Kalinin', 0, 'ivankalinin.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Ivan Kalinin');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Mr. Khrabroff', 0, 'khrabrov.png'
+SELECT 0, 'Mr. Khrabroff', 10, 'khrabrov.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Khrabroff');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Mr. Antipoff', 0, 'antipov.png'
+SELECT 0, 'Mr. Antipoff', 10, 'antipov.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Antipoff');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Anna Gladkaya', 0, 'annaglad.png'
+SELECT 0, 'Anna Gladkaya', 10, 'annaglad.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Anna Gladkaya');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Egor', 0, 'egor.png'
+SELECT 0, 'Egor', 10, 'egor.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Sergey Kopel Kopeliovich', 0, 'kopel.png'
+SELECT 0, 'Sergey Kopel Kopeliovich', 10, 'kopel.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Sergey Kopel Kopeliovich');
