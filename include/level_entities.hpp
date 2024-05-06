@@ -16,6 +16,8 @@ struct level_entities{
 
     void draw(sf::RenderTarget &target);
 
+    std::pair<bool, bool> check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
+
     void check_coin_collision(sf::FloatRect &nextPositionCollider);
 
     void check_enemy_collision(sf::FloatRect &nextPositionCollider, Player &player, sf::Vector2f &movement);

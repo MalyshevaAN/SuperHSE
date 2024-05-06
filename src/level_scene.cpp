@@ -59,33 +59,36 @@ void LevelScene::update(sf::Time &dTime) {
     // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
 
-    bool isCollidingWithWall = false;
-    bool isCollidingWithFloor = false;
-    for (auto &entity : level.entities.colliders) {
-        sf::FloatRect intersect;
-        if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
-            // проверить тип объекта, с кем пересеклись (в данном случае -
-            // стены/пол)
-            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
-            // енамы)
+    // bool isCollidingWithWall = false;
+    // bool isCollidingWithFloor = false;
+    // for (auto &entity : level.entities.colliders) {
+    //     sf::FloatRect intersect;
+    //     if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
+    //         // проверить тип объекта, с кем пересеклись (в данном случае -
+    //         // стены/пол)
+    //         // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+    //         // енамы)
 
-            // проверка что пересекаемся с полом
-            if (nextPositionCollider.top + nextPositionCollider.height >=
-                entity.brickRect.top) {
-                isCollidingWithFloor = true;
-                nextPositionCollider.top -= movement.y;
-                movement.y = 0;
+    //         // проверка что пересекаемся с полом
+    //         if (nextPositionCollider.top + nextPositionCollider.height >=
+    //             entity.brickRect.top) {
+    //             isCollidingWithFloor = true;
+    //             nextPositionCollider.top -= movement.y;
+    //             movement.y = 0;
 
-                // если после отката человечка наверх мы всё равно пересекаемся
-                // с блоком - значит он стена
-                if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
-                    isCollidingWithWall = true;
-                }
-            } else {
-                isCollidingWithWall = true;
-            }
-        }
-    }
+    //             // если после отката человечка наверх мы всё равно пересекаемся
+    //             // с блоком - значит он стена
+    //             if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
+    //                 isCollidingWithWall = true;
+    //             }
+    //         } else {
+    //             isCollidingWithWall = true;
+    //         }
+    //     }
+    // }
+    std::pair<bool, bool> collision = level.entities.check_collider_collision(nextPositionCollider, movement);
+    bool isCollidingWithWall = collision.first;
+    bool isCollidingWithFloor = collision.second;
     level.entities.check_coin_collision(nextPositionCollider);
     level.entities.check_enemy_collision(nextPositionCollider, player, movement);
 

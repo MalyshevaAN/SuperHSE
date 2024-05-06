@@ -44,6 +44,38 @@ void level_entities::check_enemy_collision(sf::FloatRect &nextPositionCollider, 
     }
 }
 
+std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
+    bool isCollidingWithWall = false;
+    bool isCollidingWithFloor = false;
+    for (auto &entity : colliders) {
+        sf::FloatRect intersect;
+        if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
+            // проверить тип объекта, с кем пересеклись (в данном случае -
+            // стены/пол)
+            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+            // енамы)
+
+            // проверка что пересекаемся с полом
+            if (nextPositionCollider.top + nextPositionCollider.height >=
+                entity.brickRect.top) {
+                isCollidingWithFloor = true;
+                nextPositionCollider.top -= movement.y;
+                movement.y = 0;
+
+                // если после отката человечка наверх мы всё равно пересекаемся
+                // с блоком - значит он стена
+                if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
+                    isCollidingWithWall = true;
+                }
+            } else {
+                isCollidingWithWall = true;
+            }
+        }
+    }
+
+    return {isCollidingWithWall, isCollidingWithFloor};
+}
+
 }
 
 #endif
