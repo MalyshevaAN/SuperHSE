@@ -49,6 +49,7 @@ void LevelScene::update(sf::Time &dTime) {
         return;
     }
     level.update(dTime, player.get_position(), player.get_active_lives());
+    player.update(dTime);
     // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
     sf::Vector2f movement = player.calcMovement(dTime);
@@ -60,7 +61,7 @@ void LevelScene::update(sf::Time &dTime) {
 
     bool isCollidingWithWall = false;
     bool isCollidingWithFloor = false;
-    for (auto &entity : level.colliders) {
+    for (auto &entity : level.entities.colliders) {
         sf::FloatRect intersect;
         if (nextPositionCollider.intersects(entity, intersect)) {
             // проверить тип объекта, с кем пересеклись (в данном случае -
@@ -85,25 +86,8 @@ void LevelScene::update(sf::Time &dTime) {
             }
         }
     }
-
-    for (auto &coin : level.coins){
-        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds())){
-            coin.disable();
-        }
-    }
-
-    for (auto &enemy : level.enemies){
-        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()) && enemy.get_state() == EnemyState::active){
-            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemy.enemySprite.getPosition().y && movement.y > 0){
-                enemy.disable();
-            }else{
-                if (enemy.get_state() == EnemyState::active){
-                    player.lose_life();
-                }
-                enemy.unable();
-            }
-        }
-    }
+    level.entities.check_coin_collision(nextPositionCollider);
+    level.entities.check_enemy_collision(nextPositionCollider, player, movement);
 
     player.isGrounded = isCollidingWithFloor;
 
@@ -115,7 +99,6 @@ void LevelScene::update(sf::Time &dTime) {
     }
 
     // обновление фрейма
-    player.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {

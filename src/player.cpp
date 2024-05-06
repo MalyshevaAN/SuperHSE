@@ -7,7 +7,7 @@
 
 namespace super_hse {
 
-const float GRAVITY = 200.f;
+const float GRAVITY = 250.f;
 
 Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
@@ -84,9 +84,9 @@ void Player::handleInput(const sf::Event &event) {
 }
 
 void Player::move(int dx, int dy) {
-    //sprite.move(dx, dy);
+    sprite.move(dx, dy);
     sprite.setPosition(
-        sprite.getPosition().x + dx, sprite.getPosition().y + dy
+        sprite.getPosition().x , sprite.getPosition().y
     );
 }
 

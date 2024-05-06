@@ -67,7 +67,7 @@ void Level::init(
                         (float)entity.getPosition().y, (float)entity.getSize().x,
                         (float)entity.getSize().y
                     );
-                    colliders.emplace_back(rect);
+                    entities.colliders.emplace_back(rect);
                     if (name != "Floor" && name != "FloorSmall" && name != "FloorMedium") {
                         textureColliders.emplace_back("brick");
                     } else {
@@ -84,9 +84,9 @@ void Level::init(
                 new_coin.coin_sprite.setTexture(coinTexture);
                 new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
                 new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                coins.emplace_back(new_coin);
+                entities.coins.emplace_back(new_coin);
             }
-            allCoins = coins.size();
+            allCoins = entities.coins.size();
         }catch(...){
             throw noSuchLayer("HSEcoin");
         }
@@ -96,7 +96,7 @@ void Level::init(
                 enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
                 new_enemy.enemySprite.setTexture(textures.at("enemy"));
                 new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
-                enemies.push_back(new_enemy);
+                entities.enemies.emplace_back(new_enemy);
             }
         }catch(...){
             throw noSuchLayer("Enemies");
@@ -136,7 +136,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
 
     if (player_pos.x >= tilemap.width - 60){
         int gatheredCoins = 0;
-        for (auto &elem : coins) {
+        for (auto &elem : entities.coins) {
             if (elem.get_status() != CoinStatus::active){
                 gatheredCoins++;
             }
@@ -165,7 +165,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         currentFrameColumn -= 5;
     }
     int gatheredCoins = 0;
-    for (auto &elem : coins) {
+    for (auto &elem : entities.coins) {
         if (elem.get_status() == CoinStatus::active){
             elem.changeFrame(currentFrameColumn);
         }else {
@@ -176,7 +176,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
             gatheredCoins++;
         };
     }
-    for (auto &enemy : enemies){
+    for (auto &enemy : entities.enemies){
         if (enemy.get_state() == EnemyState::dieing){
             enemy.disappear();
         }
@@ -198,19 +198,10 @@ void Level::render(
     for (auto &elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
-    for (size_t i = 0; i < colliders.size(); i++) {
-        target.draw(getColliderShape(colliders[i], textureColliders[i]));
+    for (size_t i = 0; i < entities.colliders.size(); i++) {
+        target.draw(getColliderShape(entities.colliders[i], textureColliders[i]));
     }
-    for (auto &elem : coins) {
-        if (elem.get_status() != CoinStatus::dead){
-            target.draw(elem.coin_sprite);
-        }
-    }
-    for (auto &elem : enemies){
-        if (elem.get_state() != EnemyState::dead){
-            target.draw(elem.enemySprite);
-        }
-    }
+    entities.draw(target);
     for (auto &life : lives){
         target.draw(life);
 

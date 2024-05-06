@@ -31,7 +31,6 @@ private:
     const int frameWidth = 64;
     const int frameHeight = 64;
     const float frameSpeed = 0.008;
-    int active_lives = 4;
     static inline sf::SoundBuffer buffer;
     static inline sf::Sound sound;
 
@@ -46,6 +45,7 @@ public:
     static const int start_position_x = 200;
     static const int start_position_y = 10;
     void lose_life();
+    int active_lives = 3;
     int get_active_lives();
     float getSpeed() const {
         return speed;
@@ -53,6 +53,7 @@ public:
 
     Position get_position();
     bool isGrounded = false;
+
 };
 
 }  // namespace super_hse

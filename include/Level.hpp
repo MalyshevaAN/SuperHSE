@@ -8,6 +8,7 @@
 #include "coin.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
+#include "level_entities.hpp"
 
 namespace super_hse {
 
@@ -19,10 +20,7 @@ struct Level {
     TileMap tilemap;  // сама карта тайлов для этого уровня
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
     int level_number;
-
-    std::vector<sf::FloatRect> colliders;
-    std::vector<coin> coins;
-    std::vector<enemy> enemies;
+    level_entities entities;
     std::vector<std::string> textureColliders;
     sf::View view;
     sf::Texture coinTexture;

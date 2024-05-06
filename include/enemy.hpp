@@ -1,5 +1,5 @@
 #ifndef ENEMY_HPP_
-#define ENEMY_HPP
+#define ENEMY_HPP_
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
