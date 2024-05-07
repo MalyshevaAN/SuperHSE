@@ -55,7 +55,6 @@ void LevelScene::update(sf::Time &dTime) {
     sf::Vector2f movement = player.calcMovement(dTime);
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
-
     // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
 
@@ -92,6 +91,10 @@ void LevelScene::update(sf::Time &dTime) {
     level.entities.check_coin_collision(nextPositionCollider);
     if(level.entities.check_enemy_collision(nextPositionCollider, movement)){
         player.lose_life();
+    }
+
+    if (isCollidingWithFloor) {
+        movement.y = 0;
     }
 
     player.isGrounded = isCollidingWithFloor;

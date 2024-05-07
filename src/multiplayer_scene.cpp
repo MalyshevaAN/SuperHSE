@@ -30,41 +30,46 @@ void MultiLevelScene::handleInput(sf::Event &event){
 
 void MultiLevelScene::update(sf::Time &dTime){
     level.update(dTime, player1.get_position(), player1.get_active_lives());
+    player1.update(dTime);
     sf::FloatRect nextPositionCollider = player1.getCollider();
     sf::Vector2f movement = player1.calcMovement(dTime);
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
-        const float dTimeSeconds = dTime.asSeconds();
+    const float dTimeSeconds = dTime.asSeconds();
     std::pair<bool , bool> collision = current_client.send(nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y);
-    // bool isCollidingWithWall = false;
-    // bool isCollidingWithFloor = false;
-    // for (auto &entity : level.colliders) {
-    //     sf::FloatRect intersect;
-    //     if (nextPositionCollider.intersects(entity, intersect)) {
-    //         // проверить тип объекта, с кем пересеклись (в данном случае -
-    //         // стены/пол)
-    //         // TODO - добавить проверку на тип объекта (тут нужна Настя и её
-    //         // енамы)
+        // bool isCollidingWithWall = false;
+        // bool isCollidingWithFloor = false;
+        // for (auto &entity : level.colliders) {
+        //     sf::FloatRect intersect;
+        //     if (nextPositionCollider.intersects(entity, intersect)) {
+        //         // проверить тип объекта, с кем пересеклись (в данном случае -
+        //         // стены/пол)
+        //         // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+        //         // енамы)
 
-    //         // проверка что пересекаемся с полом
-    //         if (nextPositionCollider.top + nextPositionCollider.height >=
-    //             entity.top) {
-    //             isCollidingWithFloor = true;
-    //             nextPositionCollider.top -= movement.y;
-    //             movement.y = 0;
+        //         // проверка что пересекаемся с полом
+        //         if (nextPositionCollider.top + nextPositionCollider.height >=
+        //             entity.top) {
+        //             isCollidingWithFloor = true;
+        //             nextPositionCollider.top -= movement.y;
+        //             movement.y = 0;
 
-    //             // если после отката человечка наверх мы всё равно пересекаемся
-    //             // с блоком - значит он стена
-    //             if (nextPositionCollider.intersects(entity, intersect)) {
-    //                 isCollidingWithWall = true;
-    //             }
-    //         } else {
-    //             isCollidingWithWall = true;
-    //         }
-    //     }
-    // }
+        //             // если после отката человечка наверх мы всё равно пересекаемся
+        //             // с блоком - значит он стена
+        //             if (nextPositionCollider.intersects(entity, intersect)) {
+        //                 isCollidingWithWall = true;
+        //             }
+        //         } else {
+        //             isCollidingWithWall = true;
+        //         }
+        //     }
+        // }
     bool isCollidingWithWall = collision.first;
     bool isCollidingWithFloor = collision.second;
+    if (isCollidingWithFloor){
+        movement.y = 0;
+    }
+        //std::cerr << isCollidingWithWall << ' ' << isCollidingWithFloor << " 3\n";
     player1.isGrounded = isCollidingWithFloor;
 
     if (!isCollidingWithWall) {
@@ -73,9 +78,6 @@ void MultiLevelScene::update(sf::Time &dTime){
     if (!isCollidingWithFloor) {
         player1.move(0, movement.y);
     }
-    player1.update(dTime);
-    // player1.move(0, movement.y);
-    // player1.move(movement.x, 0);
 }
 
 void MultiLevelScene::draw(sf::RenderWindow &window){

@@ -22,19 +22,21 @@ void server::waitForConnection(){
 }
 
 void server::updateScene(){
-    int x;
-    int y;
-    int width;
-    int height;
-    int dx;
-    int dy;
+    float x;
+    float y;
+    float width;
+    float height;
+    float dx;
+    float dy;
     sf::Packet new_packet, get_packet;
     socket.receive(new_packet);
     if (new_packet >> x >> y >> width >> height >> dx >> dy){
         sf::FloatRect nextPositionCollider(x, y, width, height);
         sf::Vector2f movement(dx, dy);
         std::pair<bool, bool> collision = entities.check_collider_collision(nextPositionCollider, movement);
-        get_packet << collision.first << collision.second;
+        bool wall = collision.first;
+        bool floor = collision.second;
+        get_packet << wall << floor;
         socket.send(get_packet);
     }
 }

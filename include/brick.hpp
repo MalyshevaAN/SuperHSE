@@ -13,7 +13,7 @@ struct brick{
     static inline sf::Texture floorTexture;
 
     static void init();
-    brick(int left, int top, int width, int height, const std::string textureName);
+    brick(float left, float top, float width, float height, const std::string textureName);
 };
 }
 

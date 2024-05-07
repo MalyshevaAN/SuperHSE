@@ -10,7 +10,7 @@ void brick::init(){
     get_texture_from_file("floor.png", floorTexture);
 }
 
-brick::brick(int left, int top, int width, int height, const std::string textureName){
+brick::brick(float left, float top, float width, float height, const std::string textureName){
     brick_sprite.setPosition(left, top);
     if(textureName == "brick"){
         brick_sprite.setTexture(brickTexture);
