@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <iostream>
+#include "messages.hpp"
+#include "cstring"
+#include <algorithm>
 
 namespace super_hse{
 
@@ -22,22 +25,22 @@ void server::waitForConnection(){
 }
 
 void server::updateScene(){
-    float x;
-    float y;
-    float width;
-    float height;
-    float dx;
-    float dy;
-    sf::Packet new_packet, get_packet;
-    socket.receive(new_packet);
-    if (new_packet >> x >> y >> width >> height >> dx >> dy){
-        sf::FloatRect nextPositionCollider(x, y, width, height);
-        sf::Vector2f movement(dx, dy);
+    sf::Packet getPacket;
+    char get_buf[sizeof(query)];
+    if (socket.receive(getPacket) == sf::Socket::Done){
+        getPacket >> get_buf;
+        query query_;
+        std::memcpy(&query_, get_buf , sizeof(query));
+        std::cout << query_.nextPositionColliderHeight << '\n';
+        sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
+        sf::Vector2f movement(query_.movement_x, query_.movement_y);
         std::pair<bool, bool> collision = entities.check_collider_collision(nextPositionCollider, movement);
-        bool wall = collision.first;
-        bool floor = collision.second;
-        get_packet << wall << floor;
-        socket.send(get_packet);
+        answer answer_;
+        answer_.isCollidingWithWall = collision.first;
+        answer_.isCollidingWithFloor = collision.second;
+        sf::Packet sendPacket;
+        sendPacket << (char *)&answer_;
+        socket.send(sendPacket);
     }
 }
 

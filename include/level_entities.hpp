@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <LDtkLoader/Project.hpp>
 #include "level_info.hpp"
+#include "messages.hpp"
 #include <vector>
 
 namespace super_hse{
@@ -22,9 +23,11 @@ struct level_entities{
 
     std::pair<bool, bool> check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
 
-    void check_coin_collision(sf::FloatRect &nextPositionCollider);
+    int check_coin_collision(sf::FloatRect &nextPositionCollider);
 
-    bool check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
+    std::pair<bool, int> check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
+
+    answer update(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
 };
 }
 

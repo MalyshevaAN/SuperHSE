@@ -4,6 +4,7 @@
 #include "client.hpp"
 #include "hse_utils.hpp"
 #include <iostream>
+#include "cstring"
 
 namespace super_hse{
 void client::init(const std::string &server_ip_, const unsigned int server_port_){
@@ -13,6 +14,7 @@ void client::init(const std::string &server_ip_, const unsigned int server_port_
         throw connectionException(serverIp.toString()+ ":" + std::to_string(serverPort));
     }
     std::string message = "Hello from the client!\n";
+    socket.setBlocking(false);
     sf::Packet packet;
     packet << message;
     if (socket.send(packet) != sf::Socket::Done){
@@ -38,17 +40,19 @@ CONNECTION_STATE client::get_connection_state(){
     }
 }
 
-std::pair<bool, bool> client::send(float x, float y, float width, float height, float movement_x, float movement_y){
-    sf::Packet newPacket, sendPacket;
-    newPacket << x << y << width << height << movement_x << movement_y;
-    socket.send(newPacket);
-    socket.receive(sendPacket);
-    bool wall, floor;
-    if (sendPacket >> wall >> floor){
-        std::cerr << wall << ' ' << floor << '\n';
-        return {wall, floor};
+answer client::send(query &query_){
+    sf::Packet sendPacket, getPacket;
+    sendPacket << (char *)&query_;
+    socket.send(sendPacket);
+    if (socket.receive(getPacket) == sf::Socket::Done){
+        char get_buf[getPacket.getDataSize()];
+        getPacket >> get_buf;
+        answer answer_;
+        std::memcpy(&answer_, get_buf, sizeof(answer));
+        return answer_;
+    }else {
+        throw 1;
     }
-    throw sendingException();
 }
 
 void client::get(){

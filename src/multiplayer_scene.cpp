@@ -2,6 +2,7 @@
 #define MULTILEVEL_CPP
 
 #include "multiplayer_scene.hpp"
+#include "messages.hpp"
 
 
 namespace super_hse{
@@ -33,49 +34,40 @@ void MultiLevelScene::update(sf::Time &dTime){
     player1.update(dTime);
     sf::FloatRect nextPositionCollider = player1.getCollider();
     sf::Vector2f movement = player1.calcMovement(dTime);
+    if (player1.isGrounded && movement.y > 0){
+        movement.y = 0;
+    }
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
     const float dTimeSeconds = dTime.asSeconds();
-    std::pair<bool , bool> collision = current_client.send(nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y);
-        // bool isCollidingWithWall = false;
-        // bool isCollidingWithFloor = false;
-        // for (auto &entity : level.colliders) {
-        //     sf::FloatRect intersect;
-        //     if (nextPositionCollider.intersects(entity, intersect)) {
-        //         // проверить тип объекта, с кем пересеклись (в данном случае -
-        //         // стены/пол)
-        //         // TODO - добавить проверку на тип объекта (тут нужна Настя и её
-        //         // енамы)
+    query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
+    answer answer_ = current_client.send(query_);
+    if (answer_.lose_life){
+        player1.lose_life();
+    }
 
-        //         // проверка что пересекаемся с полом
-        //         if (nextPositionCollider.top + nextPositionCollider.height >=
-        //             entity.top) {
-        //             isCollidingWithFloor = true;
-        //             nextPositionCollider.top -= movement.y;
-        //             movement.y = 0;
+    if (answer_.gathered_coin_index != -1){
+        level.entities.coins[answer_.gathered_coin_index].disable();
+    }
 
-        //             // если после отката человечка наверх мы всё равно пересекаемся
-        //             // с блоком - значит он стена
-        //             if (nextPositionCollider.intersects(entity, intersect)) {
-        //                 isCollidingWithWall = true;
-        //             }
-        //         } else {
-        //             isCollidingWithWall = true;
-        //         }
-        //     }
-        // }
-    bool isCollidingWithWall = collision.first;
-    bool isCollidingWithFloor = collision.second;
-    if (isCollidingWithFloor){
+    if (answer_.run_into_enemy_index != -1){
+        level.entities.enemies[answer_.run_into_enemy_index].unable();
+    }
+
+    if (answer_.run_into_enemy_index != -1){
+        level.entities.enemies[answer_.run_into_enemy_index].disable();
+    }
+
+    if (answer_.isCollidingWithFloor){
         movement.y = 0;
     }
         //std::cerr << isCollidingWithWall << ' ' << isCollidingWithFloor << " 3\n";
-    player1.isGrounded = isCollidingWithFloor;
+    player1.isGrounded = answer_.isCollidingWithFloor;
 
-    if (!isCollidingWithWall) {
+    if (!answer_.isCollidingWithWall) {
         player1.move(movement.x, 0);
     }
-    if (!isCollidingWithFloor) {
+    if (!answer_.isCollidingWithFloor) {
         player1.move(0, movement.y);
     }
 }

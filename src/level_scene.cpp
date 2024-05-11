@@ -57,52 +57,18 @@ void LevelScene::update(sf::Time &dTime) {
     nextPositionCollider.top += movement.y;
     // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
-
-    // bool isCollidingWithWall = false;
-    // bool isCollidingWithFloor = false;
-    // for (auto &entity : level.entities.colliders) {
-    //     sf::FloatRect intersect;
-    //     if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
-    //         // проверить тип объекта, с кем пересеклись (в данном случае -
-    //         // стены/пол)
-    //         // TODO - добавить проверку на тип объекта (тут нужна Настя и её
-    //         // енамы)
-
-    //         // проверка что пересекаемся с полом
-    //         if (nextPositionCollider.top + nextPositionCollider.height >=
-    //             entity.brickRect.top) {
-    //             isCollidingWithFloor = true;
-    //             nextPositionCollider.top -= movement.y;
-    //             movement.y = 0;
-
-    //             // если после отката человечка наверх мы всё равно пересекаемся
-    //             // с блоком - значит он стена
-    //             if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
-    //                 isCollidingWithWall = true;
-    //             }
-    //         } else {
-    //             isCollidingWithWall = true;
-    //         }
-    //     }
-    // }
-    std::pair<bool, bool> collision = level.entities.check_collider_collision(nextPositionCollider, movement);
-    bool isCollidingWithWall = collision.first;
-    bool isCollidingWithFloor = collision.second;
-    level.entities.check_coin_collision(nextPositionCollider);
-    if(level.entities.check_enemy_collision(nextPositionCollider, movement)){
+    answer answer_ = level.entities.update(nextPositionCollider, movement);
+    if (answer_.lose_life){
         player.lose_life();
     }
-
-    if (isCollidingWithFloor) {
+    if(answer_.isCollidingWithFloor){
         movement.y = 0;
     }
-
-    player.isGrounded = isCollidingWithFloor;
-
-    if (!isCollidingWithWall) {
+    player.isGrounded = answer_.isCollidingWithFloor;
+    if(!answer_.isCollidingWithWall){
         player.move(movement.x, 0);
     }
-    if (!isCollidingWithFloor) {
+    if(!answer_.isCollidingWithFloor){
         player.move(0, movement.y);
     }
 

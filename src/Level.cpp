@@ -141,13 +141,16 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         coinCounterFront.setPosition(coinCounterBack.getPosition());
         for (int i = 0; i < 3; ++i){
             lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.1 + i*35, lives[i].getPosition().y);
-            if (i < player_lives){
-                lives[i].setTexture(textures.at("life"));
-            }else{
-                lives[i].setTexture(textures.at("death"));
-            }
         }
     }
+    for (int i = 0; i < 3; ++i){
+        if (i < player_lives){
+            lives[i].setTexture(textures.at("life"));
+        }else{
+            lives[i].setTexture(textures.at("death"));
+        }
+    }
+
     currentFrameColumn += frameSpeed * dTime.asMilliseconds();
     if (currentFrameColumn >= 5) {
         currentFrameColumn -= 5;

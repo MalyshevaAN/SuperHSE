@@ -34,34 +34,38 @@ void level_entities::init(std::string description_file){
     }
 };
 
-void level_entities::check_coin_collision(sf::FloatRect &nextPositionCollider){
-    for (auto &coin : coins){
-        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds())){
-            coin.disable();
+int level_entities::check_coin_collision(sf::FloatRect &nextPositionCollider){
+    for (int i = 0; i < coins.size(); ++i){
+        if (nextPositionCollider.intersects(coins[i].coin_sprite.getGlobalBounds())){
+            coins[i].disable();
+            return i;
         }
     }
+    return -1;
 }
 
-bool level_entities::check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
-    for (auto &enemy : enemies){
-        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()) && enemy.get_state() == EnemyState::active){
-            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemy.enemySprite.getPosition().y && movement.y > 0){
-                enemy.disable();
+std::pair<bool, int> level_entities::check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
+    for (int i = 0; i < enemies.size(); ++i){
+        if (nextPositionCollider.intersects(enemies[i].enemySprite.getGlobalBounds()) && enemies[i].get_state() == EnemyState::active){
+            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemies[i].enemySprite.getPosition().y && movement.y > 0){
+                enemies[i].disable();
+                return {false, i};
             }else{
-                if (enemy.get_state() == EnemyState::active){
-                    enemy.unable();
-                    return true;
+                if (enemies[i].get_state() == EnemyState::active){
+                    enemies[i].unable();
+                    return {true, i};
                 }
-                enemy.unable();
+                enemies[i].unable();
             }
         }
     }
-    return false;
+    return {false, -1};
 }
 
 std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
     bool isCollidingWithWall = false;
     bool isCollidingWithFloor = false;
+    // std::cerr << movement.x << ' ' << movement.y << '\n';
     for (auto &entity : colliders) {
         sf::FloatRect intersect;
         if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
@@ -75,6 +79,7 @@ std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &ne
                 entity.brickRect.top) {
                 isCollidingWithFloor = true;
                 nextPositionCollider.top -= movement.y;
+                nextPositionCollider.top -= 1;
                 movement.y = 0;
 
                 // если после отката человечка наверх мы всё равно пересекаемся
@@ -89,6 +94,22 @@ std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &ne
     }
 
     return {isCollidingWithWall, isCollidingWithFloor};
+}
+
+answer level_entities::update(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
+    answer answer_;
+    std::pair<bool, bool> collide_with_block = check_collider_collision(nextPositionCollider, movement);
+    answer_.isCollidingWithWall = collide_with_block.first;
+    answer_.isCollidingWithFloor = collide_with_block.second;
+    answer_.gathered_coin_index = check_coin_collision(nextPositionCollider);
+    std::pair<bool,int> collide_with_enemy = check_enemy_collision(nextPositionCollider, movement);
+    if(collide_with_enemy.first == true){
+        answer_.lose_life = true;
+        answer_.run_into_enemy_index = collide_with_enemy.second;
+    }else {
+        answer_.killed_enemy_index = collide_with_enemy.second;
+    }
+    return answer_;
 }
 
 }
