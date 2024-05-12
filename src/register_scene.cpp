@@ -7,7 +7,7 @@ namespace super_hse {
 
 RegisterScene::RegisterScene() {
     // text init
-    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
+    if (!font.loadFromFile("../assets/fonts/8bit.ttf")) {
         std::cerr << "Error loading font\n";
     }
 
