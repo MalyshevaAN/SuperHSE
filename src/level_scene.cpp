@@ -43,6 +43,7 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::updateSceneSize() {
+    pauseState.updateSceneSize();
 }
 
 void LevelScene::update(sf::Time &dTime) {
