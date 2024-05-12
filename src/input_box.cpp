@@ -25,9 +25,13 @@ void InputBox::init(const sf::Font &font, const InputBoxType box_type) {
     } else if (type == InputBoxType::Password) {
         label.setString("Password: ");
         mustBeHidden = true;
-    } else {
+    } else if (type == InputBoxType::PasswordAgain) {
         label.setString("Password again: ");
         mustBeHidden = true;
+    } else if (type == InputBoxType::IP) {
+        label.setString("IP: ");
+    } else if (type == InputBoxType::Port) {
+        label.setString("Port: ");
     }
 }
 
@@ -37,8 +41,12 @@ void InputBox::setPosition() {
         type_offset = 0;
     } else if (type == InputBoxType::Password) {
         type_offset = 75;
-    } else {
+    } else if (type == InputBoxType::PasswordAgain) {
         type_offset = 150;
+    } else if (type == InputBoxType::IP) {
+        type_offset = 0;
+    } else if (type == InputBoxType::Port) {
+        type_offset = 75;
     }
     const int center_x = (Game::windowWidth - box.getSize().x) / 2;
     const int center_y = (Game::windowHeight - box.getSize().y) / 2;
