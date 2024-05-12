@@ -21,7 +21,7 @@ WardrobeScene::WardrobeScene() {
     coin.setPosition(Game::windowWidth - 5 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
     coin.setScale(3, 3);
 
-    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
+    if (!font.loadFromFile("../assets/fonts/Karma.ttf")) {
         std::cerr << "Error loading font\n";
     }
     balance.setFont(font);
