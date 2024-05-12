@@ -13,6 +13,7 @@ private:
     std::vector<skinIcon> skinIcons;
 
     sf::Font font;
+    sf::Font font_8bit;
     sf::Text balance;
 
     sf::Texture CoinTexture;

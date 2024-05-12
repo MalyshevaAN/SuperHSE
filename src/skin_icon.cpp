@@ -13,6 +13,7 @@ skinIcon::skinIcon(int num) {
     available = isSkinAvailable(Game::player_id, num);
     current = static_cast<bool>(getCurrentSkinNum(Game::player_id) == num);
     number = num;
+    cost = getSkinCost(num);
 
     get_texture_from_file("skin" +
         std::to_string(num) + "_available.png", skinIconTextureAvailable
@@ -23,6 +24,7 @@ skinIcon::skinIcon(int num) {
     get_texture_from_file("skin" +
         std::to_string(num) + "_current.png", skinIconTextureCurrent
     );
+    get_texture_from_file("HSEcoin.png", HSEcoinTexture);
 }
 
 }  // namespace super_hse

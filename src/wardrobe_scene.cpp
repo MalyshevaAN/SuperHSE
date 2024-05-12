@@ -24,6 +24,9 @@ WardrobeScene::WardrobeScene() {
     if (!font.loadFromFile("../assets/fonts/Karma.ttf")) {
         std::cerr << "Error loading font\n";
     }
+    if (!font_8bit.loadFromFile("../assets/fonts/8bit.ttf")) {
+        std::cerr << "Error loading font\n";
+    }
     balance.setFont(font);
     balance.setCharacterSize(30);
     balance.setFillColor(sf::Color::Black);
@@ -77,6 +80,22 @@ void WardrobeScene::updateSceneSize() {
             distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth,
             ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight
         );
+        if (!skin.available){
+            skin.HSEcoinSprite.setTexture(skin.HSEcoinTexture);
+            skin.HSEcoinSprite.setTextureRect({0,0,16,16});
+
+            skin.HSEcoinSprite.setPosition(
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth,
+                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight
+            );
+
+            skin.HSEcoinSprite.setScale(3, 3);
+
+            skin.skinCost.setPosition(
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth + skin.HSEcoinSprite.getTexture()->getSize().x,
+                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight
+            );
+        }
     }
 }
 
@@ -96,9 +115,15 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
             }
         } else {
             skin.skinIconSprite.setTexture(skin.skinIconTextureUnavailable);
+            skin.skinCost.setFont(font_8bit);
+            skin.skinCost.setCharacterSize(30);
+            skin.skinCost.setFillColor(sf::Color::Black);
+            skin.skinCost.setString(std::to_string(skin.cost));
         }
         skin.skinIconSprite.setScale(0.8, 0.8);
         window.draw(skin.skinIconSprite);
+        window.draw(skin.skinCost);
+        window.draw(skin.HSEcoinSprite);
     }
     
     window.draw(coin);

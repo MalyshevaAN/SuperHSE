@@ -41,6 +41,8 @@ void updateSkin(int id, int newSkin);
 
 [[nodiscard]] bool buySkin(int id, int skin);
 
+[[nodiscard]] int getSkinCost(int skin);
+
 LvlRecords getLevelRecords(int id, int level);
 
 }  // namespace super_hse

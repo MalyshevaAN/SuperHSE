@@ -290,6 +290,14 @@ void updateSkin(int id, int newSkin) {
     return true;
 }
 
+[[nodiscard]] int getSkinCost(int skin){
+    sqlite3_stmt *stmt;
+    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    return sqlite3_column_int(stmt, 0);
+}
+
 LvlRecords getLevelRecords(int id, int level) {
     sqlite3_stmt *stmt;
     std::string sql =
