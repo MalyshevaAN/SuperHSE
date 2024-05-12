@@ -14,7 +14,7 @@ set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_s
  src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp 
  src/TileMap.cpp src/hse_utils.cpp src/coin.cpp src/level_icon.cpp src/skin_icon.cpp src/authentication_scene.cpp
  src/login_scene.cpp src/register_scene.cpp src/enemy.cpp src/lose_scene.cpp src/win_scene.cpp
- src/input_box.cpp)
+ src/input_box.cpp src/multi_connect_scene.cpp)
 
 include_directories(super_hse include)
 

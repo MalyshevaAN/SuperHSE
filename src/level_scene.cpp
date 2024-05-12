@@ -15,7 +15,7 @@ namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
     levelNumber = levelN;
-    // player = Player();
+
     std::string filename = storage.storage.at(levelNumber)->filename;
     level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
@@ -28,12 +28,14 @@ LevelScene::LevelScene(int levelN) {
 }
 
 void LevelScene::handleInput(sf::Event &event) {
+    if (pauseState.isPaused) {
+        pauseState.handleInput(event);
+        return;
+    }
+
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::L) {
-            SceneManager::changeScene(std::make_unique<LevelMapScene>());
-            return;
-        } else if (event.key.code == sf::Keyboard::M) {
-            SceneManager::changeScene(std::make_unique<MainMenuScene>());
+        if (event.key.code == sf::Keyboard::Escape) {
+            pauseState.isPaused = !pauseState.isPaused;
             return;
         }
     }
@@ -41,9 +43,15 @@ void LevelScene::handleInput(sf::Event &event) {
 }
 
 void LevelScene::updateSceneSize() {
+    pauseState.updateSceneSize();
 }
 
 void LevelScene::update(sf::Time &dTime) {
+    if (pauseState.isPaused) {
+        pauseState.update(dTime);
+        return;
+    }
+
     if (player.get_active_lives() == 0){
         SceneManager::changeScene(std::make_unique<LoseScene>());
         std::cerr << 1;
@@ -123,6 +131,84 @@ void LevelScene::draw(sf::RenderWindow &window) {
     window.clear(windowFillColor);
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
+
+    if (pauseState.isPaused) {
+        sf::View fullWindowView(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
+        window.setView(fullWindowView);
+        pauseState.draw(window);
+    }
+
     window.display();
 }
+
+PauseState::PauseState() {
+    get_texture_from_file("pause.png", pauseRectanglePicture);
+    pauseRectangle.setTexture(pauseRectanglePicture);
+
+    get_texture_from_file("resume_button.png", resumeButtonPicture);
+    resumeButton.setTexture(resumeButtonPicture);
+
+    get_texture_from_file("level_map_button.png", levelMapButtonPicture);
+    levelMapButton.setTexture(levelMapButtonPicture);
+
+    get_texture_from_file("main_menu_button.png", mainMenuButtonPicture);
+    mainMenuButton.setTexture(mainMenuButtonPicture);
+
+    updateSceneSize();
+}
+
+void PauseState::update(sf::Time &dTime) {
+}
+
+void PauseState::draw(sf::RenderWindow &window) {
+    window.draw(pauseRectangle);
+    window.draw(resumeButton);
+    window.draw(levelMapButton);
+    window.draw(mainMenuButton);
+}
+
+void PauseState::handleInput(sf::Event &event) {
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (resumeButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                isPaused = false;
+                return;
+            }
+            if (levelMapButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<LevelMapScene>());
+                return;
+            }
+            if (mainMenuButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                return;
+            }
+        }
+    }
+}
+
+void PauseState::updateSceneSize() {
+    pauseRectangle.setPosition(
+        (Game::windowWidth - pauseRectanglePicture.getSize().x) / 2,
+        (Game::windowHeight - pauseRectanglePicture.getSize().y) / 2
+    );
+    resumeButton.setPosition(
+        (Game::windowWidth - resumeButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - resumeButtonPicture.getSize().y) / 2 - 100
+    );
+    levelMapButton.setPosition(
+        (Game::windowWidth - levelMapButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - levelMapButtonPicture.getSize().y) / 2
+    );
+    mainMenuButton.setPosition(
+        (Game::windowWidth - mainMenuButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - mainMenuButtonPicture.getSize().y) / 2 + 100
+    );
+}
+
 } // namespace super_hse
