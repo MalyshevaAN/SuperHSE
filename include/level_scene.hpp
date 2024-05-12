@@ -12,6 +12,12 @@ private:
 
     sf::Texture resumeButtonPicture;
     sf::Sprite resumeButton;
+    
+    sf::Texture levelMapButtonPicture;
+    sf::Sprite levelMapButton;
+
+    sf::Texture mainMenuButtonPicture;
+    sf::Sprite mainMenuButton;
 
 public:
     PauseState();

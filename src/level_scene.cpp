@@ -147,8 +147,11 @@ PauseState::PauseState() {
     get_texture_from_file("resume_button.png", resumeButtonPicture);
     resumeButton.setTexture(resumeButtonPicture);
 
-    pauseRectangle.setOrigin(0, 0);
-    resumeButton.setOrigin(0, 0);
+    get_texture_from_file("level_map_button.png", levelMapButtonPicture);
+    levelMapButton.setTexture(levelMapButtonPicture);
+
+    get_texture_from_file("main_menu_button.png", mainMenuButtonPicture);
+    mainMenuButton.setTexture(mainMenuButtonPicture);
 
     updateSceneSize();
 }
@@ -159,10 +162,11 @@ void PauseState::update(sf::Time &dTime) {
 void PauseState::draw(sf::RenderWindow &window) {
     window.draw(pauseRectangle);
     window.draw(resumeButton);
+    window.draw(levelMapButton);
+    window.draw(mainMenuButton);
 }
 
 void PauseState::handleInput(sf::Event &event) {
-
 }
 
 void PauseState::updateSceneSize() {
@@ -170,10 +174,17 @@ void PauseState::updateSceneSize() {
         (Game::windowWidth - pauseRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - pauseRectanglePicture.getSize().y) / 2
     );
-
     resumeButton.setPosition(
         (Game::windowWidth - resumeButtonPicture.getSize().x) / 2,
-        (Game::windowHeight - resumeButtonPicture.getSize().y) / 2
+        (Game::windowHeight - resumeButtonPicture.getSize().y) / 2 - 100
+    );
+    levelMapButton.setPosition(
+        (Game::windowWidth - levelMapButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - levelMapButtonPicture.getSize().y) / 2
+    );
+    mainMenuButton.setPosition(
+        (Game::windowWidth - mainMenuButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - mainMenuButtonPicture.getSize().y) / 2 + 100
     );
 }
 
