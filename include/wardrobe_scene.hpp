@@ -5,6 +5,7 @@
 #include "scene.hpp"
 #include <vector>
 #include "skin_icon.hpp"
+#include "input_box.hpp"
 
 namespace super_hse {
 
@@ -18,6 +19,8 @@ private:
 
     sf::Texture CoinTexture;
     sf::Sprite coin;
+
+    sf::Text instruction;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
