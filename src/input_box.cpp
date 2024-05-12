@@ -6,7 +6,7 @@ namespace super_hse {
 void InputBox::init(const sf::Font &font, const InputBoxType box_type) {
     type = box_type;
 
-    box.setSize(sf::Vector2f(200, 50));
+    box.setSize(sf::Vector2f(250, 50));
     box.setFillColor(sf::Color::White);
 
     inputText.setCharacterSize(24);
@@ -69,7 +69,10 @@ void InputBox::updateText(const sf::Uint32 unicode) {
     if (unicode >= 128) {
         return;
     }
-
+    
+    if (unicode == 13)  { // enter
+        return;
+    }
     if (unicode == 8) {  // backspace
         if (cursorPosition > 0) {
             textString.erase(cursorPosition - 1, 1);
@@ -124,7 +127,7 @@ void ErrorBox::init(const sf::Font &font, const int newHeightOffset) {
     errorText.setFillColor(errorTextColor);
     errorText.setFont(font);
 
-    box.setSize(sf::Vector2f(400, 50));
+    box.setSize(sf::Vector2f(480, 50));
     box.setFillColor(defaultColor);
 
     heightOffset = newHeightOffset;

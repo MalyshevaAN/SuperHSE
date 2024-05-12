@@ -130,7 +130,7 @@ void MultiConnectScene::updateSceneSize() {
 
     connectButton.setPosition(
         (Game::windowWidth - connectButtonPicture.getSize().x) / 2,
-        (Game::windowHeight + bigRectanglePicture.getSize().y) / 2 + 225
+        (Game::windowHeight - connectButtonPicture.getSize().y) / 2 + 225
     );
 }
 
