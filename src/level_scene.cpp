@@ -167,6 +167,28 @@ void PauseState::draw(sf::RenderWindow &window) {
 }
 
 void PauseState::handleInput(sf::Event &event) {
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (resumeButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                isPaused = false;
+                return;
+            }
+            if (levelMapButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<LevelMapScene>());
+                return;
+            }
+            if (mainMenuButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                return;
+            }
+        }
+    }
 }
 
 void PauseState::updateSceneSize() {
