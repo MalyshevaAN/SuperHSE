@@ -15,7 +15,7 @@ namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
     levelNumber = levelN;
-    // player = Player();
+
     std::string filename = storage.storage.at(levelNumber)->filename;
     level.ldtk_filename = storage.storage.at(levelNumber)->filename;
     level.project.loadFromFile(filename);
@@ -28,12 +28,14 @@ LevelScene::LevelScene(int levelN) {
 }
 
 void LevelScene::handleInput(sf::Event &event) {
+    if (pauseState.isPaused) {
+        pauseState.handleInput(event);
+        return;
+    }
+
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::L) {
-            SceneManager::changeScene(std::make_unique<LevelMapScene>());
-            return;
-        } else if (event.key.code == sf::Keyboard::M) {
-            SceneManager::changeScene(std::make_unique<MainMenuScene>());
+        if (event.key.code == sf::Keyboard::Escape) {
+            pauseState.isPaused = !pauseState.isPaused;
             return;
         }
     }
@@ -44,6 +46,11 @@ void LevelScene::updateSceneSize() {
 }
 
 void LevelScene::update(sf::Time &dTime) {
+    if (pauseState.isPaused) {
+        pauseState.update(dTime);
+        return;
+    }
+
     if (player.get_active_lives() == 0){
         SceneManager::changeScene(std::make_unique<LoseScene>());
         std::cerr << 1;
@@ -123,6 +130,51 @@ void LevelScene::draw(sf::RenderWindow &window) {
     window.clear(windowFillColor);
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
+
+    if (pauseState.isPaused) {
+        sf::View fullWindowView(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
+        window.setView(fullWindowView);
+        pauseState.draw(window);
+    }
+
     window.display();
 }
+
+PauseState::PauseState() {
+    get_texture_from_file("pause.png", pauseRectanglePicture);
+    pauseRectangle.setTexture(pauseRectanglePicture);
+
+    get_texture_from_file("resume_button.png", resumeButtonPicture);
+    resumeButton.setTexture(resumeButtonPicture);
+
+    pauseRectangle.setOrigin(0, 0);
+    resumeButton.setOrigin(0, 0);
+
+    updateSceneSize();
+}
+
+void PauseState::update(sf::Time &dTime) {
+}
+
+void PauseState::draw(sf::RenderWindow &window) {
+    window.draw(pauseRectangle);
+    window.draw(resumeButton);
+}
+
+void PauseState::handleInput(sf::Event &event) {
+
+}
+
+void PauseState::updateSceneSize() {
+    pauseRectangle.setPosition(
+        (Game::windowWidth - pauseRectanglePicture.getSize().x) / 2,
+        (Game::windowHeight - pauseRectanglePicture.getSize().y) / 2
+    );
+
+    resumeButton.setPosition(
+        (Game::windowWidth - resumeButtonPicture.getSize().x) / 2,
+        (Game::windowHeight - resumeButtonPicture.getSize().y) / 2
+    );
+}
+
 } // namespace super_hse

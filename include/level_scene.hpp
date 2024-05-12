@@ -5,6 +5,25 @@
 
 namespace super_hse {
 
+struct PauseState {
+private:
+    sf::Texture pauseRectanglePicture;
+    sf::Sprite pauseRectangle;
+
+    sf::Texture resumeButtonPicture;
+    sf::Sprite resumeButton;
+
+public:
+    PauseState();
+
+    bool isPaused = false;
+
+    void update(sf::Time &dTime);
+    void updateSceneSize();
+    void draw(sf::RenderWindow &window);
+    void handleInput(sf::Event &event);
+};
+
 class LevelScene : public Scene {
 private:
     std::string ldtk_filename;
@@ -12,6 +31,8 @@ private:
     LevelsStorage storage;
     int levelNumber;
     Level level;  // добавила класс уровня
+
+    PauseState pauseState;
 
     const sf::Color windowFillColor = sf::Color(125, 166, 218);
 

@@ -60,10 +60,10 @@ void Game::run() {
 
                 SceneManager::updateSceneSize();
             }
-            if (event.type == sf::Event::KeyPressed &&
-                event.key.code == sf::Keyboard::Escape) {
-                changeFullScreenMode();
-            }
+            // if (event.type == sf::Event::KeyPressed &&
+            //     event.key.code == sf::Keyboard::Escape) {
+            //     changeFullScreenMode();
+            // }
 
             SceneManager::handleInput(event);
         }
