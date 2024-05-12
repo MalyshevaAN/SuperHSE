@@ -1,5 +1,7 @@
 #include "multi_connect_scene.hpp"
 #include "input_box.hpp"
+#include "main_menu_scene.hpp"
+#include "game.hpp"
 
 namespace super_hse {
 
@@ -24,6 +26,126 @@ MultiConnectScene::MultiConnectScene() {
     connectButton.setTexture(connectButtonPicture);
 
     updateSceneSize();
+}
+
+void MultiConnectScene::updateActiveInputText(const sf::Uint32 unicode) {
+    activeInputBox->updateText(unicode);
+    std::string &text = activeInputBox->textString;
+
+    activeInputBox->inputText.setString(text);
+}
+
+void MultiConnectScene::updateInputBoxes(sf::Event &event) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Down) {
+            activeInputBoxIndex = (activeInputBoxIndex + 1) % inputBoxes.size();
+
+        } else if (event.key.code == sf::Keyboard::Up) {
+            activeInputBoxIndex =
+                (activeInputBoxIndex - 1 + inputBoxes.size()) %
+                inputBoxes.size();
+
+        } else {
+            activeInputBox->updateCursorPosition(event);
+        }
+    } else if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            for (int index = 0; index < inputBoxes.size(); index++) {
+                if (inputBoxes[index]->box.getGlobalBounds().contains(
+                        event.mouseButton.x, event.mouseButton.y
+                    )) {
+                    activeInputBoxIndex = index;
+                }
+            }
+        }
+    } else {
+        return;
+    }
+    activeInputBox->box.setFillColor(sf::Color::White);
+    activeInputBox->cursorVisible = false;
+
+    activeInputBox = inputBoxes[activeInputBoxIndex];
+
+    activeInputBox->box.setFillColor(activeInputBoxColor);
+    activeInputBox->cursorVisible = true;
+}
+
+void MultiConnectScene::checkAndConnect() {
+    const std::string IP = ipInput.textString;
+    const std::string port = portInput.textString;
+
+    // TODO всякие проверки на валидность айпи и порта
+    if (true) {
+        errorBox.setError("IP and port are checked");
+        return;
+    }
+
+    // TODO подключение к серверу и смена сцены
+
+    // SceneManager::changeScene(std::make_unique<...>());
+}
+
+void MultiConnectScene::handleInput(sf::Event &event) {
+    updateInputBoxes(event);
+
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (connectButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                checkAndConnect();
+                return;
+            }
+            if (Game::backButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<MainMenuScene>(
+                ));
+            }
+        }
+    }
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Enter) {
+            checkAndConnect();
+        }
+    }
+    if (event.type == sf::Event::TextEntered) {
+        updateActiveInputText(event.text.unicode);
+    }
+}
+
+void MultiConnectScene::update(sf::Time &dTime) {
+    activeInputBox->update(dTime);
+}
+
+void MultiConnectScene::updateSceneSize() {
+    bigRectangle.setPosition(
+        (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
+        (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
+    );
+
+    ipInput.setPosition();
+    portInput.setPosition();
+    errorBox.setPosition();
+
+    connectButton.setPosition(
+        (Game::windowWidth - connectButtonPicture.getSize().x) / 2,
+        (Game::windowHeight + bigRectanglePicture.getSize().y) / 2 + 225
+    );
+}
+
+void MultiConnectScene::draw(sf::RenderWindow &window) {
+    window.clear(backgroundColor);
+    window.draw(bigRectangle);
+
+    ipInput.draw(window);
+    portInput.draw(window);
+    errorBox.draw(window);
+
+    window.draw(connectButton);
+    window.draw(Game::backButton);
+
+    window.display();
 }
 
 }

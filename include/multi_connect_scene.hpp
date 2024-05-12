@@ -35,6 +35,7 @@ public:
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
     void updateSceneSize() override;
+    void checkAndConnect();
 
     void updateActiveInputText(const sf::Uint32 unicode);
     void updateInputBoxes(sf::Event &event);
