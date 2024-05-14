@@ -36,6 +36,11 @@ WardrobeScene::WardrobeScene() {
     instruction.setFillColor(sf::Color::Black);
     instruction.setString("Press skin's icon to buy or apply. New skin will be applied automatically");
 
+    error.setFont(font_8bit);
+    error.setCharacterSize(35);
+    error.setFillColor(sf::Color::Red);
+    error.setString("Oops! Go and earn more HSEcoins!");
+
     updateSceneSize();
 }
 
@@ -45,15 +50,19 @@ void WardrobeScene::handleInput(sf::Event &event) {
             for (const auto &skin : skinIcons) {
                 if (skin.skinIconSprite.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y)) {
+                    Game::errorOn = false;
                     if (skin.available && !skin.current) {
                         SceneManager::changeScene(std::make_unique<MainMenuScene>());
                         updateSkin(Game::player_id, skin.number);
+                        SceneManager::changeScene(std::make_unique<WardrobeScene>());
                     } else if (!skin.available) {
-                        SceneManager::changeScene(std::make_unique<MainMenuScene>());
-                        bool success = buySkin(Game::player_id, skin.number); // TODO output not enough cash
-                        if (!success) {
-                            std::cerr << "Oops... Go and earn more HSEcoins!\n";
+                        bool ok = (getBalance(Game::player_id) >= getSkinCost(skin.number));
+                        if (ok){
+                            buySkin(Game::player_id, skin.number);
+                        }else{
+                            Game::errorOn = true;
                         }
+                        SceneManager::changeScene(std::make_unique<WardrobeScene>());
                     }
                     return;
                 }
@@ -107,8 +116,10 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
     window.setView(view);
 
     float windowCenterX = window.getSize().x / 2.0f;
-    float textWidth = instruction.getLocalBounds().width;
-    instruction.setPosition(windowCenterX - textWidth / 2.0f, window.getSize().y * 6 / 7);
+    float instructionTextWidth = instruction.getLocalBounds().width;
+    float errorTextWidth = error.getLocalBounds().width;
+    instruction.setPosition(windowCenterX - instructionTextWidth / 2.0f, window.getSize().y * 6 / 7);
+    error.setPosition(windowCenterX - errorTextWidth / 2.0f, window.getSize().y / 2.0f);
     balance.setPosition(window.getSize().x - 2 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
     coin.setPosition(window.getSize().x - 3 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
 
@@ -136,6 +147,9 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
     window.draw(balance);
     window.draw(Game::backButton);
     window.draw(instruction);
+    if (Game::errorOn){
+        window.draw(error);
+    }
     window.display();
 }
 

@@ -21,6 +21,7 @@ private:
     sf::Sprite coin;
 
     sf::Text instruction;
+    sf::Text error;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 

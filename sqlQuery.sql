@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "LEVELS" (
 );
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Ivan Kalinin', 0, 'ivankalinin.png'
+SELECT 0, 'Ivan Kalinin', 0, 'hse.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Ivan Kalinin');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
@@ -51,7 +51,7 @@ SELECT 0, 'Anna Gladkaya', 10, 'annaglad.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Anna Gladkaya');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Egor', 10, 'egor.png'
+SELECT 0, 'Egor', 10, 'egor2.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
