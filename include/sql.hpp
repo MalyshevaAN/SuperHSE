@@ -27,13 +27,21 @@ loginUser(const std::string &username, const std::string &password);
 
 [[nodiscard]] std::string getCurrentSkin(int id);
 
+[[nodiscard]] int getCurrentSkinNum(int id);
+
 [[nodiscard]] bool isLevelAvailable(int id, int level);
 
 void updateLevel(int id, int level, int newLives, int newCoins);
 
-void addLevelsForUser(int id, int levelsCount);
+// void addLevelsForUser(int id, int levelsCount);
 
 void updateSkin(int id, int newSkin);
+
+[[nodiscard]] bool isSkinAvailable(int id, int skin);
+
+[[nodiscard]] bool buySkin(int id, int skin);
+
+[[nodiscard]] int getSkinCost(int skin);
 
 LvlRecords getLevelRecords(int id, int level);
 

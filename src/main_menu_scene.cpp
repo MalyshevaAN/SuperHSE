@@ -4,6 +4,7 @@
 #include "level_map_scene.hpp"
 #include "wardrobe_scene.hpp"
 #include "multiplayer_scene.hpp"
+#include "multi_connect_scene.hpp"
 #include "scene.hpp"
 
 namespace super_hse {
@@ -35,18 +36,23 @@ void MainMenuScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<LevelMapScene>());
                 return;
             }
+            if (buttonMultiplayer.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<MultiConnectScene>());
+                return;
+            }
             if (buttonChangeSkin.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
                 SceneManager::changeScene(std::make_unique<WardrobeScene>());
                 return;
             }
-            if (buttonMultiplayer.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                SceneManager::changeScene(std::make_unique<MultiLevelScene>("127.0.0.1", 8000, 1));
-                return;
-            }
+        }
+    }if (event.type == sf::Event::KeyPressed){
+        if (event.key.code == sf::Keyboard::M){
+            SceneManager::changeScene(std::make_unique<MultiLevelScene>("127.0.0.1", 8000, 1));
+            return;
         }
     }
 }

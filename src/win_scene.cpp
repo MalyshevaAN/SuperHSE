@@ -53,7 +53,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     coin.setScale(3, 3);
     lives.setScale(1.5, 1.5);
 
-    if (!font.loadFromFile("../assets/fonts/Arial.ttf")) {
+    if (!font.loadFromFile("../assets/fonts/8bit.ttf")) {
         std::cerr << "Error loading font\n";
     }
     collected_coins.setFont(font);
@@ -74,12 +74,12 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_) : coins(coins_
     records_txt.setFont(font);
     records_txt.setCharacterSize(30);
     records_txt.setFillColor(sf::Color::Black);
-    records_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 2.7);
+    records_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/5, Game::windowHeight / 2.7);
     records_txt.setString("Best results:");
     result_txt.setFont(font);
     result_txt.setCharacterSize(30);
     result_txt.setFillColor(sf::Color::Black);
-    result_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/4, Game::windowHeight / 3);
+    result_txt.setPosition((Game::windowWidth - coin.getTexture()->getSize().x)/5, Game::windowHeight / 3);
     result_txt.setString("Your results:");
     best_coins.setFont(font);
     best_coins.setCharacterSize(30);

@@ -6,7 +6,7 @@
 
 namespace super_hse {
 
-enum class InputBoxType { Username, Password, PasswordAgain };
+enum class InputBoxType { Username, Password, PasswordAgain, IP, Port};
 
 class InputBox {
 public:

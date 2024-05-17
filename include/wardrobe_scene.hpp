@@ -3,31 +3,24 @@
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
+#include <vector>
+#include "skin_icon.hpp"
+#include "input_box.hpp"
 
 namespace super_hse {
 
 class WardrobeScene : public Scene {
 private:
-// TODO vectors
-    sf::Texture skin1Texture;
-    sf::Texture skin2Texture;
-    sf::Texture skin3Texture;
-    sf::Texture skin4Texture;
-    sf::Texture skin5Texture;
-    sf::Texture skin6Texture;
-
-    sf::Sprite skin1;
-    sf::Sprite skin2;
-    sf::Sprite skin3;
-    sf::Sprite skin4;
-    sf::Sprite skin5;
-    sf::Sprite skin6;
+    std::vector<skinIcon> skinIcons;
 
     sf::Font font;
+    sf::Font font_8bit;
     sf::Text balance;
 
     sf::Texture CoinTexture;
     sf::Sprite coin;
+
+    sf::Text instruction;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
