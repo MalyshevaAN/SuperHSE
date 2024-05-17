@@ -3,8 +3,6 @@
 
 namespace super_hse{
 
-
-#pragma pack(push, 1)
     
 struct query{
     float nextPositionColliderLeft{};
@@ -27,7 +25,6 @@ struct answer{
     // add information about enemies, coins, states
 };
 
-#pragma pack(pop)
 
 }
 

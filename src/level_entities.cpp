@@ -65,7 +65,6 @@ std::pair<bool, int> level_entities::check_enemy_collision(sf::FloatRect &nextPo
 std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
     bool isCollidingWithWall = false;
     bool isCollidingWithFloor = false;
-    // std::cerr << movement.x << ' ' << movement.y << '\n';
     for (auto &entity : colliders) {
         sf::FloatRect intersect;
         if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
@@ -92,7 +91,7 @@ std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &ne
             }
         }
     }
-
+    std::cerr << isCollidingWithWall << 't' << isCollidingWithFloor <<'\n';
     return {isCollidingWithWall, isCollidingWithFloor};
 }
 

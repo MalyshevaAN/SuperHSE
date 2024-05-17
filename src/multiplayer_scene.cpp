@@ -34,9 +34,9 @@ void MultiLevelScene::update(sf::Time &dTime){
     player1.update(dTime);
     sf::FloatRect nextPositionCollider = player1.getCollider();
     sf::Vector2f movement = player1.calcMovement(dTime);
-    if (player1.isGrounded && movement.y > 0){
-        movement.y = 0;
-    }
+    // if (player1.isGrounded && movement.y > 0){
+    //     movement.y = 0;
+    // }
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
     const float dTimeSeconds = dTime.asSeconds();

@@ -42,13 +42,17 @@ CONNECTION_STATE client::get_connection_state(){
 
 answer client::send(query &query_){
     sf::Packet sendPacket, getPacket;
-    sendPacket << (char *)&query_;
+     std::cerr << query_.nextPositionColliderLeft << ' ' << query_.nextPositionColliderTop << ' ' << query_.nextPositionColliderWidth << ' ' << query_.nextPositionColliderHeight << ' ' << query_.movement_x << ' ' << query_.movement_y <<'\n';
+    sendPacket << query_.nextPositionColliderLeft << query_.nextPositionColliderTop <<  query_.nextPositionColliderWidth <<  query_.nextPositionColliderHeight << query_.movement_x << query_.movement_y;
     socket.send(sendPacket);
-    if (socket.receive(getPacket) == sf::Socket::Done){
-        char get_buf[getPacket.getDataSize()];
-        getPacket >> get_buf;
+    while (!socket.receive(getPacket)){
+        
+    }
+    if (socket.receive(getPacket)){
         answer answer_;
-        std::memcpy(&answer_, get_buf, sizeof(answer));
+        std::cerr << 1;
+        std::memcpy(&answer_, getPacket.getData(), getPacket.getDataSize());
+        std::cerr << answer_.isCollidingWithWall << 't' << answer_.isCollidingWithFloor << '\n';
         return answer_;
     }else {
         throw 1;

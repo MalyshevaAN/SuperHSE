@@ -26,20 +26,26 @@ void server::waitForConnection(){
 
 void server::updateScene(){
     sf::Packet getPacket;
-    char get_buf[sizeof(query)];
+    // char *get_buf[sizeof(struct query)];
+    socket.receive(getPacket);
+    // std::cerr << *get_buf << '\n';
     if (socket.receive(getPacket) == sf::Socket::Done){
-        getPacket >> get_buf;
-        query query_;
-        std::memcpy(&query_, get_buf , sizeof(query));
-        std::cout << query_.nextPositionColliderHeight << '\n';
+        // const void *get_buf(getPacket.getData());
+        // std::cerr << get_buf << '\n';
+        struct query query_;
+        std::cout << query_.nextPositionColliderLeft <<  '\n';
+        std::memcpy(&query_, getPacket.getData() , sizeof(query));
+        std::cerr << query_.nextPositionColliderLeft << ' ' << query_.nextPositionColliderTop << ' ' << query_.nextPositionColliderWidth << ' ' << query_.nextPositionColliderHeight << ' ' << query_.movement_x << ' ' << query_.movement_y <<'\n';
         sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
         sf::Vector2f movement(query_.movement_x, query_.movement_y);
         std::pair<bool, bool> collision = entities.check_collider_collision(nextPositionCollider, movement);
+
         answer answer_;
         answer_.isCollidingWithWall = collision.first;
         answer_.isCollidingWithFloor = collision.second;
+        std::cout << answer_.isCollidingWithWall << ' ' << answer_.isCollidingWithFloor << '\n';
         sf::Packet sendPacket;
-        sendPacket << (char *)&answer_;
+        sendPacket << answer_.isCollidingWithWall << ' ' << answer_.isCollidingWithFloor << answer_.lose_life << answer_.gathered_coin_index << answer_.killed_enemy_index << answer_.run_into_enemy_index;
         socket.send(sendPacket);
     }
 }
