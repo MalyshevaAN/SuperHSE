@@ -29,40 +29,62 @@ void level_entities::init(std::string description_file){
                 }
             }
         }
+        try {
+            auto &coinLayer = ldtk_first_level.getLayer("HSEcoin");
+            for (ldtk::Entity &entity : coinLayer.getEntitiesByName("Coin")) {
+                coin new_coin;
+                new_coin.setStatus(CoinStatus::active);
+                new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
+                new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                coins.emplace_back(new_coin);
+            }
+        }catch(...){
+            throw noSuchLayer("HSEcoin");
+        }
+        try{
+            auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
+            for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
+                enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
+                new_enemy.enemySprite.setTextureRect(sf::IntRect(0, 0, 64, 16));
+                new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                enemies.emplace_back(new_enemy);
+            }
+        }catch(...){
+            throw noSuchLayer("Enemies");
+        }
     }catch(...){
         throw noSuchLevel("Level_1");
     }
 };
 
-int level_entities::check_coin_collision(sf::FloatRect &nextPositionCollider){
+void level_entities::check_coin_collision(sf::FloatRect &nextPositionCollider, answer &answer_){
     for (int i = 0; i < coins.size(); ++i){
         if (nextPositionCollider.intersects(coins[i].coin_sprite.getGlobalBounds())){
             coins[i].disable();
-            return i;
+            answer_.gathered_coin_index = i;
         }
     }
-    return -1;
 }
 
-std::pair<bool, int> level_entities::check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
+void level_entities::check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement, answer &answer_){
     for (int i = 0; i < enemies.size(); ++i){
         if (nextPositionCollider.intersects(enemies[i].enemySprite.getGlobalBounds()) && enemies[i].get_state() == EnemyState::active){
             if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemies[i].enemySprite.getPosition().y && movement.y > 0){
                 enemies[i].disable();
-                return {false, i};
+                answer_.killed_enemy_index = i;
             }else{
                 if (enemies[i].get_state() == EnemyState::active){
                     enemies[i].unable();
-                    return {true, i};
+                    answer_.run_into_enemy_index = i;
+                    answer_.lose_life = true;
                 }
                 enemies[i].unable();
             }
         }
     }
-    return {false, -1};
 }
 
-std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
+void level_entities::check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement, answer &answer_){
     bool isCollidingWithWall = false;
     bool isCollidingWithFloor = false;
     for (auto &entity : colliders) {
@@ -91,23 +113,20 @@ std::pair<bool, bool> level_entities::check_collider_collision(sf::FloatRect &ne
             }
         }
     }
-    std::cerr << isCollidingWithWall << 't' << isCollidingWithFloor <<'\n';
-    return {isCollidingWithWall, isCollidingWithFloor};
+    answer_.movement_x = movement.x;
+    answer_.movement_y = movement.y;
+    answer_.isCollidingWithWall = isCollidingWithWall;
+    answer_.isCollidingWithFloor = isCollidingWithFloor;
 }
 
 answer level_entities::update(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement){
     answer answer_;
-    std::pair<bool, bool> collide_with_block = check_collider_collision(nextPositionCollider, movement);
-    answer_.isCollidingWithWall = collide_with_block.first;
-    answer_.isCollidingWithFloor = collide_with_block.second;
-    answer_.gathered_coin_index = check_coin_collision(nextPositionCollider);
-    std::pair<bool,int> collide_with_enemy = check_enemy_collision(nextPositionCollider, movement);
-    if(collide_with_enemy.first == true){
-        answer_.lose_life = true;
-        answer_.run_into_enemy_index = collide_with_enemy.second;
-    }else {
-        answer_.killed_enemy_index = collide_with_enemy.second;
-    }
+    check_collider_collision(nextPositionCollider, movement, answer_);
+    check_coin_collision(nextPositionCollider, answer_);
+    check_enemy_collision(nextPositionCollider, movement, answer_);
+    // if (answer_.run_into_enemy_index != -1){
+    //     std::cout << answer_.run_into_enemy_index<<'\n';
+    // }
     return answer_;
 }
 

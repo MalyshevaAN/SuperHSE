@@ -34,41 +34,30 @@ void MultiLevelScene::update(sf::Time &dTime){
     player1.update(dTime);
     sf::FloatRect nextPositionCollider = player1.getCollider();
     sf::Vector2f movement = player1.calcMovement(dTime);
-    // if (player1.isGrounded && movement.y > 0){
-    //     movement.y = 0;
-    // }
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
     const float dTimeSeconds = dTime.asSeconds();
     query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
     answer answer_ = current_client.send(query_);
-    if (answer_.lose_life){
-        player1.lose_life();
-    }
-
-    if (answer_.gathered_coin_index != -1){
-        level.entities.coins[answer_.gathered_coin_index].disable();
-    }
-
-    if (answer_.run_into_enemy_index != -1){
-        level.entities.enemies[answer_.run_into_enemy_index].unable();
-    }
-
-    if (answer_.run_into_enemy_index != -1){
-        level.entities.enemies[answer_.run_into_enemy_index].disable();
-    }
-
-    if (answer_.isCollidingWithFloor){
-        movement.y = 0;
-    }
-        //std::cerr << isCollidingWithWall << ' ' << isCollidingWithFloor << " 3\n";
     player1.isGrounded = answer_.isCollidingWithFloor;
-
-    if (!answer_.isCollidingWithWall) {
+    // std::cout <<answer_.movement_x << ' ' << answer_.movement_y <<'\n';
+    if(!answer_.isCollidingWithWall){
         player1.move(movement.x, 0);
     }
-    if (!answer_.isCollidingWithFloor) {
+    if(!answer_.isCollidingWithFloor){
         player1.move(0, movement.y);
+    }
+    if(answer_.gathered_coin_index != -1){
+        level.entities.coins[answer_.gathered_coin_index].disable();
+    }
+    if (answer_.killed_enemy_index != -1){
+        level.entities.enemies[answer_.killed_enemy_index].disable();
+    }
+    if(answer_.run_into_enemy_index != -1){
+        level.entities.enemies[answer_.run_into_enemy_index].unable();
+    }
+    if(answer_.lose_life){
+        player1.lose_life();
     }
 }
 

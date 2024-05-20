@@ -72,18 +72,13 @@ void LevelScene::update(sf::Time &dTime) {
     if (answer_.lose_life){
         player.lose_life();
     }
-    if(answer_.isCollidingWithFloor){
-        movement.y = 0;
-    }
     player.isGrounded = answer_.isCollidingWithFloor;
     if(!answer_.isCollidingWithWall){
-        player.move(movement.x, 0);
+        player.move(answer_.movement_x, 0);
     }
     if(!answer_.isCollidingWithFloor){
-        player.move(0, movement.y);
+        player.move(0, answer_.movement_y);
     }
-
-    // обновление фрейма
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {

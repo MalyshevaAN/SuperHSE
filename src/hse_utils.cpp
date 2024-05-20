@@ -19,7 +19,7 @@ noSuchDescriptionFile::noSuchDescriptionFile(const std::string &fileName) : ldtk
 textureException::textureException(const std::string &texture_name) : runtime_error("Cannot find texture named: " + texture_name){};
 
 serverException::serverException(const std::string &message) : runtime_error(message){};
-connectionException::connectionException(const std::string &socket_address) : serverException("Failed to connect to server on addredd: " + socket_address + '\n'){};
+connectionException::connectionException(const std::string &socket_address) : serverException("Failed to connect to server on address: " + socket_address + '\n'){};
 sendingException::sendingException() : serverException("Failed to send data to server\n"){};
 
 void get_texture_from_file(std::string filename, sf::Texture &texture) {

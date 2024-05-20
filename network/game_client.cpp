@@ -14,7 +14,6 @@ void client::init(const std::string &server_ip_, const unsigned int server_port_
         throw connectionException(serverIp.toString()+ ":" + std::to_string(serverPort));
     }
     std::string message = "Hello from the client!\n";
-    socket.setBlocking(false);
     sf::Packet packet;
     packet << message;
     if (socket.send(packet) != sf::Socket::Done){
@@ -42,21 +41,13 @@ CONNECTION_STATE client::get_connection_state(){
 
 answer client::send(query &query_){
     sf::Packet sendPacket, getPacket;
-     std::cerr << query_.nextPositionColliderLeft << ' ' << query_.nextPositionColliderTop << ' ' << query_.nextPositionColliderWidth << ' ' << query_.nextPositionColliderHeight << ' ' << query_.movement_x << ' ' << query_.movement_y <<'\n';
     sendPacket << query_.nextPositionColliderLeft << query_.nextPositionColliderTop <<  query_.nextPositionColliderWidth <<  query_.nextPositionColliderHeight << query_.movement_x << query_.movement_y;
     socket.send(sendPacket);
-    while (!socket.receive(getPacket)){
-        
-    }
-    if (socket.receive(getPacket)){
-        answer answer_;
-        std::cerr << 1;
-        std::memcpy(&answer_, getPacket.getData(), getPacket.getDataSize());
-        std::cerr << answer_.isCollidingWithWall << 't' << answer_.isCollidingWithFloor << '\n';
-        return answer_;
-    }else {
-        throw 1;
-    }
+    socket.receive(getPacket);
+    answer answer_;
+    getPacket >> answer_.isCollidingWithWall >> answer_.isCollidingWithFloor >> answer_.movement_x >> answer_.movement_y >> answer_.lose_life >> answer_.gathered_coin_index >> answer_.killed_enemy_index >> answer_.run_into_enemy_index;
+    //std::memcpy(&answer_, getPacket.getData(), getPacket.getDataSize());
+    return answer_;
 }
 
 void client::get(){

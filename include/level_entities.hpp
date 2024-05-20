@@ -21,11 +21,11 @@ struct level_entities{
 
     void init(std::string description_file);
 
-    std::pair<bool, bool> check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
+    void check_collider_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement, answer &answer_);
 
-    int check_coin_collision(sf::FloatRect &nextPositionCollider);
+    void check_coin_collision(sf::FloatRect &nextPositionCollider, answer &answer_);
 
-    std::pair<bool, int> check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
+    void check_enemy_collision(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement, answer &answer_);
 
     answer update(sf::FloatRect &nextPositionCollider, sf::Vector2f &movement);
 };

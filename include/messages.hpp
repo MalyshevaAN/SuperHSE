@@ -17,6 +17,8 @@ struct query{
 struct answer{
     bool isCollidingWithWall{};
     bool isCollidingWithFloor{};
+    float movement_x{};
+    float movement_y{};
     bool lose_life = false;
     int gathered_coin_index = -1;
     int killed_enemy_index = -1;
