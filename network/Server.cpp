@@ -28,12 +28,13 @@ void server::updateScene(){
     sf::Packet getPacket;
     socket.receive(getPacket);
     struct query query_;
+    query_.get_query_from_packet(getPacket);
     std::memcpy(&query_, getPacket.getData() , sizeof(query));
     sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
     sf::Vector2f movement(query_.movement_x, query_.movement_y);
     answer answer_ = entities.update(nextPositionCollider, movement);
     sf::Packet sendPacket;
-    sendPacket << answer_.isCollidingWithWall << answer_.isCollidingWithFloor << answer_.movement_x <<answer_.movement_y <<answer_.lose_life << answer_.gathered_coin_index << answer_.killed_enemy_index << answer_.run_into_enemy_index;
+    answer_.fill_answer(sendPacket);
     socket.send(sendPacket);
 }
 
