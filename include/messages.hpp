@@ -13,10 +13,10 @@ struct query{
     float nextPositionColliderHeight{};
     float movement_x{};
     float movement_y{};
-    // add info about current frame cause it is important for correct drawing for another client
 
     void fill_query(sf::Packet &packet);
     void get_query_from_packet(sf::Packet &packet);
+    // add info about current frame cause it is important for correct drawing for another client
 };
 
 struct answer{
