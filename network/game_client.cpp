@@ -41,11 +41,13 @@ CONNECTION_STATE client::get_connection_state(){
 
 answer client::send(query &query_){
     sf::Packet sendPacket, getPacket;
-    sendPacket << query_.nextPositionColliderLeft << query_.nextPositionColliderTop <<  query_.nextPositionColliderWidth <<  query_.nextPositionColliderHeight << query_.movement_x << query_.movement_y;
+    //sendPacket << query_.nextPositionColliderLeft << query_.nextPositionColliderTop <<  query_.nextPositionColliderWidth <<  query_.nextPositionColliderHeight << query_.movement_x << query_.movement_y;
+    query_.fill_query(sendPacket);
     socket.send(sendPacket);
     socket.receive(getPacket);
     answer answer_;
-    getPacket >> answer_.isCollidingWithWall >> answer_.isCollidingWithFloor >> answer_.movement_x >> answer_.movement_y >> answer_.lose_life >> answer_.gathered_coin_index >> answer_.killed_enemy_index >> answer_.run_into_enemy_index;
+    answer_.get_answer_from_packet(getPacket);
+    //getPacket >> answer_.isCollidingWithWall >> answer_.isCollidingWithFloor >> answer_.movement_x >> answer_.movement_y >> answer_.lose_life >> answer_.gathered_coin_index >> answer_.killed_enemy_index >> answer_.run_into_enemy_index;
     //std::memcpy(&answer_, getPacket.getData(), getPacket.getDataSize());
     return answer_;
 }
