@@ -32,6 +32,9 @@ void server::updateScene(){
     std::memcpy(&query_, getPacket.getData() , sizeof(query));
     sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
     sf::Vector2f movement(query_.movement_x, query_.movement_y);
+    for (auto elem : entities.enemies){
+        elem.change_pos();
+    }
     answer answer_ = entities.update(nextPositionCollider, movement);
     sf::Packet sendPacket;
     answer_.fill_answer(sendPacket);

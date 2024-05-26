@@ -3,7 +3,6 @@
 #include "game.hpp"
 #include "level_map_scene.hpp"
 #include "wardrobe_scene.hpp"
-#include "multiplayer_scene.hpp"
 #include "multi_connect_scene.hpp"
 #include "scene.hpp"
 
@@ -48,11 +47,6 @@ void MainMenuScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<WardrobeScene>());
                 return;
             }
-        }
-    }if (event.type == sf::Event::KeyPressed){
-        if (event.key.code == sf::Keyboard::M){
-            SceneManager::changeScene(std::make_unique<MultiLevelScene>("127.0.0.1", 8000, 1));
-            return;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace super_hse{
     public:
         client() = default;
         void init(const std::string &server_ip_, const unsigned int server_port_);
-
+        CONNECTION_STATE state;
 
         CONNECTION_STATE get_connection_state();
         answer send(query &query_);

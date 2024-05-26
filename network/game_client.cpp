@@ -10,15 +10,14 @@ namespace super_hse{
 void client::init(const std::string &server_ip_, const unsigned int server_port_){
     serverIp = sf::IpAddress(server_ip_); // в будущем данные с клавиатуры
     serverPort = server_port_;
-    if (socket.connect(serverIp, serverPort) != sf::Socket::Done){
-        throw connectionException(serverIp.toString()+ ":" + std::to_string(serverPort));
+    std::cerr << 2;
+    if (socket.connect(serverIp, serverPort, sf::seconds(1)) != sf::Socket::Done) { // 5 секунд таймаут
+        socket.disconnect();
+        std::cerr << 1;
+        state = CONNECTION_STATE::IS_NOT_CONNECTED;
+        return;
     }
-    std::string message = "Hello from the client!\n";
-    sf::Packet packet;
-    packet << message;
-    if (socket.send(packet) != sf::Socket::Done){
-        throw sendingException();
-    }
+    state = CONNECTION_STATE::READY_TO_PLAY;
     std::cout << "Data sent to server\n";
 }
 

@@ -51,7 +51,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     if (isGrounded) {
         verticalVelocity = 0;
     }
-    // std::cout << verticalVelocity << "\n";
+    std::cout << verticalVelocity << "\n";
     movement.y += verticalVelocity;
     movement *= dTime.asSeconds();
     return movement;

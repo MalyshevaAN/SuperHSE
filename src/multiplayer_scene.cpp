@@ -3,10 +3,13 @@
 
 #include "multiplayer_scene.hpp"
 #include "messages.hpp"
+#include "game.hpp"
+#include "main_menu_scene.hpp"
 
 
 namespace super_hse{
 MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverPort_, const int level_number_){
+    std::cerr << serverIp_ << serverPort_ <<'\n';
     current_client.init(serverIp_, serverPort_); // в будущем данные, введенные польлзователем
     try{
         std::filesystem::path p(std::filesystem::current_path());
@@ -26,51 +29,65 @@ MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverP
 }
 
 void MultiLevelScene::handleInput(sf::Event &event){
-    
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (Game::backButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                return;
+            }
+        }
+    }
 }
 
 void MultiLevelScene::update(sf::Time &dTime){
-    level.update(dTime, player1.get_position(), player1.get_active_lives());
-    player1.update(dTime);
-    sf::FloatRect nextPositionCollider = player1.getCollider();
-    sf::Vector2f movement = player1.calcMovement(dTime);
-    nextPositionCollider.left += movement.x;
-    nextPositionCollider.top += movement.y;
-    const float dTimeSeconds = dTime.asSeconds();
-    query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
-    answer answer_ = current_client.send(query_);
-    player1.isGrounded = answer_.isCollidingWithFloor;
-    // std::cout <<answer_.movement_x << ' ' << answer_.movement_y <<'\n';
-    if(!answer_.isCollidingWithWall){
-        player1.move(movement.x, 0);
-    }
-    if(!answer_.isCollidingWithFloor){
-        player1.move(0, movement.y);
-    }
-    if(answer_.gathered_coin_index != -1){
-        level.entities.coins[answer_.gathered_coin_index].disable();
-    }
-    if (answer_.killed_enemy_index != -1){
-        level.entities.enemies[answer_.killed_enemy_index].disable();
-    }
-    if(answer_.run_into_enemy_index != -1){
-        level.entities.enemies[answer_.run_into_enemy_index].unable();
-    }
-    if(answer_.lose_life){
-        player1.lose_life();
+    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
+        level.update(dTime, player1.get_position(), player1.get_active_lives());
+        player1.update(dTime);
+        sf::FloatRect nextPositionCollider = player1.getCollider();
+        sf::Vector2f movement = player1.calcMovement(dTime);
+        nextPositionCollider.left += movement.x;
+        nextPositionCollider.top += movement.y;
+        query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
+        answer answer_ = current_client.send(query_);
+        player1.isGrounded = answer_.isCollidingWithFloor;
+        std::cout << answer_.movement_x << ' ' << answer_.movement_y <<'\n';
+        if(!answer_.isCollidingWithWall){
+            player1.move(movement.x, 0);
+        }
+        if(!answer_.isCollidingWithFloor){
+            player1.move(0, movement.y);
+        }
+        if(answer_.gathered_coin_index != -1){
+            level.entities.coins[answer_.gathered_coin_index].disable();
+        }
+        if (answer_.killed_enemy_index != -1){
+            level.entities.enemies[answer_.killed_enemy_index].disable();
+        }
+        if(answer_.run_into_enemy_index != -1){
+            level.entities.enemies[answer_.run_into_enemy_index].unable();
+        }
+        if(answer_.lose_life){
+            player1.lose_life();
+        }
     }
 }
 
 void MultiLevelScene::draw(sf::RenderWindow &window){
     window.clear(windowFillColor);
-    level.render(window, info.tileLayerName);
-    player1.draw(window);
+    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
+        level.render(window, info.tileLayerName);
+        player1.draw(window);
+    }else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED){
+        window.draw(Game::backButton);
+    }
     window.display();
 }
 
 
 void MultiLevelScene::updateSceneSize(){
-    
+
 }
 
 }
