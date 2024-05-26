@@ -16,7 +16,15 @@ private:
     Level level; 
     client current_client{};
 
-    const sf::Color windowFillColor = sf::Color(125, 166, 218);
+
+    sf::Texture waitForPartnerTexture;
+    sf::Texture serverIsUnavailableTexture;
+
+    sf::Sprite waitForPartner;
+    sf::Sprite serverIsUnavailable;
+
+    const sf::Color windowFillColorPlay = sf::Color(125, 166, 218);
+    const sf::Color windowFillColorWait = sf::Color(154, 217, 234);
 
     static inline std::map<int, std::string> storage = {
         {1, "/assets/files/multi_level.txt"}

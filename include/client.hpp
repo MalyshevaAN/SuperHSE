@@ -9,7 +9,7 @@
 namespace super_hse{
     enum class CONNECTION_STATE {
         IS_NOT_CONNECTED,
-        WAITING_FOR_PARTER,
+        WAITING_FOR_PARTNER,
         READY_TO_PLAY
     };
 
@@ -22,7 +22,8 @@ namespace super_hse{
         void init(const std::string &server_ip_, const unsigned int server_port_);
         CONNECTION_STATE state;
 
-        CONNECTION_STATE get_connection_state();
+        // CONNECTION_STATE get_connection_state();
+        void check();
         answer send(query &query_);
         void get();
     };

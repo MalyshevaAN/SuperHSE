@@ -26,6 +26,10 @@ MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverP
     }catch (std::out_of_range &e){
         throw noSuchLevel(std::to_string(level_number_));
     }
+    get_texture_from_file("waiting_for_connection.png", waitForPartnerTexture);
+    waitForPartner.setTexture(waitForPartnerTexture);
+    waitForPartner.setPosition(Game::windowWidth / 8, Game::windowHeight / 2);
+    waitForPartner.setScale(0.5, 0.5);
 }
 
 void MultiLevelScene::handleInput(sf::Event &event){
@@ -75,12 +79,17 @@ void MultiLevelScene::update(sf::Time &dTime){
 }
 
 void MultiLevelScene::draw(sf::RenderWindow &window){
-    window.clear(windowFillColor);
     if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
+        window.clear(windowFillColorPlay);
         level.render(window, info.tileLayerName);
         player1.draw(window);
     }else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED){
+        window.clear(windowFillColorWait);
         window.draw(Game::backButton);
+    }else if (current_client.state == CONNECTION_STATE::WAITING_FOR_PARTNER){
+        window.clear(windowFillColorWait);
+        current_client.check();
+        window.draw(waitForPartner);
     }
     window.display();
 }
