@@ -10,9 +10,12 @@ private:
     sf::Texture backgroundTexture;
     sf::Texture mainMenuTexture;
     sf::Texture tryAgainTexture;
+    sf::Texture payResumeTexture;
+
     sf::Sprite mainMenu;
     sf::Sprite tryAgain;
     sf::Sprite background;
+    sf::Sprite payResume;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
