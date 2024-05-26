@@ -17,7 +17,7 @@ WardrobeScene::WardrobeScene() {
 
     get_texture_from_file("HSEcoin.png", CoinTexture);
     coin.setTexture(CoinTexture);
-    coin.setTextureRect({0,0,16,16});
+    coin.setTextureRect({0, 0, 16, 16});
     coin.setScale(3, 3);
 
     if (!font.loadFromFile("../assets/fonts/Karma.ttf")) {
@@ -52,7 +52,9 @@ void WardrobeScene::handleInput(sf::Event &event) {
                     event.mouseButton.x, event.mouseButton.y)) {
                     Game::errorOn = false;
                     if (skin.available && !skin.current) {
-                        SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                        SceneManager::changeScene(
+                            std::make_unique<MainMenuScene>()
+                        );
                         updateSkin(Game::player_id, skin.number);
                         SceneManager::changeScene(std::make_unique<WardrobeScene>());
                     } else if (!skin.available) {
@@ -81,31 +83,64 @@ void WardrobeScene::update(sf::Time &dTime) {
 }
 
 void WardrobeScene::updateSceneSize() {
+    Game::backButton.setPosition(20, 20);
+    Game::soundButton.setPosition(
+        Game::backButton.getPosition().x + Game::backButton.getGlobalBounds().width + 20,
+        20
+    );
+
     float buttonWidth = 126.0f;
     float buttonHeight = 126.0f;
     float distanceBetweenButtons = (Game::windowWidth - 3 * buttonWidth) / 4;
 
     for (auto &skin : skinIcons) {
         skin.skinIconSprite.setPosition(
-            distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth,
-            ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight
+            distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                ((skin.number - 1) % 3) * buttonWidth,
+            ((skin.number + 2) / 3) *
+                    ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                ((skin.number + 2) / 3 - 1) * buttonHeight
         );
-        if (!skin.available){
+        if (!skin.available) {
             skin.HSEcoinSprite.setTexture(skin.HSEcoinTexture);
-            skin.HSEcoinSprite.setTextureRect({0,0,16,16});
+            skin.HSEcoinSprite.setTextureRect({0, 0, 16, 16});
 
             skin.HSEcoinSprite.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth + buttonWidth / 5,
-                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight * 1.1
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                    ((skin.number - 1) % 3) * buttonWidth + buttonWidth / 5,
+                ((skin.number + 2) / 3) *
+                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                    ((skin.number + 2) / 3 - 1) * buttonHeight +
+                    buttonHeight * 1.1
             );
 
             skin.HSEcoinSprite.setScale(2, 2);
             skin.skinCost.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth + skin.HSEcoinSprite.getTexture()->getSize().x * 0.8,
-                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight * 1.1
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                    ((skin.number - 1) % 3) * buttonWidth +
+                    skin.HSEcoinSprite.getTexture()->getSize().x * 0.8,
+                ((skin.number + 2) / 3) *
+                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                    ((skin.number + 2) / 3 - 1) * buttonHeight +
+                    buttonHeight * 1.1
             );
         }
     }
+
+    
+    float windowCenterX = Game::windowWidth / 2.0f;
+    float textWidth = instruction.getLocalBounds().width;
+    instruction.setPosition(
+        windowCenterX - textWidth / 2.0f, Game::windowHeight * 6 / 7
+    );
+    balance.setPosition(
+        Game::windowWidth - 2 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
+    coin.setPosition(
+        Game::windowWidth - 3 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
 }
 
 void WardrobeScene::draw(sf::RenderWindow &window) {
@@ -142,10 +177,11 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
         window.draw(skin.skinCost);
         window.draw(skin.HSEcoinSprite);
     }
-    
+
     window.draw(coin);
     window.draw(balance);
     window.draw(Game::backButton);
+    window.draw(Game::soundButton);
     window.draw(instruction);
     if (Game::errorOn){
         window.draw(error);
