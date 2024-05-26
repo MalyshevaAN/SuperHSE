@@ -10,10 +10,8 @@ namespace super_hse{
 void client::init(const std::string &server_ip_, const unsigned int server_port_){
     serverIp = sf::IpAddress(server_ip_); // в будущем данные с клавиатуры
     serverPort = server_port_;
-    std::cerr << 2;
     if (socket.connect(serverIp, serverPort, sf::seconds(1)) != sf::Socket::Done) { // 5 секунд таймаут
         socket.disconnect();
-        std::cerr << 1;
         state = CONNECTION_STATE::IS_NOT_CONNECTED;
         return;
     }
