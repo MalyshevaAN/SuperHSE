@@ -21,6 +21,14 @@ Game::Game()
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
 
+    if (!music.openFromFile("../assets/audio/best_song.wav")) {
+        std::cerr << "Error loading font file best_song.wav" << '\n';
+        return;
+    }
+    // music.openFromFile("assets/audio/best_song.wav");
+    music.setVolume(50);
+    music.play();
+
     // set icon
     const std::filesystem::path p = std::filesystem::current_path();
     const std::string texture_path =

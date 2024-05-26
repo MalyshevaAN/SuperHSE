@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <filesystem>
 #include <memory>
 #include <random>
@@ -18,6 +19,8 @@ private:
     sf::RenderWindow window;
     SceneManager sceneManager;
     bool isFullScreen = false;
+
+    sf::Music music;
 
     sf::Image icon;
 
