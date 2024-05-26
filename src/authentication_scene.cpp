@@ -13,14 +13,10 @@ AuthenticationScene::AuthenticationScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // buttons init
-    get_texture_from_file(
-        "login_button.png", loginButtonPicture
-    );
+    get_texture_from_file("login_button.png", loginButtonPicture);
     loginButton.setTexture(loginButtonPicture);
 
-    get_texture_from_file(
-        "register_button.png", registerButtonPicture
-    );
+    get_texture_from_file("register_button.png", registerButtonPicture);
     registerButton.setTexture(registerButtonPicture);
 
     updateSceneSize();
@@ -73,6 +69,8 @@ void AuthenticationScene::draw(sf::RenderWindow &window) {
 
     window.draw(loginButton);
     window.draw(registerButton);
+
+    window.draw(Game::soundButton);
 
     window.display();
 }

@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
 
-namespace super_hse{
+namespace super_hse {
 class LoseScene : public Scene {
 private:
     sf::Texture backgroundTexture;
@@ -22,8 +22,7 @@ public:
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
     void updateSceneSize() override;
-
 };
-}
+}  // namespace super_hse
 
 #endif

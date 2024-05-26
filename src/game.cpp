@@ -25,9 +25,13 @@ Game::Game()
         std::cerr << "Error loading font file best_song.wav" << '\n';
         return;
     }
-    // music.openFromFile("assets/audio/best_song.wav");
     music.setVolume(50);
     music.play();
+
+    get_texture_from_file("sound_off.png", muteSoundButtonTexture);
+    get_texture_from_file("sound_on.png", unmuteSoundButtonTexture);
+    soundButton.setTexture(unmuteSoundButtonTexture);
+    soundButton.setPosition(windowWidth - 50, 20);
 
     // set icon
     const std::filesystem::path p = std::filesystem::current_path();
@@ -68,10 +72,21 @@ void Game::run() {
 
                 SceneManager::updateSceneSize();
             }
-            // if (event.type == sf::Event::KeyPressed &&
-            //     event.key.code == sf::Keyboard::Escape) {
-            //     changeFullScreenMode();
-            // }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left &&
+                    soundButton.getGlobalBounds().contains(
+                        event.mouseButton.x, event.mouseButton.y
+                    )) {
+                    isSoundOn = !isSoundOn;
+                    if (isSoundOn) {
+                        soundButton.setTexture(unmuteSoundButtonTexture);
+                        music.play();
+                    } else {
+                        soundButton.setTexture(muteSoundButtonTexture);
+                        music.pause();
+                    }
+                }
+            }
 
             SceneManager::handleInput(event);
         }

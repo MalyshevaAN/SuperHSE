@@ -12,7 +12,7 @@ private:
 
     sf::Texture resumeButtonPicture;
     sf::Sprite resumeButton;
-    
+
     sf::Texture levelMapButtonPicture;
     sf::Sprite levelMapButton;
 

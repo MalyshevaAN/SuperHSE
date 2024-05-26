@@ -90,16 +90,16 @@ void Player::move(int dx, int dy) {
     );
 }
 
-Position Player::get_position(){
+Position Player::get_position() {
     return {sprite.getPosition().x, sprite.getPosition().y};
 }
 
-void Player::lose_life(){
+void Player::lose_life() {
     Player::sound.play();
     active_lives--;
 }
 
-int Player::get_active_lives(){
+int Player::get_active_lives() {
     return active_lives;
 }
 

@@ -119,7 +119,7 @@ bool registerUser(const std::string &username, const std::string &password) {
     }
 
     // skins for the new user
-    for (int i = 1; i <= Game::skinsCount; ++i){
+    for (int i = 1; i <= Game::skinsCount; ++i) {
         sql = "INSERT INTO SKINS (USER_ID, ITEM_ID, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", " +
               (i == 1 ? "1" : "0") + ")";
@@ -270,7 +270,8 @@ void updateSkin(int id, int newSkin) {
 
 [[nodiscard]] bool buySkin(int id, int skin) {
     sqlite3_stmt *stmt;
-    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
+    std::string sql =
+        "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     sqlite3_step(stmt);
     int skinCost = sqlite3_column_int(stmt, 0);
@@ -290,9 +291,10 @@ void updateSkin(int id, int newSkin) {
     return true;
 }
 
-[[nodiscard]] int getSkinCost(int skin){
+[[nodiscard]] int getSkinCost(int skin) {
     sqlite3_stmt *stmt;
-    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
+    std::string sql =
+        "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     sqlite3_step(stmt);
     return sqlite3_column_int(stmt, 0);

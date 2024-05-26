@@ -2,9 +2,9 @@
 #include <memory>
 #include "game.hpp"
 #include "level_map_scene.hpp"
-#include "wardrobe_scene.hpp"
 #include "multi_connect_scene.hpp"
 #include "scene.hpp"
+#include "wardrobe_scene.hpp"
 
 namespace super_hse {
 
@@ -38,7 +38,8 @@ void MainMenuScene::handleInput(sf::Event &event) {
             if (buttonMultiplayer.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                SceneManager::changeScene(std::make_unique<MultiConnectScene>());
+                SceneManager::changeScene(std::make_unique<MultiConnectScene>()
+                );
                 return;
             }
             if (buttonChangeSkin.getGlobalBounds().contains(

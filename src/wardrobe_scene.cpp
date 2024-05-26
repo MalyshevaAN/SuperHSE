@@ -17,7 +17,7 @@ WardrobeScene::WardrobeScene() {
 
     get_texture_from_file("HSEcoin.png", CoinTexture);
     coin.setTexture(CoinTexture);
-    coin.setTextureRect({0,0,16,16});
+    coin.setTextureRect({0, 0, 16, 16});
     coin.setScale(3, 3);
 
     if (!font.loadFromFile("../assets/fonts/Karma.ttf")) {
@@ -34,7 +34,10 @@ WardrobeScene::WardrobeScene() {
     instruction.setFont(font_8bit);
     instruction.setCharacterSize(25);
     instruction.setFillColor(sf::Color::Black);
-    instruction.setString("Press skin's icon to buy or apply. New skin will be applied automatically");
+    instruction.setString(
+        "Press skin's icon to buy or apply. New skin will be applied "
+        "automatically"
+    );
 
     updateSceneSize();
 }
@@ -44,13 +47,20 @@ void WardrobeScene::handleInput(sf::Event &event) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             for (const auto &skin : skinIcons) {
                 if (skin.skinIconSprite.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y)) {
+                        event.mouseButton.x, event.mouseButton.y
+                    )) {
                     if (skin.available && !skin.current) {
-                        SceneManager::changeScene(std::make_unique<MainMenuScene>());
+                        SceneManager::changeScene(
+                            std::make_unique<MainMenuScene>()
+                        );
                         updateSkin(Game::player_id, skin.number);
                     } else if (!skin.available) {
-                        SceneManager::changeScene(std::make_unique<MainMenuScene>());
-                        bool success = buySkin(Game::player_id, skin.number); // TODO output not enough cash
+                        SceneManager::changeScene(
+                            std::make_unique<MainMenuScene>()
+                        );
+                        bool success = buySkin(
+                            Game::player_id, skin.number
+                        );  // TODO output not enough cash
                         if (!success) {
                             std::cerr << "Oops... Go and earn more HSEcoins!\n";
                         }
@@ -78,22 +88,34 @@ void WardrobeScene::updateSceneSize() {
 
     for (auto &skin : skinIcons) {
         skin.skinIconSprite.setPosition(
-            distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth,
-            ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight
+            distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                ((skin.number - 1) % 3) * buttonWidth,
+            ((skin.number + 2) / 3) *
+                    ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                ((skin.number + 2) / 3 - 1) * buttonHeight
         );
-        if (!skin.available){
+        if (!skin.available) {
             skin.HSEcoinSprite.setTexture(skin.HSEcoinTexture);
-            skin.HSEcoinSprite.setTextureRect({0,0,16,16});
+            skin.HSEcoinSprite.setTextureRect({0, 0, 16, 16});
 
             skin.HSEcoinSprite.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth + buttonWidth / 5,
-                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight * 1.1
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                    ((skin.number - 1) % 3) * buttonWidth + buttonWidth / 5,
+                ((skin.number + 2) / 3) *
+                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                    ((skin.number + 2) / 3 - 1) * buttonHeight +
+                    buttonHeight * 1.1
             );
 
             skin.HSEcoinSprite.setScale(2, 2);
             skin.skinCost.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) + ((skin.number - 1) % 3) * buttonWidth + skin.HSEcoinSprite.getTexture()->getSize().x * 0.8,
-                ((skin.number + 2) / 3) * ((Game::windowHeight - 2 * buttonHeight) / 3) + ((skin.number + 2) / 3 - 1) * buttonHeight + buttonHeight * 1.1
+                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
+                    ((skin.number - 1) % 3) * buttonWidth +
+                    skin.HSEcoinSprite.getTexture()->getSize().x * 0.8,
+                ((skin.number + 2) / 3) *
+                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
+                    ((skin.number + 2) / 3 - 1) * buttonHeight +
+                    buttonHeight * 1.1
             );
         }
     }
@@ -108,9 +130,17 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
 
     float windowCenterX = window.getSize().x / 2.0f;
     float textWidth = instruction.getLocalBounds().width;
-    instruction.setPosition(windowCenterX - textWidth / 2.0f, window.getSize().y * 6 / 7);
-    balance.setPosition(window.getSize().x - 2 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
-    coin.setPosition(window.getSize().x - 3 * coin.getTexture()->getSize().x, coin.getTexture()->getSize().y);
+    instruction.setPosition(
+        windowCenterX - textWidth / 2.0f, window.getSize().y * 6 / 7
+    );
+    balance.setPosition(
+        window.getSize().x - 2 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
+    coin.setPosition(
+        window.getSize().x - 3 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
 
     for (auto &skin : skinIcons) {
         if (skin.available) {
@@ -131,7 +161,7 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
         window.draw(skin.skinCost);
         window.draw(skin.HSEcoinSprite);
     }
-    
+
     window.draw(coin);
     window.draw(balance);
     window.draw(Game::backButton);

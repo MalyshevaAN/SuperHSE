@@ -5,11 +5,11 @@
 #include <string>
 #include "Level.hpp"
 #include "TileMap.hpp"
+#include "game.hpp"
 #include "level_map_scene.hpp"
+#include "lose_scene.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
-#include "game.hpp"
-#include "lose_scene.hpp"
 
 namespace super_hse {
 
@@ -22,8 +22,7 @@ LevelScene::LevelScene(int levelN) {
     level.init(
         storage.storage.at(levelNumber)->tileLayerName,
         storage.storage.at(levelNumber)->entityLayerName,
-        storage.storage.at(levelNumber)->colliderName,
-        levelN
+        storage.storage.at(levelNumber)->colliderName, levelN
     );
 }
 
@@ -52,7 +51,7 @@ void LevelScene::update(sf::Time &dTime) {
         return;
     }
 
-    if (player.get_active_lives() == 0){
+    if (player.get_active_lives() == 0) {
         SceneManager::changeScene(std::make_unique<LoseScene>());
         std::cerr << 1;
         return;
@@ -95,18 +94,23 @@ void LevelScene::update(sf::Time &dTime) {
         }
     }
 
-    for (auto &coin : level.coins){
-        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds())){
+    for (auto &coin : level.coins) {
+        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds()
+            )) {
             coin.disable();
         }
     }
 
-    for (auto &enemy : level.enemies){
-        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()) && enemy.get_state() == EnemyState::active){
-            if (nextPositionCollider.top + nextPositionCollider.height - 4 <= enemy.enemySprite.getPosition().y && movement.y > 0){
+    for (auto &enemy : level.enemies) {
+        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()
+            ) &&
+            enemy.get_state() == EnemyState::active) {
+            if (nextPositionCollider.top + nextPositionCollider.height - 4 <=
+                    enemy.enemySprite.getPosition().y &&
+                movement.y > 0) {
                 enemy.disable();
-            }else{
-                if (enemy.get_state() == EnemyState::active){
+            } else {
+                if (enemy.get_state() == EnemyState::active) {
                     player.lose_life();
                 }
                 enemy.unable();
@@ -133,7 +137,9 @@ void LevelScene::draw(sf::RenderWindow &window) {
     player.draw(window);
 
     if (pauseState.isPaused) {
-        sf::View fullWindowView(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
+        sf::View fullWindowView(
+            sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
+        );
         window.setView(fullWindowView);
         pauseState.draw(window);
     }
@@ -211,4 +217,4 @@ void PauseState::updateSceneSize() {
     );
 }
 
-} // namespace super_hse
+}  // namespace super_hse

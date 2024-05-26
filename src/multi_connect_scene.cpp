@@ -1,7 +1,7 @@
 #include "multi_connect_scene.hpp"
+#include "game.hpp"
 #include "input_box.hpp"
 #include "main_menu_scene.hpp"
-#include "game.hpp"
 
 namespace super_hse {
 
@@ -99,8 +99,7 @@ void MultiConnectScene::handleInput(sf::Event &event) {
             if (Game::backButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                SceneManager::changeScene(std::make_unique<MainMenuScene>(
-                ));
+                SceneManager::changeScene(std::make_unique<MainMenuScene>());
             }
         }
     }
@@ -148,4 +147,4 @@ void MultiConnectScene::draw(sf::RenderWindow &window) {
     window.display();
 }
 
-}
+}  // namespace super_hse

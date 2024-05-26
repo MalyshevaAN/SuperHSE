@@ -6,8 +6,8 @@
 namespace super_hse {
 
 struct LvlRecords {
-  int lives;
-  int coins;
+    int lives;
+    int coins;
 };
 
 void executeQuery();
