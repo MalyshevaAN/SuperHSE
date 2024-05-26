@@ -133,14 +133,16 @@ void LevelScene::update(sf::Time &dTime) {
 
 void LevelScene::draw(sf::RenderWindow &window) {
     window.clear(windowFillColor);
+
     level.render(window, storage.storage.at(levelNumber)->tileLayerName);
     player.draw(window);
 
+    sf::View fullWindowView(
+        sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
+    );
+    window.setView(fullWindowView);
+    window.draw(Game::soundButton);
     if (pauseState.isPaused) {
-        sf::View fullWindowView(
-            sf::FloatRect(0, 0, window.getSize().x, window.getSize().y)
-        );
-        window.setView(fullWindowView);
         pauseState.draw(window);
     }
 
@@ -199,6 +201,8 @@ void PauseState::handleInput(sf::Event &event) {
 }
 
 void PauseState::updateSceneSize() {
+    Game::soundButton.setPosition(20, 20);
+
     pauseRectangle.setPosition(
         (Game::windowWidth - pauseRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - pauseRectanglePicture.getSize().y) / 2

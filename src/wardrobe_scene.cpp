@@ -82,6 +82,12 @@ void WardrobeScene::update(sf::Time &dTime) {
 }
 
 void WardrobeScene::updateSceneSize() {
+    Game::backButton.setPosition(20, 20);
+    Game::soundButton.setPosition(
+        Game::backButton.getPosition().x + Game::backButton.getGlobalBounds().width + 20,
+        20
+    );
+
     float buttonWidth = 126.0f;
     float buttonHeight = 126.0f;
     float distanceBetweenButtons = (Game::windowWidth - 3 * buttonWidth) / 4;
@@ -119,6 +125,21 @@ void WardrobeScene::updateSceneSize() {
             );
         }
     }
+
+    
+    float windowCenterX = Game::windowWidth / 2.0f;
+    float textWidth = instruction.getLocalBounds().width;
+    instruction.setPosition(
+        windowCenterX - textWidth / 2.0f, Game::windowHeight * 6 / 7
+    );
+    balance.setPosition(
+        Game::windowWidth - 2 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
+    coin.setPosition(
+        Game::windowWidth - 3 * coin.getTexture()->getSize().x,
+        coin.getTexture()->getSize().y
+    );
 }
 
 void WardrobeScene::draw(sf::RenderWindow &window) {
@@ -127,20 +148,6 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
     view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
     window.clear(backgroundColor);
     window.setView(view);
-
-    float windowCenterX = window.getSize().x / 2.0f;
-    float textWidth = instruction.getLocalBounds().width;
-    instruction.setPosition(
-        windowCenterX - textWidth / 2.0f, window.getSize().y * 6 / 7
-    );
-    balance.setPosition(
-        window.getSize().x - 2 * coin.getTexture()->getSize().x,
-        coin.getTexture()->getSize().y
-    );
-    coin.setPosition(
-        window.getSize().x - 3 * coin.getTexture()->getSize().x,
-        coin.getTexture()->getSize().y
-    );
 
     for (auto &skin : skinIcons) {
         if (skin.available) {
@@ -165,6 +172,7 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
     window.draw(coin);
     window.draw(balance);
     window.draw(Game::backButton);
+    window.draw(Game::soundButton);
     window.draw(instruction);
     window.display();
 }

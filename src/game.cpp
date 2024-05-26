@@ -31,7 +31,7 @@ Game::Game()
     get_texture_from_file("sound_off.png", muteSoundButtonTexture);
     get_texture_from_file("sound_on.png", unmuteSoundButtonTexture);
     soundButton.setTexture(unmuteSoundButtonTexture);
-    soundButton.setPosition(windowWidth - 50, 20);
+    soundButton.setPosition(100, 20);
 
     // set icon
     const std::filesystem::path p = std::filesystem::current_path();
@@ -79,11 +79,11 @@ void Game::run() {
                     )) {
                     isSoundOn = !isSoundOn;
                     if (isSoundOn) {
-                        soundButton.setTexture(unmuteSoundButtonTexture);
                         music.play();
+                        soundButton.setTexture(unmuteSoundButtonTexture);
                     } else {
-                        soundButton.setTexture(muteSoundButtonTexture);
                         music.pause();
+                        soundButton.setTexture(muteSoundButtonTexture);
                     }
                 }
             }

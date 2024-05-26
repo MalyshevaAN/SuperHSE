@@ -56,6 +56,8 @@ void MainMenuScene::update(sf::Time &dTime) {
 }
 
 void MainMenuScene::updateSceneSize() {
+    Game::soundButton.setPosition(20, 20);
+
     // update positions of all objects
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
@@ -85,6 +87,9 @@ void MainMenuScene::draw(sf::RenderWindow &window) {
     window.draw(buttonSingleplayer);
     window.draw(buttonMultiplayer);
     window.draw(buttonChangeSkin);
+
+    window.draw(Game::soundButton);
+
     window.display();
 }
 

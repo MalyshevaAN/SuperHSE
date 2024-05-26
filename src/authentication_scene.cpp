@@ -46,7 +46,8 @@ void AuthenticationScene::update(sf::Time &dTime) {
 }
 
 void AuthenticationScene::updateSceneSize() {
-    // update positions of all objects
+    Game::soundButton.setPosition(20, 20);
+
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
