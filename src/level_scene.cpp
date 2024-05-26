@@ -14,6 +14,9 @@
 namespace super_hse {
 
 LevelScene::LevelScene(int levelN) {
+    get_texture_from_file("pause_button.png", pauseButtonPicture);
+    pauseButton.setTexture(pauseButtonPicture);
+
     levelNumber = levelN;
 
     std::string filename = storage.storage.at(levelNumber)->filename;
@@ -24,6 +27,7 @@ LevelScene::LevelScene(int levelN) {
         storage.storage.at(levelNumber)->entityLayerName,
         storage.storage.at(levelNumber)->colliderName, levelN
     );
+    updateSceneSize();
 }
 
 void LevelScene::handleInput(sf::Event &event) {
@@ -38,11 +42,28 @@ void LevelScene::handleInput(sf::Event &event) {
             return;
         }
     }
+
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (pauseButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                pauseState.isPaused = !pauseState.isPaused;
+                return;
+            }
+        }
+    }
     // player.handleInput(event);
 }
 
 void LevelScene::updateSceneSize() {
     pauseState.updateSceneSize();
+
+    pauseButton.setPosition(20, 20);
+    Game::soundButton.setPosition(
+        pauseButton.getPosition().x + pauseButtonPicture.getSize().x + 20,
+        20
+    );
 }
 
 void LevelScene::update(sf::Time &dTime) {
@@ -103,8 +124,7 @@ void LevelScene::update(sf::Time &dTime) {
 
     for (auto &enemy : level.enemies) {
         if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()
-            ) &&
-            enemy.get_state() == EnemyState::active) {
+            ) && enemy.get_state() == EnemyState::active) {
             if (nextPositionCollider.top + nextPositionCollider.height - 4 <=
                     enemy.enemySprite.getPosition().y &&
                 movement.y > 0) {
@@ -142,6 +162,7 @@ void LevelScene::draw(sf::RenderWindow &window) {
     );
     window.setView(fullWindowView);
     window.draw(Game::soundButton);
+    window.draw(pauseButton);
     if (pauseState.isPaused) {
         pauseState.draw(window);
     }
@@ -201,8 +222,6 @@ void PauseState::handleInput(sf::Event &event) {
 }
 
 void PauseState::updateSceneSize() {
-    Game::soundButton.setPosition(20, 20);
-
     pauseRectangle.setPosition(
         (Game::windowWidth - pauseRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - pauseRectanglePicture.getSize().y) / 2

@@ -39,6 +39,8 @@ private:
     Level level;  // добавила класс уровня
 
     PauseState pauseState;
+    sf::Texture pauseButtonPicture;
+    sf::Sprite pauseButton;
 
     const sf::Color windowFillColor = sf::Color(125, 166, 218);
 
