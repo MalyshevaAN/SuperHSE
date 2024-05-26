@@ -305,16 +305,17 @@ void LoseState::handleInput(sf::Event &event) {
             if (payResumeButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                // TODO - добавить покупку возобновления
+                // TODO норм возвращение в игру
 
-                // стоимость в resumeCost
-
-                // bool success = buyResume(Game::player_id, resumeCost);
-                // if (success) {
+                int resumeCost = 5;
+                bool success = buyResume(Game::player_id, resumeCost);
+                if (success) {
                 //     SceneManager::changeScene(std::make_unique<LevelScene>(0));
-                // } else {
-                //     std::cerr << "Oops... Go and earn more HSEcoins!\n";
-                // }
+                    isLose = false;
+                    return;
+                } else {
+                    std::cerr << "Oops... Go and earn more HSEcoins!\n";
+                }
                 return;
             }
         }

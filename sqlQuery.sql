@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "LEVELS" (
 );
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Ivan Kalinin', 0, 'hse.png'
+SELECT 0, 'Ivan Kalinin', 0, 'ivankalinin.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Ivan Kalinin');
 
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
@@ -57,3 +57,23 @@ WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
 INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
 SELECT 0, 'Sergey Kopel Kopeliovich', 10, 'kopel.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Sergey Kopel Kopeliovich');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
+SELECT 0, 'HSE Raven', 40, 'hse.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'HSE Raven');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
+SELECT 0, 'sasha red', 40, 'red.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha red');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
+SELECT 0, 'sasha blue', 0, 'blue.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha blue');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
+SELECT 0, 'sasha white', 0, 'white.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha white');
+
+INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
+SELECT 0, 'sasha purple', 0, 'purple.png'
+WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha purple');

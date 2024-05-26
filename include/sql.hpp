@@ -43,6 +43,8 @@ void updateSkin(int id, int newSkin);
 
 void buySkin(int id, int skin);
 
+bool buyResume(int id, int resumeCost);
+
 LvlRecords getLevelRecords(int id, int level);
 
 }  // namespace super_hse

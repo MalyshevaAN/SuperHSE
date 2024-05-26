@@ -291,6 +291,14 @@ void buySkin(int id, int skin) {
     updateSkin(id, skin);
 }
 
+bool buyResume(int id, int resumeCost) {
+    if (getBalance(id) < resumeCost) {
+        return false;
+    }
+    updateBalance(id, getBalance(id) - resumeCost);
+    return true;
+}
+
 LvlRecords getLevelRecords(int id, int level) {
     sqlite3_stmt *stmt;
     std::string sql =
