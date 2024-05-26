@@ -1,9 +1,9 @@
 #include "level_map_scene.hpp"
 #include <filesystem>
-#include "level_icon.hpp"
 #include <memory>
 #include "game.hpp"
 #include "hse_utils.hpp"
+#include "level_icon.hpp"
 #include "level_scene.hpp"
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
@@ -19,6 +19,8 @@ LevelMapScene::LevelMapScene() {
     }
     get_texture_from_file("clothes.png", clothesTexture);
     clothes.setTexture(clothesTexture);
+
+    updateSceneSize();
 }
 
 void LevelMapScene::handleInput(sf::Event &event) {
@@ -58,17 +60,22 @@ void LevelMapScene::update(sf::Time &dTime) {
 }
 
 void LevelMapScene::updateSceneSize() {
-}
+    Game::backButton.setPosition(20, 20);
+    Game::soundButton.setPosition(
+        Game::backButton.getPosition().x + Game::backButton.getGlobalBounds().width + 20,
+        20
+    );
 
-void LevelMapScene::draw(sf::RenderWindow &window) {
-    window.clear(backgroundColor);
     double x_scale =
         Game::windowWidth / static_cast<double>(Game::defaultWindowWidth);
     double y_scale =
         Game::windowHeight / static_cast<double>(Game::defaultWindowHeight);
     levelMap.setScale(x_scale, y_scale);
-    levelMap.setPosition((Game::windowWidth - levelMap.getPosition().x) / 8, (Game::windowHeight - levelMap.getPosition().y) / 8);
-    window.draw(levelMap);
+    levelMap.setPosition(
+        (Game::windowWidth - levelMap.getPosition().x) / 8,
+        (Game::windowHeight - levelMap.getPosition().y) / 8
+    );
+
     for (auto &elem : levelIcons) {
         if (elem.available) {
             elem.levelIconSprite.setTexture(elem.levelIconTextureAvailable);
@@ -83,11 +90,26 @@ void LevelMapScene::draw(sf::RenderWindow &window) {
                 Game::windowHeight / 4;
         elem.levelIconSprite.setPosition(x, y);
         elem.levelIconSprite.setScale(0.8, 0.8);
+    }
+
+    clothes.setPosition(
+        (Game::windowWidth - clothesTexture.getSize().x) / 2 -
+            Game::windowWidth / 6,
+        (Game::windowHeight - clothesTexture.getSize().y) / 2 -
+            Game::windowHeight / 7
+    );
+    clothes.setScale(x_scale, y_scale);
+}
+
+void LevelMapScene::draw(sf::RenderWindow &window) {
+    window.clear(backgroundColor);
+
+    window.draw(levelMap);
+    for (auto &elem : levelIcons) {
         window.draw(elem.levelIconSprite);
     }
-    clothes.setPosition((Game::windowWidth - clothesTexture.getSize().x) / 2 - Game::windowWidth / 6, (Game::windowHeight - clothesTexture.getSize().y) / 2 - Game::windowHeight/7);
-    clothes.setScale(x_scale, y_scale);
     window.draw(Game::backButton);
+    window.draw(Game::soundButton);
     window.draw(clothes);
     window.display();
 }

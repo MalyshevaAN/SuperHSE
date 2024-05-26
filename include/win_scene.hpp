@@ -1,13 +1,12 @@
 #ifndef WIN_SCENE_HPP
-#define WIN_SCENE_HPP 
+#define WIN_SCENE_HPP
 
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
 
-namespace super_hse{
+namespace super_hse {
 class WinScene : public Scene {
 private:
-
     sf::Texture BackgroundTexture;
     sf::Texture NextLevelTexture;
     sf::Texture MainMenuTexture;
@@ -38,6 +37,7 @@ private:
     int saved_lives;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
+
 public:
     WinScene();
     WinScene(int coins_, int level_numb_, int saved_lives_);
@@ -46,7 +46,6 @@ public:
     void handleInput(sf::Event &event) override;
     void updateSceneSize() override;
 };
-}
-
+}  // namespace super_hse
 
 #endif

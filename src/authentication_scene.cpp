@@ -13,14 +13,10 @@ AuthenticationScene::AuthenticationScene() {
     bigRectangle.setTexture(bigRectanglePicture);
 
     // buttons init
-    get_texture_from_file(
-        "login_button.png", loginButtonPicture
-    );
+    get_texture_from_file("login_button.png", loginButtonPicture);
     loginButton.setTexture(loginButtonPicture);
 
-    get_texture_from_file(
-        "register_button.png", registerButtonPicture
-    );
+    get_texture_from_file("register_button.png", registerButtonPicture);
     registerButton.setTexture(registerButtonPicture);
 
     updateSceneSize();
@@ -50,7 +46,8 @@ void AuthenticationScene::update(sf::Time &dTime) {
 }
 
 void AuthenticationScene::updateSceneSize() {
-    // update positions of all objects
+    Game::soundButton.setPosition(20, 20);
+
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
@@ -73,6 +70,8 @@ void AuthenticationScene::draw(sf::RenderWindow &window) {
 
     window.draw(loginButton);
     window.draw(registerButton);
+
+    window.draw(Game::soundButton);
 
     window.display();
 }

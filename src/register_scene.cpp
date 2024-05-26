@@ -143,6 +143,12 @@ void RegisterScene::update(sf::Time &dTime) {
 
 void RegisterScene::updateSceneSize() {
     // update positions of all objects
+    Game::backButton.setPosition(20, 20);
+    Game::soundButton.setPosition(
+        Game::backButton.getPosition().x + Game::backButton.getGlobalBounds().width + 20,
+        20
+    );
+
     bigRectangle.setPosition(
         (Game::windowWidth - bigRectanglePicture.getSize().x) / 2,
         (Game::windowHeight - bigRectanglePicture.getSize().y) / 2 - 125
@@ -170,6 +176,7 @@ void RegisterScene::draw(sf::RenderWindow &window) {
 
     window.draw(createPlayerButton);
     window.draw(Game::backButton);
+    window.draw(Game::soundButton);
     window.display();
 }
 
