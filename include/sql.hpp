@@ -39,9 +39,11 @@ void updateSkin(int id, int newSkin);
 
 [[nodiscard]] bool isSkinAvailable(int id, int skin);
 
-[[nodiscard]] bool buySkin(int id, int skin);
-
 [[nodiscard]] int getSkinCost(int skin);
+
+void buySkin(int id, int skin);
+
+bool buyResume(int id, int resumeCost);
 
 LvlRecords getLevelRecords(int id, int level);
 

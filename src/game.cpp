@@ -14,6 +14,7 @@ int Game::defaultWindowHeight = 760;
 
 int Game::player_id = -1;
 std::string Game::player_name = "NULL";
+int Game::errorOn = false;
 
 Game::Game()
     : window(sf::VideoMode(windowWidth, windowHeight, 32), "Super HSE"),

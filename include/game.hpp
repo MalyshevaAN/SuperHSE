@@ -40,9 +40,10 @@ public:
 
     static int player_id;
     static std::string player_name;
+    static int errorOn;
 
     const static int levelsCount = 4;
-    const static int skinsCount = 6;
+    const static int skinsCount = 8;
 
     Game();
     void run();
