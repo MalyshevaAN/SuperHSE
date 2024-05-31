@@ -119,7 +119,7 @@ bool registerUser(const std::string &username, const std::string &password) {
     }
 
     // skins for the new user
-    for (int i = 1; i <= Game::skinsCount; ++i){
+    for (int i = 1; i <= Game::skinsCount; ++i) {
         sql = "INSERT INTO SKINS (USER_ID, ITEM_ID, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", " +
               (i == 1 ? "1" : "0") + ")";
@@ -268,16 +268,18 @@ void updateSkin(int id, int newSkin) {
     return isAvailable;
 }
 
-[[nodiscard]] bool buySkin(int id, int skin) {
+[[nodiscard]] int getSkinCost(int skin){
     sqlite3_stmt *stmt;
-    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
+    std::string sql =
+        "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     sqlite3_step(stmt);
-    int skinCost = sqlite3_column_int(stmt, 0);
-    if (getBalance(id) < skinCost) {
-        return false;
-    }
-    sql = "UPDATE SKINS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
+    return sqlite3_column_int(stmt, 0);
+}
+
+void buySkin(int id, int skin) {
+    int skinCost = getSkinCost(skin);
+    std::string sql = "UPDATE SKINS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
           " AND ITEM_ID = " + std::to_string(skin);
     char *err = 0;
     int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
@@ -287,15 +289,14 @@ void updateSkin(int id, int newSkin) {
     }
     updateBalance(id, getBalance(id) - skinCost);
     updateSkin(id, skin);
-    return true;
 }
 
-[[nodiscard]] int getSkinCost(int skin){
-    sqlite3_stmt *stmt;
-    std::string sql = "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
-    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    sqlite3_step(stmt);
-    return sqlite3_column_int(stmt, 0);
+bool buyResume(int id, int resumeCost) {
+    if (getBalance(id) < resumeCost) {
+        return false;
+    }
+    updateBalance(id, getBalance(id) - resumeCost);
+    return true;
 }
 
 LvlRecords getLevelRecords(int id, int level) {

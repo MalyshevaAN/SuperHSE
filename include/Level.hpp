@@ -39,12 +39,9 @@ struct Level {
     const float frameSpeed = 0.004;
     float currentFrameColumn = 0;
     std::map<std::string, sf::Texture> textures = {
-        {"coin", coinTexture},
-        {"brick", brickTexture},
-        {"floor", floorTexture},
-        {"enemy", enemyTexture},
-        {"life", lifeTexture}, 
-        {"death", deathTexure}};
+        {"coin", coinTexture},   {"brick", brickTexture},
+        {"floor", floorTexture}, {"enemy", enemyTexture},
+        {"life", lifeTexture},   {"death", deathTexure}};
     void init(
         std::vector<std::string> &tileLayerName,
         std::vector<std::string> &entityLayerNames,

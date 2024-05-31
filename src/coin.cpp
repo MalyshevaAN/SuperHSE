@@ -5,44 +5,46 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-namespace super_hse{
+namespace super_hse {
 
-void coin::init(){
+void coin::init() {
     coin::buffer.loadFromFile("../assets/audio/coin.wav");
     coin::sound.setBuffer(buffer);
 }
 
-void coin::setStatus(CoinStatus status_){
+void coin::setStatus(CoinStatus status_) {
     status = status_;
 }
 
-void coin::changeFrame(int frame){
+void coin::changeFrame(int frame) {
     coin_sprite.setTextureRect(sf::IntRect(
-    static_cast<int>(frame) * coin::coinWidth, 0, coin::coinWidth,
-    coin::coinHeight));
+        static_cast<int>(frame) * coin::coinWidth, 0, coin::coinWidth,
+        coin::coinHeight
+    ));
 }
 
-void coin::disable(){
-    if (status == CoinStatus::active){
+void coin::disable() {
+    if (status == CoinStatus::active) {
         coin::sound.play();
         setStatus(CoinStatus::dieing);
     }
 }
 
-CoinStatus coin::get_status(){
+CoinStatus coin::get_status() {
     return status;
 }
 
-void coin::disappear(){
-    if (height_change <= 3){
-        coin_sprite.setPosition(sf::Vector2f(coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2));
+void coin::disappear() {
+    if (height_change <= 3) {
+        coin_sprite.setPosition(sf::Vector2f(
+            coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2
+        ));
         height_change += 0.1;
     }else {
         setStatus(CoinStatus::dead);
     }
 }
 
-}
-
+}  // namespace super_hse
 
 #endif

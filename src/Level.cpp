@@ -10,12 +10,14 @@
 #include <string>
 #include "TileMap.hpp"
 #include "coin.hpp"
+#include "game.hpp"
 #include "hse_utils.hpp"
 #include "coin.hpp"
 #include "brick.hpp"
 #include "game.hpp"
 #include "player.hpp"
 #include "lose_scene.hpp"
+#include "player.hpp"
 #include "win_scene.hpp"
 
 namespace super_hse {
@@ -33,7 +35,7 @@ Level::Level(std::string filename) {
     view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
 }
 
-void Level::get_textures(){
+void Level::get_textures() {
     get_texture_from_file("HSEcoin.png", coinTexture);
     get_texture_from_file("bricks.png", textures.at("brick"));
     get_texture_from_file("floor.png", textures.at("floor"));
@@ -102,22 +104,28 @@ void Level::init(
         throw noSuchLevel("Level_1");
     }
 
-    coinCounterBack.setSize({(float)Game::windowWidth / 10, (float)Game::windowHeight / 20});
-    coinCounterBack.setPosition({(float)(Game::windowWidth / 1.3), (float)Game::windowHeight / 40});
+    coinCounterBack.setSize(
+        {(float)Game::windowWidth / 10, (float)Game::windowHeight / 20}
+    );
+    coinCounterBack.setPosition(
+        {(float)(Game::windowWidth / 1.3), (float)Game::windowHeight / 40}
+    );
     coinCounterBack.setFillColor(sf::Color::White);
     coinCounterFront.setPosition(coinCounterBack.getPosition());
     coinCounterFront.setFillColor(sf::Color::Green);
     coinCounterFront.setSize({0, coinCounterBack.getSize().y});
-    for (int i = 0; i < 3; ++i){
+    for (int i = 0; i < 3; ++i) {
         sf::Sprite new_life;
         new_life.setTexture(textures.at("life"));
-        new_life.setPosition(Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40);
+        new_life.setPosition(
+            Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40
+        );
         lives.push_back(new_life);
     }
 }
 
 void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
-    if (player_lives == 0){
+    if (player_lives == 0) {
         view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
         return;
     }
@@ -130,14 +138,19 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
             }
         };
 
-        SceneManager::changeScene(std::make_unique<WinScene>(gatheredCoins, level_number + 1, player_lives));
+        SceneManager::changeScene(std::make_unique<WinScene>(
+            gatheredCoins, level_number + 1, player_lives
+        ));
         return;
     }
     int diff = Game::windowWidth / 2 - Player::start_position_x;
     if (player_pos.x + diff >= Game::windowWidth / 2  && player_pos.x + diff < tilemap.width - 580){
         view.setSize(Game::windowWidth, Game::windowHeight);
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
-        coinCounterBack.setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.3, coinCounterBack.getPosition().y);
+        coinCounterBack.setPosition(
+            player_pos.x - Player::start_position_x + Game::windowWidth / 1.3,
+            coinCounterBack.getPosition().y
+        );
         coinCounterFront.setPosition(coinCounterBack.getPosition());
         for (int i = 0; i < 3; ++i){
             lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.1 + i*35, lives[i].getPosition().y);
@@ -159,8 +172,8 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     for (auto &elem : entities.coins) {
         if (elem.get_status() == CoinStatus::active){
             elem.changeFrame(currentFrameColumn);
-        }else {
-            if (elem.get_status() == CoinStatus::dieing){
+        } else {
+            if (elem.get_status() == CoinStatus::dieing) {
                 elem.changeFrame(currentFrameColumn);
                 elem.disappear();
             }
@@ -171,14 +184,18 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         if (enemy.get_state() == EnemyState::dieing){
             enemy.disappear();
         }
-        if (enemy.get_state() == EnemyState::not_active){
+        if (enemy.get_state() == EnemyState::not_active) {
             enemy.unable();
         }
-        if (enemy.get_state() == EnemyState::active || enemy.get_state() == EnemyState::not_active){
+        if (enemy.get_state() == EnemyState::active ||
+            enemy.get_state() == EnemyState::not_active) {
             enemy.change_pos();
         }
     }
-    coinCounterFront.setSize({(coinCounterBack.getSize().x / allCoins) * gatheredCoins, coinCounterBack.getSize().y});
+    coinCounterFront.setSize(
+        {(coinCounterBack.getSize().x / allCoins) * gatheredCoins,
+         coinCounterBack.getSize().y}
+    );
 }
 
 void Level::render(
@@ -203,9 +220,8 @@ void Level::render(
             target.draw(elem.enemySprite);
         }
     }
-    for (auto &life : lives){
+    for (auto &life : lives) {
         target.draw(life);
-
     }
     target.draw(coinCounterBack);
     target.draw(coinCounterFront);

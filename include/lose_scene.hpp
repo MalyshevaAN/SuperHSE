@@ -4,15 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include "scene.hpp"
 
-namespace super_hse{
+namespace super_hse {
 class LoseScene : public Scene {
 private:
     sf::Texture backgroundTexture;
     sf::Texture mainMenuTexture;
     sf::Texture tryAgainTexture;
+    sf::Texture payResumeTexture;
+
     sf::Sprite mainMenu;
     sf::Sprite tryAgain;
     sf::Sprite background;
+    sf::Sprite payResume;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
@@ -22,8 +25,7 @@ public:
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
     void updateSceneSize() override;
-
 };
-}
+}  // namespace super_hse
 
 #endif

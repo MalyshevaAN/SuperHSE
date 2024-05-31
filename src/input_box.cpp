@@ -69,8 +69,8 @@ void InputBox::updateText(const sf::Uint32 unicode) {
     if (unicode >= 128) {
         return;
     }
-    
-    if (unicode == 13)  { // enter
+
+    if (unicode == 13) {  // enter
         return;
     }
     if (unicode == 8) {  // backspace

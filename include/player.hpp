@@ -1,8 +1,8 @@
 #ifndef PLAYER_HPP_
 #define PLAYER_HPP_
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 namespace super_hse {
@@ -47,6 +47,7 @@ public:
     void lose_life();
     int active_lives = 3;
     int get_active_lives();
+
     float getSpeed() const {
         return speed;
     }

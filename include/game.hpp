@@ -1,6 +1,7 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -18,8 +19,10 @@ private:
     sf::RenderWindow window;
     SceneManager sceneManager;
     bool isFullScreen = false;
-
     sf::Image icon;
+
+    bool isSoundOn = true;
+    sf::Music music;
 
 public:
     static int windowWidth;
@@ -31,11 +34,16 @@ public:
     static inline sf::Sprite backButton;
     static inline sf::Texture backButtonTexture;
 
+    static inline sf::Texture muteSoundButtonTexture;
+    static inline sf::Texture unmuteSoundButtonTexture;
+    static inline sf::Sprite soundButton;
+
     static int player_id;
     static std::string player_name;
+    static int errorOn;
 
     const static int levelsCount = 4;
-    const static int skinsCount = 6;
+    const static int skinsCount = 8;
 
     Game();
     void run();

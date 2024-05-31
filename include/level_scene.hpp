@@ -13,7 +13,7 @@ private:
 
     sf::Texture resumeButtonPicture;
     sf::Sprite resumeButton;
-    
+
     sf::Texture levelMapButtonPicture;
     sf::Sprite levelMapButton;
 
@@ -31,6 +31,36 @@ public:
     void handleInput(sf::Event &event);
 };
 
+struct LoseState {
+private:
+    sf::Texture loseRectanglePicture;
+    sf::Sprite loseRectangle;
+
+    sf::Texture payResumeButtonPicture;
+    sf::Sprite payResumeButton;
+
+    sf::Font font;
+    sf::Font font_8bit;
+    sf::Text balance;
+    sf::Texture coinTexture;
+    sf::Sprite coin;
+
+    const int resumeCost = 3;
+
+    const float loseStateTime = 6;
+    sf::Text timerText;
+
+public:
+    LoseState();
+    bool isLose = false;
+    sf::Clock timer;
+
+    void update(sf::Time &dTime);
+    void updateSceneSize();
+    void draw(sf::RenderWindow &window);
+    void handleInput(sf::Event &event);
+};
+
 class LevelScene : public Scene {
 private:
     std::string ldtk_filename;
@@ -40,6 +70,10 @@ private:
     Level level; 
 
     PauseState pauseState;
+    sf::Texture pauseButtonPicture;
+    sf::Sprite pauseButton;
+
+    LoseState loseState;
 
     const sf::Color windowFillColor = sf::Color(125, 166, 218);
 

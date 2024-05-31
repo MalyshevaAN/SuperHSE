@@ -1,8 +1,8 @@
 #include "hse_utils.hpp"
-#include "game.hpp"
-#include "sql.hpp"
 #include <filesystem>
 #include <iostream>
+#include "game.hpp"
+#include "sql.hpp"
 
 namespace super_hse {
 
