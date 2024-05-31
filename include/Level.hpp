@@ -7,7 +7,9 @@
 #include "TileMap.hpp"
 #include "coin.hpp"
 #include "enemy.hpp"
+#include "brick.hpp"
 #include "player.hpp"
+#include "level_entities.hpp"
 
 namespace super_hse {
 
@@ -19,10 +21,7 @@ struct Level {
     TileMap tilemap;  // сама карта тайлов для этого уровня
     ldtk::Project project;  // сделала проект откуда берем уровень его полем
     int level_number;
-
-    std::vector<sf::FloatRect> colliders;
-    std::vector<coin> coins;
-    std::vector<enemy> enemies;
+    level_entities entities;
     std::vector<std::string> textureColliders;
     sf::View view;
     sf::Texture coinTexture;
@@ -51,34 +50,9 @@ struct Level {
     );
 
     void init_enemies();
-
-    sf::RectangleShape
-    getColliderShape(const sf::FloatRect &rect, std::string texture_name);
-
     void
     render(sf::RenderTarget &target, std::vector<std::string> &tileLayerName);
     void update(sf::Time &dTime, Position player_pos, int player_lives);
-};
-
-struct LevelInfo;
-
-struct LevelsStorage {
-    std::vector<std::unique_ptr<LevelInfo>> storage;
-
-    LevelsStorage();
-};
-
-struct LevelInfo {
-    std::string filename;
-    std::vector<std::string> tileLayerName;
-    std::vector<std::string> entityLayerName;
-    std::vector<std::string> colliderName;
-
-    LevelInfo() = default;
-
-    LevelInfo(std::string file);
-
-    friend LevelsStorage;
 };
 
 }  // namespace super_hse

@@ -2,6 +2,7 @@
 #define LEVEL_SCENE_HPP_
 
 #include "scene.hpp"
+#include "level_info.hpp"
 
 namespace super_hse {
 
@@ -66,7 +67,7 @@ private:
     Player player;
     LevelsStorage storage;
     int levelNumber;
-    Level level;  // добавила класс уровня
+    Level level; 
 
     PauseState pauseState;
     sf::Texture pauseButtonPicture;
@@ -78,7 +79,6 @@ private:
 
 public:
     LevelScene() = default;
-    LevelScene(std::string ldtk_filename);
     LevelScene(int levelN);
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;

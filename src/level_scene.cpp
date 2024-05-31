@@ -19,9 +19,8 @@ LevelScene::LevelScene(int levelN) {
     pauseButton.setTexture(pauseButtonPicture);
 
     levelNumber = levelN;
-
     std::string filename = storage.storage.at(levelNumber)->filename;
-    level.ldtk_filename = storage.storage.at(levelNumber)->filename;
+    level.ldtk_filename = filename;
     level.project.loadFromFile(filename);
     level.init(
         storage.storage.at(levelNumber)->tileLayerName,
@@ -44,17 +43,9 @@ void LevelScene::handleInput(sf::Event &event) {
         if (event.key.code == sf::Keyboard::Escape) {
             pauseState.isPaused = !pauseState.isPaused;
             return;
-        }
-    }
-
-    if (event.type == sf::Event::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            if (pauseButton.getGlobalBounds().contains(
-                    event.mouseButton.x, event.mouseButton.y
-                )) {
-                pauseState.isPaused = !pauseState.isPaused;
-                return;
-            }
+        }else if (event.key.code == sf::Keyboard::M) {
+            SceneManager::changeScene(std::make_unique<MainMenuScene>());
+            return;
         }
     }
     // player.handleInput(event);
@@ -85,77 +76,25 @@ void LevelScene::update(sf::Time &dTime) {
         return;
     }
     level.update(dTime, player.get_position(), player.get_active_lives());
+    player.update(dTime);
     // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
     sf::Vector2f movement = player.calcMovement(dTime);
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
-
     // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
-
-    bool isCollidingWithWall = false;
-    bool isCollidingWithFloor = false;
-    for (auto &entity : level.colliders) {
-        sf::FloatRect intersect;
-        if (nextPositionCollider.intersects(entity, intersect)) {
-            // проверить тип объекта, с кем пересеклись (в данном случае -
-            // стены/пол)
-            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
-            // енамы)
-
-            // проверка что пересекаемся с полом
-            if (nextPositionCollider.top + nextPositionCollider.height >=
-                entity.top) {
-                isCollidingWithFloor = true;
-                nextPositionCollider.top -= movement.y;
-                movement.y = 0;
-
-                // если после отката человечка наверх мы всё равно пересекаемся
-                // с блоком - значит он стена
-                if (nextPositionCollider.intersects(entity, intersect)) {
-                    isCollidingWithWall = true;
-                }
-            } else {
-                isCollidingWithWall = true;
-            }
-        }
+    answer answer_ = level.entities.update(nextPositionCollider, movement);
+    if (answer_.lose_life){
+        player.lose_life();
     }
-
-    for (auto &coin : level.coins) {
-        if (nextPositionCollider.intersects(coin.coin_sprite.getGlobalBounds()
-            )) {
-            coin.disable();
-        }
+    player.isGrounded = answer_.isCollidingWithFloor;
+    if(!answer_.isCollidingWithWall){
+        player.move(answer_.movement_x, 0);
     }
-
-    for (auto &enemy : level.enemies) {
-        if (nextPositionCollider.intersects(enemy.enemySprite.getGlobalBounds()
-            ) && enemy.get_state() == EnemyState::active) {
-            if (nextPositionCollider.top + nextPositionCollider.height - 4 <=
-                    enemy.enemySprite.getPosition().y &&
-                movement.y > 0) {
-                enemy.disable();
-            } else {
-                if (enemy.get_state() == EnemyState::active) {
-                    player.lose_life();
-                }
-                enemy.unable();
-            }
-        }
+    if(!answer_.isCollidingWithFloor){
+        player.move(0, answer_.movement_y);
     }
-
-    player.isGrounded = isCollidingWithFloor;
-
-    if (!isCollidingWithWall) {
-        player.move(movement.x, 0);
-    }
-    if (!isCollidingWithFloor) {
-        player.move(0, movement.y);
-    }
-
-    // обновление фрейма
-    player.update(dTime);
 }
 
 void LevelScene::draw(sf::RenderWindow &window) {
