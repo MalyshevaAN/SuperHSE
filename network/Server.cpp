@@ -8,10 +8,12 @@
 #include "messages.hpp"
 #include "cstring"
 #include <algorithm>
+#include <thread>
 
 namespace super_hse{
 
-server::server(): serverIp(sf::IpAddress("127.0.0.1")), serverPort1(8000), serverPort2(8001){
+server::server(): serverIp(sf::IpAddress::getLocalAddress()), serverPort1(8000), serverPort2(8001){
+    std::cout << "Server Address " << sf::IpAddress::getLocalAddress().toString() << '\n';
     std::cout << "Server is listening on port " << serverPort1 << '\n';
     std::cout << "Server is listening on port " << serverPort2 << '\n';
     std::filesystem::path p(std::filesystem::current_path());
@@ -39,21 +41,41 @@ void server::waitForConnection(int player){
     std::cerr << "Get new Client!\n";
 }
 
-void server::updateScene(){
+void server::updateScene(int num){
     sf::Packet getPacket;
-    socket1.receive(getPacket);
-    struct query query_;
-    query_.get_query_from_packet(getPacket);
-    std::memcpy(&query_, getPacket.getData() , sizeof(query));
-    sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
-    sf::Vector2f movement(query_.movement_x, query_.movement_y);
-    for (auto elem : entities.enemies){
-        elem.change_pos();
+    if (num == 1){
+        socket1.receive(getPacket);
+        struct query query_;
+        query_.get_query_from_packet(getPacket);
+        std::memcpy(&query_, getPacket.getData() , sizeof(query));
+        sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
+        sf::Vector2f movement(query_.movement_x, query_.movement_y);
+        for (auto elem : entities.enemies){
+            elem.change_pos();
+        }
+        answer answer_ = entities.update(nextPositionCollider, movement);
+        sf::Packet sendPacket;
+        answer_.fill_answer(sendPacket);
+        socket1.send(sendPacket);
+    }else if (num == 2){
+        socket2.receive(getPacket);
+        struct query query_;
+        query_.get_query_from_packet(getPacket);
+        std::memcpy(&query_, getPacket.getData() , sizeof(query));
+        sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
+        sf::Vector2f movement(query_.movement_x, query_.movement_y);
+        for (auto elem : entities.enemies){
+            elem.change_pos();
+        }
+        answer answer_ = entities.update(nextPositionCollider, movement);
+        sf::Packet sendPacket;
+        answer_.fill_answer(sendPacket);
+        socket2.send(sendPacket);
     }
-    answer answer_ = entities.update(nextPositionCollider, movement);
-    sf::Packet sendPacket;
-    answer_.fill_answer(sendPacket);
-    socket1.send(sendPacket);
+}
+
+void server::updateSceneWrapper(server* serverObj, int num){
+    serverObj->updateScene(num);
 }
 
 void server::run(){
@@ -65,7 +87,11 @@ void server::run(){
             case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
                 waitForConnection(2);
             case SERVER_STATE::CONNECTED:
-                updateScene();
+                // updateScene();
+                std::thread th1(updateSceneWrapper, this, 1);
+	            std::thread th2(updateSceneWrapper, this, 2);
+                th1.join();
+                th2.join();
         }
     }
 }

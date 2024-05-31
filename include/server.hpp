@@ -33,7 +33,8 @@ public:
     server();
     void run();
     void waitForConnection(int player);
-    void updateScene();
+    static void updateSceneWrapper(server* serverObj, int num);
+    void updateScene(int num);
 };
 }
 
