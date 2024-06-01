@@ -29,6 +29,8 @@ loginUser(const std::string &username, const std::string &password);
 
 [[nodiscard]] int getCurrentSkinNum(int id);
 
+[[nodiscard]] std::string getSkinPath(int skin_id);
+
 [[nodiscard]] bool isLevelAvailable(int id, int level);
 
 void updateLevel(int id, int level, int newLives, int newCoins);
