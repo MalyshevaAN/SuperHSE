@@ -42,8 +42,8 @@ void server::waitForConnection(int player){
 }
 
 void server::updateScene(int num){
-    sf::Packet getPacket;
     if (num == 1){
+        sf::Packet getPacket;
         socket1.receive(getPacket);
         struct query query_;
         query_.get_query_from_packet(getPacket);
@@ -61,15 +61,17 @@ void server::updateScene(int num){
         player1.skin_id = query_.skin_id;
         answer_.x_partner = player2.x;
         answer_.y_partner = player2.y;
-        // answer_.skin_col_partner = player2.skin_col;
-        // answer_.skin_row_partner = player2.skin_row;
-        // answer_.skin_id_partner = player2.skin_id;
+        answer_.skin_col_partner = player2.skin_col;
+        answer_.skin_row_partner = player2.skin_row;
+        answer_.skin_id_partner = player2.skin_id;
         l.unlock();
         std::cerr << player1.skin_id << ' ' << player1.skin_col << ' ' <<player1.skin_row << '\n';
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket1.send(sendPacket);
+        std::cerr << 1 << '\n';
     }else if (num == 2){
+        sf::Packet getPacket;
         socket2.receive(getPacket);
         struct query query_;
         query_.get_query_from_packet(getPacket);
@@ -87,10 +89,11 @@ void server::updateScene(int num){
         player2.skin_id = query_.skin_id;
         answer_.x_partner = player1.x;
         answer_.y_partner = player1.y;
-        // answer_.skin_col_partner = player1.skin_col;
-        // answer_.skin_row_partner = player1.skin_row;
-        // answer_.skin_id_partner = player1.skin_id;
+        answer_.skin_col_partner = player1.skin_col;
+        answer_.skin_row_partner = player1.skin_row;
+        answer_.skin_id_partner = player1.skin_id;
         l.unlock();
+        std::cerr << 2 << '\n';
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket2.send(sendPacket);
