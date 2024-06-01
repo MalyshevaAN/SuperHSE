@@ -34,7 +34,7 @@ void closeDB() {
 
 // maybe TODO getters in one func returning std::string
 
-[[nodiscard]] std::string getUsername(int id) {
+std::string getUsername(int id) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT USERNAME FROM USERS WHERE USER_ID = " + std::to_string(id);
@@ -47,7 +47,7 @@ void closeDB() {
     return username;
 }
 
-[[nodiscard]] int getBalance(int id) {
+int getBalance(int id) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT BALANCE FROM USERS WHERE USER_ID = " + std::to_string(id);
@@ -133,8 +133,7 @@ bool registerUser(const std::string &username, const std::string &password) {
     return true;
 }
 
-[[nodiscard]] int
-loginUser(const std::string &username, const std::string &password) {
+int loginUser(const std::string &username, const std::string &password) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT USER_ID FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
@@ -150,7 +149,7 @@ loginUser(const std::string &username, const std::string &password) {
     return id;
 }
 
-[[nodiscard]] std::string getCurrentSkin(int id) {
+std::string getCurrentSkin(int id) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT CURRENT_SKIN FROM USERS WHERE USER_ID = " + std::to_string(id);
@@ -169,7 +168,7 @@ loginUser(const std::string &username, const std::string &password) {
     return path;
 }
 
-[[nodiscard]] int getCurrentSkinNum(int id) {
+int getCurrentSkinNum(int id) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT CURRENT_SKIN FROM USERS WHERE USER_ID = " + std::to_string(id);
@@ -181,7 +180,20 @@ loginUser(const std::string &username, const std::string &password) {
     return skinId;
 }
 
-[[nodiscard]] bool isLevelAvailable(int id, int level) {
+std::string getSkinPath(int skin_id) {
+    sqlite3_stmt *stmt;
+    std::string sql =
+        "SELECT PATH FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin_id);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    sqlite3_step(stmt);
+    const char *pathText =
+        reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
+    std::string path = pathText ? pathText : "";
+    sqlite3_finalize(stmt);
+    return path;
+}
+
+bool isLevelAvailable(int id, int level) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT STATUS FROM LEVELS WHERE USER_ID = " + std::to_string(id) +
@@ -256,7 +268,7 @@ void updateSkin(int id, int newSkin) {
     sqlite3_finalize(stmt);
 }
 
-[[nodiscard]] bool isSkinAvailable(int id, int skin) {
+bool isSkinAvailable(int id, int skin) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT STATUS FROM SKINS WHERE USER_ID = " + std::to_string(id) +
@@ -268,7 +280,7 @@ void updateSkin(int id, int newSkin) {
     return isAvailable;
 }
 
-[[nodiscard]] int getSkinCost(int skin){
+int getSkinCost(int skin) {
     sqlite3_stmt *stmt;
     std::string sql =
         "SELECT COST FROM ITEMS WHERE ITEM_ID = " + std::to_string(skin);
@@ -279,8 +291,9 @@ void updateSkin(int id, int newSkin) {
 
 void buySkin(int id, int skin) {
     int skinCost = getSkinCost(skin);
-    std::string sql = "UPDATE SKINS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
-          " AND ITEM_ID = " + std::to_string(skin);
+    std::string sql =
+        "UPDATE SKINS SET STATUS = 1 WHERE USER_ID = " + std::to_string(id) +
+        " AND ITEM_ID = " + std::to_string(skin);
     char *err = 0;
     int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
     if (rc != SQLITE_OK) {
