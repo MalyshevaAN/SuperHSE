@@ -9,6 +9,7 @@
 #include <vector>
 #include <LDtkLoader/Project.hpp>
 #include "level_entities.hpp"
+#include <mutex>
 
 
 namespace super_hse{
@@ -19,6 +20,14 @@ enum class SERVER_STATE{
     CONNECTED
 };
 
+struct player_info{
+    float x;
+    float y;
+    int skin_id = 1;
+    int skin_col = 0;
+    int skin_row = 11;
+};
+
 class server {
     sf::IpAddress serverIp;
     int serverPort1;
@@ -27,9 +36,11 @@ class server {
     sf::TcpListener listener2;
     sf::TcpSocket socket1;
     sf::TcpSocket socket2;
+    player_info player1{};
+    player_info player2{};
     SERVER_STATE state = SERVER_STATE::WAIT_FOR_FIRST_CONNECTION;
     level_entities entities;
-
+    std::mutex m;
 public:
     server();
     void run();

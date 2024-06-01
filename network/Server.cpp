@@ -47,13 +47,25 @@ void server::updateScene(int num){
         socket1.receive(getPacket);
         struct query query_;
         query_.get_query_from_packet(getPacket);
-        std::memcpy(&query_, getPacket.getData() , sizeof(query));
         sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
         sf::Vector2f movement(query_.movement_x, query_.movement_y);
         for (auto elem : entities.enemies){
             elem.change_pos();
         }
         answer answer_ = entities.update(nextPositionCollider, movement);
+        std::unique_lock l(m);
+        player1.x = query_.nextPositionColliderLeft + answer_.movement_x;
+        player1.y = query_.nextPositionColliderTop + answer_.movement_y;
+        player1.skin_col = query_.skin_col;
+        player1.skin_row = query_.skin_row;
+        player1.skin_id = query_.skin_id;
+        answer_.x_partner = player2.x;
+        answer_.y_partner = player2.y;
+        // answer_.skin_col_partner = player2.skin_col;
+        // answer_.skin_row_partner = player2.skin_row;
+        // answer_.skin_id_partner = player2.skin_id;
+        l.unlock();
+        std::cerr << player1.skin_id << ' ' << player1.skin_col << ' ' <<player1.skin_row << '\n';
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket1.send(sendPacket);
@@ -61,13 +73,24 @@ void server::updateScene(int num){
         socket2.receive(getPacket);
         struct query query_;
         query_.get_query_from_packet(getPacket);
-        std::memcpy(&query_, getPacket.getData() , sizeof(query));
         sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
         sf::Vector2f movement(query_.movement_x, query_.movement_y);
         for (auto elem : entities.enemies){
             elem.change_pos();
         }
         answer answer_ = entities.update(nextPositionCollider, movement);
+        std::unique_lock l(m);
+        player2.x = query_.nextPositionColliderLeft + answer_.movement_x;
+        player2.y = query_.nextPositionColliderTop + answer_.movement_y;
+        player2.skin_col = query_.skin_col;
+        player2.skin_row = query_.skin_row;
+        player2.skin_id = query_.skin_id;
+        answer_.x_partner = player1.x;
+        answer_.y_partner = player1.y;
+        // answer_.skin_col_partner = player1.skin_col;
+        // answer_.skin_row_partner = player1.skin_row;
+        // answer_.skin_id_partner = player1.skin_id;
+        l.unlock();
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket2.send(sendPacket);
