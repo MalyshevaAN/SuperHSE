@@ -124,9 +124,6 @@ answer level_entities::update(sf::FloatRect &nextPositionCollider, sf::Vector2f 
     check_collider_collision(nextPositionCollider, movement, answer_);
     check_coin_collision(nextPositionCollider, answer_);
     check_enemy_collision(nextPositionCollider, movement, answer_);
-    // if (answer_.run_into_enemy_index != -1){
-    //     std::cout << answer_.run_into_enemy_index<<'\n';
-    // }
     return answer_;
 }
 

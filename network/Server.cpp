@@ -87,7 +87,6 @@ void server::run(){
             case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
                 waitForConnection(2);
             case SERVER_STATE::CONNECTED:
-                // updateScene();
                 std::thread th1(updateSceneWrapper, this, 1);
 	            std::thread th2(updateSceneWrapper, this, 2);
                 th1.join();

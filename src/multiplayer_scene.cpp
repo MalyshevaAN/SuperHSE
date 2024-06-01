@@ -9,7 +9,6 @@
 
 namespace super_hse{
 MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverPort_, const int level_number_){
-    std::cerr << serverIp_ << serverPort_ <<'\n';
     current_client.init(serverIp_, serverPort_); // в будущем данные, введенные польлзователем
     try{
         std::filesystem::path p(std::filesystem::current_path());
@@ -56,7 +55,6 @@ void MultiLevelScene::update(sf::Time &dTime){
         query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
         answer answer_ = current_client.send(query_);
         player1.isGrounded = answer_.isCollidingWithFloor;
-        std::cout << answer_.movement_x << ' ' << answer_.movement_y <<'\n';
         if(!answer_.isCollidingWithWall){
             player1.move(movement.x, 0);
         }
