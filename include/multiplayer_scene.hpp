@@ -5,13 +5,15 @@
 #include "client.hpp"
 #include <map>
 #include "level_info.hpp"
+#include "player_icon.hpp"
 
 namespace super_hse {
 
 class MultiLevelScene : public Scene {
 private:
     std::string ldtk_filename;
-    Player player1;
+    Player player;
+    Player_icon partner;
     LevelInfo info;
     Level level; 
     client current_client{};

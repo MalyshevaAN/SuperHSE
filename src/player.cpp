@@ -11,6 +11,7 @@ const float GRAVITY = 250.f;
 
 Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
+    skin_id = getCurrentSkinNum(Game::player_id);
     get_texture_from_file(skinPath, playerPicture);
     sprite.setTexture(playerPicture);
     sprite.setPosition(200, 10);
@@ -92,6 +93,18 @@ void Player::move(int dx, int dy) {
 
 Position Player::get_position() {
     return {sprite.getPosition().x, sprite.getPosition().y};
+}
+
+int Player::getCurrentFrameColumn(){
+    return static_cast<int>(currentFrameColumn);
+}
+
+int Player::getCurrentFrameRow(){
+    return currentFrameRow;
+}
+
+int Player::getCurrentSkinId(){
+    return skin_id;
 }
 
 void Player::lose_life() {

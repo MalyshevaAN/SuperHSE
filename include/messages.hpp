@@ -13,10 +13,12 @@ struct query{
     float nextPositionColliderHeight{};
     float movement_x{};
     float movement_y{};
+    int skin_id{};
+    int skin_col{};
+    int skin_row{};
 
     void fill_query(sf::Packet &packet);
     void get_query_from_packet(sf::Packet &packet);
-    // add info about current frame cause it is important for correct drawing for another client
 };
 
 struct answer{
@@ -24,6 +26,11 @@ struct answer{
     bool isCollidingWithFloor{};
     float movement_x{};
     float movement_y{};
+    float x_partner{};
+    float y_partner{};
+    int skin_id_partner=1;
+    int skin_col_partner{};
+    int skin_row_partner{};
     bool lose_life = false;
     int gathered_coin_index = -1;
     int killed_enemy_index = -1;

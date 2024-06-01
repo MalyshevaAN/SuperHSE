@@ -46,20 +46,22 @@ void MultiLevelScene::handleInput(sf::Event &event){
 
 void MultiLevelScene::update(sf::Time &dTime){
     if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
-        level.update(dTime, player1.get_position(), player1.get_active_lives());
-        player1.update(dTime);
-        sf::FloatRect nextPositionCollider = player1.getCollider();
-        sf::Vector2f movement = player1.calcMovement(dTime);
+        level.update(dTime, player.get_position(), player.get_active_lives());
+        player.update(dTime);
+        sf::FloatRect nextPositionCollider = player.getCollider();
+        sf::Vector2f movement = player.calcMovement(dTime);
         nextPositionCollider.left += movement.x;
         nextPositionCollider.top += movement.y;
-        query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
+        query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y, player.getCurrentSkinId(), player.getCurrentFrameColumn(), player.getCurrentFrameRow()});
         answer answer_ = current_client.send(query_);
-        player1.isGrounded = answer_.isCollidingWithFloor;
+        partner.update(answer_.x_partner, answer_.y_partner, answer_.skin_id_partner, answer_.skin_col_partner, answer_.skin_row_partner);
+        partner.changePos();
+        player.isGrounded = answer_.isCollidingWithFloor;
         if(!answer_.isCollidingWithWall){
-            player1.move(movement.x, 0);
+            player.move(movement.x, 0);
         }
         if(!answer_.isCollidingWithFloor){
-            player1.move(0, movement.y);
+            player.move(0, movement.y);
         }
         if(answer_.gathered_coin_index != -1){
             level.entities.coins[answer_.gathered_coin_index].disable();
@@ -71,7 +73,7 @@ void MultiLevelScene::update(sf::Time &dTime){
             level.entities.enemies[answer_.run_into_enemy_index].unable();
         }
         if(answer_.lose_life){
-            player1.lose_life();
+            player.lose_life();
         }
     }
 }
@@ -80,7 +82,8 @@ void MultiLevelScene::draw(sf::RenderWindow &window){
     if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
         window.clear(windowFillColorPlay);
         level.render(window, info.tileLayerName);
-        player1.draw(window);
+        player.draw(window);
+        partner.draw(window);
     }else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED){
         window.clear(windowFillColorWait);
         window.draw(Game::backButton);
