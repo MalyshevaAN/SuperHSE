@@ -28,7 +28,7 @@ struct answer{
     float movement_y{};
     float x_partner{};
     float y_partner{};
-    int skin_id_partner=1;
+    int skin_id_partner=0;
     int skin_col_partner{};
     int skin_row_partner{};
     bool lose_life = false;

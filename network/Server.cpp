@@ -65,11 +65,9 @@ void server::updateScene(int num){
         answer_.skin_row_partner = player2.skin_row;
         answer_.skin_id_partner = player2.skin_id;
         l.unlock();
-        std::cerr << player1.skin_id << ' ' << player1.skin_col << ' ' <<player1.skin_row << '\n';
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket1.send(sendPacket);
-        std::cerr << 1 << '\n';
     }else if (num == 2){
         sf::Packet getPacket;
         socket2.receive(getPacket);
@@ -93,7 +91,6 @@ void server::updateScene(int num){
         answer_.skin_row_partner = player1.skin_row;
         answer_.skin_id_partner = player1.skin_id;
         l.unlock();
-        std::cerr << 2 << '\n';
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket2.send(sendPacket);

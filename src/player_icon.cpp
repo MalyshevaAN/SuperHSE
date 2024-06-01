@@ -12,7 +12,7 @@ void Player_icon::update(float x, float y, int skin_id, int col, int row){
     position.y = y;
     if (!get_texture){
         try{
-            const char *skinPath = getCurrentSkin(3).c_str();
+            const char *skinPath = getSkinPath(skin_id).c_str();
             get_texture_from_file(skinPath, playerIconPicture);
             sprite.setTexture(playerIconPicture);
             get_texture = true;
