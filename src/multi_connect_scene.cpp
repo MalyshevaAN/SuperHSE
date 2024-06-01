@@ -2,7 +2,8 @@
 #include "game.hpp"
 #include "input_box.hpp"
 #include "main_menu_scene.hpp"
-
+#include "game.hpp"
+#include "multiplayer_scene.hpp"
 namespace super_hse {
 
 MultiConnectScene::MultiConnectScene() {
@@ -72,16 +73,15 @@ void MultiConnectScene::updateInputBoxes(sf::Event &event) {
 
 void MultiConnectScene::checkAndConnect() {
     const std::string IP = ipInput.textString;
-    const std::string port = portInput.textString;
+    const std::string port = portInput.textString;//
 
     // TODO всякие проверки на валидность айпи и порта
     if (true) {
         errorBox.setError("IP and port are checked");
-        return;
+        SceneManager::changeScene(std::make_unique<MultiLevelScene>(IP, std::stoi(port), 1));
+        // return;
     }
-
     // TODO подключение к серверу и смена сцены
-
     // SceneManager::changeScene(std::make_unique<...>());
 }
 

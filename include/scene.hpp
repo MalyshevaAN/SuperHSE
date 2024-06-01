@@ -8,6 +8,7 @@
 #include <memory>
 #include <random>
 #include "Level.hpp"
+#include "level_info.hpp"
 #include "player.hpp"
 
 namespace super_hse {

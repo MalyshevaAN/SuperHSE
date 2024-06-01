@@ -7,7 +7,7 @@
 
 namespace super_hse {
 
-const float GRAVITY = 200.f;
+const float GRAVITY = 250.f;
 
 Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
@@ -37,7 +37,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
         if (isGrounded) {
-            verticalVelocity -= 170;
+            verticalVelocity -= 270;
             isGrounded = false;
         }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -51,7 +51,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     if (isGrounded) {
         verticalVelocity = 0;
     }
-    // std::cout << verticalVelocity << "\n";
+    std::cout << verticalVelocity << "\n";
     movement.y += verticalVelocity;
     movement *= dTime.asSeconds();
     return movement;
@@ -86,7 +86,7 @@ void Player::handleInput(const sf::Event &event) {
 void Player::move(int dx, int dy) {
     sprite.move(dx, dy);
     sprite.setPosition(
-        sprite.getPosition().x + dx, sprite.getPosition().y + dy
+        sprite.getPosition().x , sprite.getPosition().y
     );
 }
 
