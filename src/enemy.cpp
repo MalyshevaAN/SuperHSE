@@ -19,8 +19,10 @@ void enemy::init() {
 }
 
 void enemy::disable() {
-    state = EnemyState::dieing;
-    enemy::sound.play();
+    if (state == EnemyState::active){
+        state = EnemyState::dieing;
+        enemy::sound.play();
+    }
 }
 
 void enemy::change_pos() {

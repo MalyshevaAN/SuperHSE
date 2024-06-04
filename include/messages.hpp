@@ -37,6 +37,7 @@ struct answer{
     int killed_enemy_index = -1;
     int run_into_enemy_index = -1;
     int gathered_coin_index_partner = -1;
+    int killed_enemy_index_partner = -1;
 
     void fill_answer(sf::Packet &packet);
     void get_answer_from_packet(sf::Packet &packet);

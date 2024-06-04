@@ -54,7 +54,6 @@ void MultiLevelScene::update(sf::Time &dTime){
         nextPositionCollider.top += movement.y;
         query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y, player.getCurrentSkinId(), player.getCurrentFrameColumn(), player.getCurrentFrameRow()});
         answer answer_ = current_client.send(query_);
-        std::cerr << answer_.x_partner << ' ' << answer_.y_partner;
         partner.update(answer_.x_partner, answer_.y_partner, answer_.skin_id_partner, answer_.skin_col_partner, answer_.skin_row_partner);
         partner.changePos();
         player.isGrounded = answer_.isCollidingWithFloor;
@@ -72,6 +71,9 @@ void MultiLevelScene::update(sf::Time &dTime){
         }
         if (answer_.killed_enemy_index != -1){
             level.entities.enemies[answer_.killed_enemy_index].disable();
+        }
+        if (answer_.killed_enemy_index_partner != -1){
+            level.entities.enemies[answer_.killed_enemy_index_partner].disable();
         }
         if(answer_.run_into_enemy_index != -1){
             level.entities.enemies[answer_.run_into_enemy_index].unable();

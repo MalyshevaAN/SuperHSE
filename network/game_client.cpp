@@ -19,7 +19,6 @@ void client::init(const std::string &server_ip_, const unsigned int server_port_
     int active_connections;
     if (socket.receive(server_state) == sf::Socket::Done){
         server_state >> active_connections;
-        std::cerr << active_connections;
         if (active_connections == 1){
             state = CONNECTION_STATE::WAITING_FOR_PARTNER;
         }else if (active_connections == 2){
@@ -44,14 +43,11 @@ void client::check(){
 
 answer client::send(query &query_){
     sf::Packet sendPacket, getPacket;
-    //sendPacket << query_.nextPositionColliderLeft << query_.nextPositionColliderTop <<  query_.nextPositionColliderWidth <<  query_.nextPositionColliderHeight << query_.movement_x << query_.movement_y;
     query_.fill_query(sendPacket);
     socket.send(sendPacket);
     socket.receive(getPacket);
     answer answer_;
     answer_.get_answer_from_packet(getPacket);
-    //getPacket >> answer_.isCollidingWithWall >> answer_.isCollidingWithFloor >> answer_.movement_x >> answer_.movement_y >> answer_.lose_life >> answer_.gathered_coin_index >> answer_.killed_enemy_index >> answer_.run_into_enemy_index;
-    //std::memcpy(&answer_, getPacket.getData(), getPacket.getDataSize());
     return answer_;
 }
 
