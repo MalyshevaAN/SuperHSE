@@ -54,20 +54,24 @@ void server::updateScene(int num){
         }
         answer answer_ = entities.update(nextPositionCollider, movement);
         std::unique_lock l(m);
-        player1.x = query_.nextPositionColliderLeft + answer_.movement_x;
-        player1.y = query_.nextPositionColliderTop + answer_.movement_y;
+        player1.x = nextPositionCollider.left;
+        player1.y = nextPositionCollider.top;
         player1.skin_col = query_.skin_col;
         player1.skin_row = query_.skin_row;
         player1.skin_id = query_.skin_id;
+        if (answer_.gathered_coin_index != -1){
+            player1.gathered_coin_id = answer_.gathered_coin_index;
+        }
         answer_.x_partner = player2.x;
         answer_.y_partner = player2.y;
         answer_.skin_col_partner = player2.skin_col;
         answer_.skin_row_partner = player2.skin_row;
         answer_.skin_id_partner = player2.skin_id;
-        l.unlock();
+        answer_.gathered_coin_index_partner = player2.gathered_coin_id;
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket1.send(sendPacket);
+        l.unlock();
     }else if (num == 2){
         sf::Packet getPacket;
         socket2.receive(getPacket);
@@ -80,20 +84,24 @@ void server::updateScene(int num){
         }
         answer answer_ = entities.update(nextPositionCollider, movement);
         std::unique_lock l(m);
-        player2.x = query_.nextPositionColliderLeft + answer_.movement_x;
-        player2.y = query_.nextPositionColliderTop + answer_.movement_y;
+        player2.x = nextPositionCollider.left;
+        player2.y = nextPositionCollider.top;
         player2.skin_col = query_.skin_col;
         player2.skin_row = query_.skin_row;
         player2.skin_id = query_.skin_id;
+        if (answer_.gathered_coin_index != -1){
+            player2.gathered_coin_id = answer_.gathered_coin_index;
+        }
         answer_.x_partner = player1.x;
         answer_.y_partner = player1.y;
         answer_.skin_col_partner = player1.skin_col;
         answer_.skin_row_partner = player1.skin_row;
         answer_.skin_id_partner = player1.skin_id;
-        l.unlock();
+        answer_.gathered_coin_index_partner = player1.gathered_coin_id;
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
         socket2.send(sendPacket);
+        l.unlock();
     }
 }
 

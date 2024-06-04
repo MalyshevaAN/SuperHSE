@@ -23,6 +23,7 @@ enum class SERVER_STATE{
 struct player_info{
     float x;
     float y;
+    int gathered_coin_id = -1;
     int skin_id = 0;
     int skin_col = 0;
     int skin_row = 11;

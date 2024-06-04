@@ -27,6 +27,7 @@ void Player_icon::update(float x, float y, int skin_id, int col, int row){
 void Player_icon::changePos(){
     sprite.setTextureRect(sf::IntRect(0, currentFrameRow * frameHeight, frameWidth, frameHeight));
     sprite.setPosition(position.x, position.y);
+    sprite.setColor(sf::Color(255, 255, 255, 128));
 }
 
 void Player_icon::draw(sf::RenderWindow &window){

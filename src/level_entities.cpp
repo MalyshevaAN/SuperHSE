@@ -100,13 +100,14 @@ void level_entities::check_collider_collision(sf::FloatRect &nextPositionCollide
                 entity.brickRect.top) {
                 isCollidingWithFloor = true;
                 nextPositionCollider.top -= movement.y;
-                nextPositionCollider.top -= 1;
                 movement.y = 0;
 
                 // если после отката человечка наверх мы всё равно пересекаемся
                 // с блоком - значит он стена
                 if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
                     isCollidingWithWall = true;
+                    nextPositionCollider.left -= movement.x;
+                    movement.x = 0;
                 }
             } else {
                 isCollidingWithWall = true;
