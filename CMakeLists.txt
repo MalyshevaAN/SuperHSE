@@ -32,7 +32,7 @@ set(SRC_LIST_SERVER src/sql.cpp src/game.cpp src/scene.cpp src/level_map_scene.c
 include_directories(server include)
 
 add_executable(server ${SRC_LIST_SERVER})
-target_link_libraries(server LDtkLoader sfml-system sfml-graphics sfml-network sfml-audio sfml-window ${SQLite3_LIBRARIES})
+target_link_libraries(server LDtkLoader sfml-system sfml-graphics sfml-network sfml-audio sfml-window sqlite3)
 
 if (SQLITE3_FOUND)
     include_directories(${SQLITE3_INCLUDE_DIRS})
