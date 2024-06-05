@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "../sqlite/sqlite3.h"
+#include <sqlite3.h>
 #include "game.hpp"
 
 namespace super_hse {
