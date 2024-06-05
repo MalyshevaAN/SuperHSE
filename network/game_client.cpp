@@ -10,7 +10,7 @@ namespace super_hse{
 void client::init(const std::string &server_ip_, const unsigned int server_port_){
     serverIp = sf::IpAddress(server_ip_); // в будущем данные с клавиатуры
     serverPort = server_port_;
-    if (socket.connect(serverIp, serverPort, sf::seconds(1)) != sf::Socket::Done) { // 5 секунд таймаут
+    if (socket.connect(serverIp, serverPort, sf::seconds(1)) != sf::Socket::Done) { // 1 секунд таймаут
         socket.disconnect();
         state = CONNECTION_STATE::IS_NOT_CONNECTED;
         return;
@@ -42,6 +42,10 @@ void client::check(){
 }
 
 answer client::send(query &query_){
+    if (socket.getRemoteAddress() == sf::IpAddress::None){
+        state = CONNECTION_STATE::IS_NOT_CONNECTED;
+        return answer();
+    }
     sf::Packet sendPacket, getPacket;
     query_.fill_query(sendPacket);
     socket.send(sendPacket);

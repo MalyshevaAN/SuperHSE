@@ -72,7 +72,17 @@ void server::update_player_state_and_send(query &query_, answer &answer_, sf::Fl
 }
 
 void server::updateScene(int num){
-    while(true){
+    bool is_connected = true;
+    while(is_connected){
+        if (socket1.getRemoteAddress() == sf::IpAddress::None
+        || socket2.getRemoteAddress() == sf::IpAddress::None){
+            is_connected = false;
+            socket1.disconnect();
+            socket2.disconnect();
+            state = SERVER_STATE::WAIT_FOR_FIRST_CONNECTION;
+            std::cerr << "Clients are not available\n";
+            continue;
+        }
         sf::Packet getPacket;
         if (num == 0){
             socket1.receive(getPacket);
@@ -87,15 +97,9 @@ void server::updateScene(int num){
                 elem.change_pos();
             }
             answer answer_ = entities.update(nextPositionCollider, movement);
-            if (num == 0){
-                std::unique_lock l(m);
-                update_player_state_and_send(query_, answer_, nextPositionCollider, 0);
-                l.unlock();
-            }else{
-                std::unique_lock l(m);
-                update_player_state_and_send(query_, answer_, nextPositionCollider, 1);
-                l.unlock();
-            }
+            std::unique_lock l(m);
+            update_player_state_and_send(query_, answer_, nextPositionCollider, num);
+            l.unlock();
     }
 }
 

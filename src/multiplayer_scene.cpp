@@ -29,6 +29,10 @@ MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverP
     waitForPartner.setTexture(waitForPartnerTexture);
     waitForPartner.setPosition(Game::windowWidth / 8, Game::windowHeight / 2);
     waitForPartner.setScale(0.5, 0.5);
+    get_texture_from_file("server_is_unavailable.png", serverIsUnavailableTexture);
+    serverIsUnavailable.setTexture(serverIsUnavailableTexture);
+    serverIsUnavailable.setPosition(Game::windowWidth / 6, Game::windowHeight / 2);
+    serverIsUnavailable.setScale(0.5, 0.5);
 }
 
 void MultiLevelScene::handleInput(sf::Event &event){
@@ -54,32 +58,34 @@ void MultiLevelScene::update(sf::Time &dTime){
         nextPositionCollider.top += movement.y;
         query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y, player.getCurrentSkinId(), player.getCurrentFrameColumn(), player.getCurrentFrameRow()});
         answer answer_ = current_client.send(query_);
-        partner.update(answer_.x_partner, answer_.y_partner, answer_.skin_id_partner, answer_.skin_col_partner, answer_.skin_row_partner);
-        partner.changePos();
-        player.isGrounded = answer_.isCollidingWithFloor;
-        if(!answer_.isCollidingWithWall){
-            player.move(answer_.movement_x, 0);
-        }
-        if(!answer_.isCollidingWithFloor){
-            player.move(0, answer_.movement_y);
-        }
-        if(answer_.gathered_coin_index != -1){
-            level.entities.coins[answer_.gathered_coin_index].disable();
-        }
-        if (answer_.gathered_coin_index_partner != -1){
-            level.entities.coins[answer_.gathered_coin_index_partner].disable();
-        }
-        if (answer_.killed_enemy_index != -1){
-            level.entities.enemies[answer_.killed_enemy_index].disable();
-        }
-        if (answer_.killed_enemy_index_partner != -1){
-            level.entities.enemies[answer_.killed_enemy_index_partner].disable();
-        }
-        if(answer_.run_into_enemy_index != -1){
-            level.entities.enemies[answer_.run_into_enemy_index].unable();
-        }
-        if(answer_.lose_life){
-            player.lose_life();
+        if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
+            partner.update(answer_.x_partner, answer_.y_partner, answer_.skin_id_partner, answer_.skin_col_partner, answer_.skin_row_partner);
+            partner.changePos();
+            player.isGrounded = answer_.isCollidingWithFloor;
+            if(!answer_.isCollidingWithWall){
+                player.move(answer_.movement_x, 0);
+            }
+            if(!answer_.isCollidingWithFloor){
+                player.move(0, answer_.movement_y);
+            }
+            if(answer_.gathered_coin_index != -1){
+                level.entities.coins[answer_.gathered_coin_index].disable();
+            }
+            if (answer_.gathered_coin_index_partner != -1){
+                level.entities.coins[answer_.gathered_coin_index_partner].disable();
+            }
+            if (answer_.killed_enemy_index != -1){
+                level.entities.enemies[answer_.killed_enemy_index].disable();
+            }
+            if (answer_.killed_enemy_index_partner != -1){
+                level.entities.enemies[answer_.killed_enemy_index_partner].disable();
+            }
+            if(answer_.run_into_enemy_index != -1){
+                level.entities.enemies[answer_.run_into_enemy_index].unable();
+            }
+            if(answer_.lose_life){
+                player.lose_life();
+            }
         }
     }
 }
@@ -91,8 +97,13 @@ void MultiLevelScene::draw(sf::RenderWindow &window){
         player.draw(window);
         partner.draw(window);
     }else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED){
+        sf::View view;
+        view.setSize(Game::windowWidth, Game::windowHeight);
+        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
         window.clear(windowFillColorWait);
+        window.setView(view);
         window.draw(Game::backButton);
+        window.draw(serverIsUnavailable);
     }else if (current_client.state == CONNECTION_STATE::WAITING_FOR_PARTNER){
         window.clear(windowFillColorWait);
         current_client.check();
