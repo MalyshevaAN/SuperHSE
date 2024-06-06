@@ -15,14 +15,17 @@
 
 namespace super_hse {
 
+std::pair<int, int> getPorts() {
+    // вернуть свободные порты сервера или что-то такое
+    return {8000, 8001};
+}
+
 server::server()
-    : serverIp(sf::IpAddress::getLocalAddress()),
-      serverPort1(8000),
-      serverPort2(8001) {
-    std::cout << "Server Address "
-              << sf::IpAddress::getLocalAddress().toString() << '\n';
-    std::cout << "Server is listening on port " << serverPort1 << '\n';
-    std::cout << "Server is listening on port " << serverPort2 << '\n';
+    : serverIp(sf::IpAddress::getLocalAddress()) {
+    const std::pair<int, int> ports = getPorts();
+    serverPort1 = ports.first;
+    serverPort2 = ports.second;
+
     std::filesystem::path p(std::filesystem::current_path());
     entities.init(p.parent_path().string() + "/assets/files/multi_level.txt");
 };
@@ -93,6 +96,8 @@ void server::updateSceneWrapper(server *serverObj, int num) {
 void server::run() {
     std::thread windowLoopThread([&]() {
         serverInfoScene.init();
+        // вообще цикл внутри run, но можно вынести его сюда 
+        // чтобы было удобно обновлять доступность портов и передавать обновления
         serverInfoScene.run();
     });
 

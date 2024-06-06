@@ -8,10 +8,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <utility>
 #include "level_entities.hpp"
 #include "server_info_scene.hpp"
 
 namespace super_hse {
+
+std::pair<int, int> getPorts();
 
 enum class SERVER_STATE {
     WAIT_FOR_FIRST_CONNECTION,
