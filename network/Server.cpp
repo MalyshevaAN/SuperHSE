@@ -12,10 +12,10 @@
 
 namespace super_hse{
 
-server::server(): serverIp(sf::IpAddress::getLocalAddress()), serverPort1(8000), serverPort2(8001){
+server::server(): serverIp(sf::IpAddress::getLocalAddress()), serverPort1({8000, true}), serverPort2({8001, true}){
     std::cout << "Server Address " << sf::IpAddress::getLocalAddress().toString() << '\n';
-    std::cout << "Server is listening on port " << serverPort1 << '\n';
-    std::cout << "Server is listening on port " << serverPort2 << '\n';
+    std::cout << "Server is listening on port " << serverPort1.number << '\n';
+    std::cout << "Server is listening on port " << serverPort2.number << '\n';
     std::filesystem::path p(std::filesystem::current_path());
     entities.init(p.parent_path().string() + "/assets/files/multi_level.txt");
     players.resize(2);
@@ -24,7 +24,7 @@ server::server(): serverIp(sf::IpAddress::getLocalAddress()), serverPort1(8000),
 void server::waitForConnection(int player){
     sf::Packet server_state;
     if (player == 1){
-        listener1.listen(serverPort1);
+        listener1.listen(serverPort1.number);
         listener1.accept(socket1);
         state = SERVER_STATE::WAIT_FOR_SECOND_CONNECTION;
         server_state << 1;
@@ -32,7 +32,7 @@ void server::waitForConnection(int player){
 
     } 
     if (player == 2){
-        listener2.listen(serverPort2);
+        listener2.listen(serverPort2.number);
         listener2.accept(socket2);
         state = SERVER_STATE::CONNECTED;
         server_state << 2;
@@ -73,12 +73,16 @@ void server::update_player_state_and_send(query &query_, answer &answer_, sf::Fl
 
 void server::updateScene(int num){
     bool is_connected = true;
+    std::cerr << "jkjk" << '\n';
     while(is_connected){
         if (socket1.getRemoteAddress() == sf::IpAddress::None
         || socket2.getRemoteAddress() == sf::IpAddress::None){
             is_connected = false;
             socket1.disconnect();
             socket2.disconnect();
+            players[0] = player_info();
+            players[1] = player_info();
+            game_started = false;
             state = SERVER_STATE::WAIT_FOR_FIRST_CONNECTION;
             std::cerr << "Clients are not available\n";
             continue;
@@ -111,12 +115,15 @@ void server::run() {
     while (true) {
         switch (state) {
             case SERVER_STATE::WAIT_FOR_FIRST_CONNECTION:
+                std::cerr << "1\n";
                 waitForConnection(1);
                 break;
             case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
                 waitForConnection(2);
+                std::cerr << "2\n";
                 break;  
             case SERVER_STATE::CONNECTED:
+                std::cerr << game_started << '\n';
                 if (!game_started){
                     std::thread th1(&server::updateSceneWrapper, this, 0);
                     std::thread th2(&server::updateSceneWrapper, this, 1);

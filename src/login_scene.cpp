@@ -140,7 +140,8 @@ void LoginScene::update(sf::Time &dTime) {
 void LoginScene::updateSceneSize() {
     Game::backButton.setPosition(20, 20);
     Game::soundButton.setPosition(
-        Game::backButton.getPosition().x + Game::backButton.getGlobalBounds().width + 20,
+        Game::backButton.getPosition().x +
+            Game::backButton.getGlobalBounds().width + 20,
         20
     );
 

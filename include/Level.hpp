@@ -5,11 +5,11 @@
 #include <map>
 #include <vector>
 #include "TileMap.hpp"
+#include "brick.hpp"
 #include "coin.hpp"
 #include "enemy.hpp"
-#include "brick.hpp"
-#include "player.hpp"
 #include "level_entities.hpp"
+#include "player.hpp"
 
 namespace super_hse {
 

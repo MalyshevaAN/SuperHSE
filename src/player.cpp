@@ -95,15 +95,15 @@ Position Player::get_position() {
     return {sprite.getPosition().x, sprite.getPosition().y};
 }
 
-int Player::getCurrentFrameColumn(){
+int Player::getCurrentFrameColumn() {
     return static_cast<int>(currentFrameColumn);
 }
 
-int Player::getCurrentFrameRow(){
+int Player::getCurrentFrameRow() {
     return currentFrameRow;
 }
 
-int Player::getCurrentSkinId(){
+int Player::getCurrentSkinId() {
     return skin_id;
 }
 

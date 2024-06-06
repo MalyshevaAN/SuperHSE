@@ -58,7 +58,7 @@ void Game::run() {
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            if (window.hasFocus()){
+            if (window.hasFocus()) {
                 if (event.type == sf::Event::Closed) {
                     window.close();
                 }

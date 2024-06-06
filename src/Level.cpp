@@ -9,13 +9,10 @@
 #include <iostream>
 #include <string>
 #include "TileMap.hpp"
+#include "brick.hpp"
 #include "coin.hpp"
 #include "game.hpp"
 #include "hse_utils.hpp"
-#include "coin.hpp"
-#include "brick.hpp"
-#include "game.hpp"
-#include "player.hpp"
 #include "lose_scene.hpp"
 #include "player.hpp"
 #include "win_scene.hpp"
@@ -56,21 +53,26 @@ void Level::init(
     brick::init();
     level_number = level_number_;
     auto &world = project.allWorlds().at(0);
-    try{
-        auto &ldtk_first_level =
-            world.getLevel("Level_1");  // передали проект и забрали оттуда уровень
+    try {
+        auto &ldtk_first_level = world.getLevel("Level_1"
+        );  // передали проект и забрали оттуда уровень
         TileMap::path = project.getFilePath().directory(
         );  // достали папку где лежит проект, чтобы потом там искать текстуры
         tilemap.load(ldtk_first_level);  // загружаем слои конкретного уровня
         for (auto elem : entityLayerNames) {
             auto &entitiesLayer = ldtk_first_level.getLayer(elem);
             for (auto name : colliderNames) {
-                for (ldtk::Entity &entity : entitiesLayer.getEntitiesByName(name)) {
+                for (ldtk::Entity &entity :
+                     entitiesLayer.getEntitiesByName(name)) {
                     std::string texture_name = "brick";
-                    if (name == "Floor" || name == "FloorSmall" || name == "FloorMedium"){
+                    if (name == "Floor" || name == "FloorSmall" ||
+                        name == "FloorMedium") {
                         texture_name = "floor";
                     }
-                    brick new_brick(entity.getPosition().x, entity.getPosition().y, entity.getSize().x, entity.getSize().y, texture_name);
+                    brick new_brick(
+                        entity.getPosition().x, entity.getPosition().y,
+                        entity.getSize().x, entity.getSize().y, texture_name
+                    );
                     entities.colliders.emplace_back(new_brick);
                 }
             }
@@ -81,26 +83,32 @@ void Level::init(
                 coin new_coin;
                 new_coin.setStatus(CoinStatus::active);
                 new_coin.coin_sprite.setTexture(coinTexture);
-                new_coin.coin_sprite.setTextureRect(sf::IntRect(0,0,coin::coinWidth,coin::coinHeight));
-                new_coin.coin_sprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                new_coin.coin_sprite.setTextureRect(
+                    sf::IntRect(0, 0, coin::coinWidth, coin::coinHeight)
+                );
+                new_coin.coin_sprite.setPosition(
+                    sf::Vector2f(entity.getPosition().x, entity.getPosition().y)
+                );
                 entities.coins.emplace_back(new_coin);
             }
             allCoins = entities.coins.size();
-        }catch(...){
+        } catch (...) {
             throw noSuchLayer("HSEcoin");
         }
-        try{
+        try {
             auto &enemyLayer = ldtk_first_level.getLayer("Enemies");
             for (ldtk::Entity &entity : enemyLayer.getEntitiesByName("Enemy")) {
                 enemy new_enemy(entity.getPosition().x, entity.getPosition().y);
                 new_enemy.enemySprite.setTexture(textures.at("enemy"));
-                new_enemy.enemySprite.setPosition(sf::Vector2f(entity.getPosition().x, entity.getPosition().y));
+                new_enemy.enemySprite.setPosition(
+                    sf::Vector2f(entity.getPosition().x, entity.getPosition().y)
+                );
                 entities.enemies.emplace_back(new_enemy);
             }
-        }catch(...){
+        } catch (...) {
             throw noSuchLayer("Enemies");
         }
-    }catch(...){
+    } catch (...) {
         throw noSuchLevel("Level_1");
     }
 
@@ -130,10 +138,10 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         return;
     }
 
-    if (player_pos.x >= tilemap.width - 60){
+    if (player_pos.x >= tilemap.width - 60) {
         int gatheredCoins = 0;
         for (auto &elem : entities.coins) {
-            if (elem.get_status() != CoinStatus::active){
+            if (elem.get_status() != CoinStatus::active) {
                 gatheredCoins++;
             }
         };
@@ -144,7 +152,8 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
         return;
     }
     int diff = Game::windowWidth / 2 - Player::start_position_x;
-    if (player_pos.x + diff >= Game::windowWidth / 2  && player_pos.x + diff < tilemap.width - 580){
+    if (player_pos.x + diff >= Game::windowWidth / 2 &&
+        player_pos.x + diff < tilemap.width - 580) {
         view.setSize(Game::windowWidth, Game::windowHeight);
         view.setCenter(player_pos.x + diff, Game::windowHeight / 3);
         coinCounterBack.setPosition(
@@ -152,14 +161,18 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
             coinCounterBack.getPosition().y
         );
         coinCounterFront.setPosition(coinCounterBack.getPosition());
-        for (int i = 0; i < 3; ++i){
-            lives[i].setPosition(player_pos.x - Player::start_position_x + Game::windowWidth / 1.1 + i*35, lives[i].getPosition().y);
+        for (int i = 0; i < 3; ++i) {
+            lives[i].setPosition(
+                player_pos.x - Player::start_position_x +
+                    Game::windowWidth / 1.1 + i * 35,
+                lives[i].getPosition().y
+            );
         }
     }
-    for (int i = 0; i < 3; ++i){
-        if (i < player_lives){
+    for (int i = 0; i < 3; ++i) {
+        if (i < player_lives) {
             lives[i].setTexture(textures.at("life"));
-        }else{
+        } else {
             lives[i].setTexture(textures.at("death"));
         }
     }
@@ -170,7 +183,7 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     }
     int gatheredCoins = 0;
     for (auto &elem : entities.coins) {
-        if (elem.get_status() == CoinStatus::active){
+        if (elem.get_status() == CoinStatus::active) {
             elem.changeFrame(currentFrameColumn);
         } else {
             if (elem.get_status() == CoinStatus::dieing) {
@@ -180,8 +193,8 @@ void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
             gatheredCoins++;
         };
     }
-    for (auto &enemy : entities.enemies){
-        if (enemy.get_state() == EnemyState::dieing){
+    for (auto &enemy : entities.enemies) {
+        if (enemy.get_state() == EnemyState::dieing) {
             enemy.disappear();
         }
         if (enemy.get_state() == EnemyState::not_active) {
@@ -206,17 +219,17 @@ void Level::render(
     for (auto &elem : tileLayerName) {
         target.draw(tilemap.getLayer(elem));
     }
-    for (auto &elem : entities.colliders){
+    for (auto &elem : entities.colliders) {
         target.draw(elem.brick_sprite);
     }
 
-    for (auto &elem : entities.coins){
-        if (elem.get_status() != CoinStatus::dead){
+    for (auto &elem : entities.coins) {
+        if (elem.get_status() != CoinStatus::dead) {
             target.draw(elem.coin_sprite);
         }
     }
-    for (auto &elem : entities.enemies){
-        if (elem.get_state() != EnemyState::dead){
+    for (auto &elem : entities.enemies) {
+        if (elem.get_state() != EnemyState::dead) {
             target.draw(elem.enemySprite);
         }
     }

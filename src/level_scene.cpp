@@ -43,7 +43,7 @@ void LevelScene::handleInput(sf::Event &event) {
         if (event.key.code == sf::Keyboard::Escape) {
             pauseState.isPaused = !pauseState.isPaused;
             return;
-        }else if (event.key.code == sf::Keyboard::M) {
+        } else if (event.key.code == sf::Keyboard::M) {
             SceneManager::changeScene(std::make_unique<MainMenuScene>());
             return;
         }
@@ -56,8 +56,7 @@ void LevelScene::updateSceneSize() {
 
     pauseButton.setPosition(20, 20);
     Game::soundButton.setPosition(
-        pauseButton.getPosition().x + pauseButtonPicture.getSize().x + 20,
-        20
+        pauseButton.getPosition().x + pauseButtonPicture.getSize().x + 20, 20
     );
 }
 
@@ -69,7 +68,7 @@ void LevelScene::update(sf::Time &dTime) {
         loseState.update(dTime);
         return;
     }
-    
+
     if (player.get_active_lives() == 0) {
         loseState.isLose = true;
         loseState.timer.restart();
@@ -85,14 +84,14 @@ void LevelScene::update(sf::Time &dTime) {
     // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
     answer answer_ = level.entities.update(nextPositionCollider, movement);
-    if (answer_.lose_life){
+    if (answer_.lose_life) {
         player.lose_life();
     }
     player.isGrounded = answer_.isCollidingWithFloor;
-    if(!answer_.isCollidingWithWall){
+    if (!answer_.isCollidingWithWall) {
         player.move(answer_.movement_x, 0);
     }
-    if(!answer_.isCollidingWithFloor){
+    if (!answer_.isCollidingWithFloor) {
         player.move(0, answer_.movement_y);
     }
 }
@@ -196,7 +195,7 @@ LoseState::LoseState() {
 
     get_texture_from_file("pay_resume_button.png", payResumeButtonPicture);
     payResumeButton.setTexture(payResumeButtonPicture);
-    
+
     get_texture_from_file("HSEcoin.png", coinTexture);
     coin.setTexture(coinTexture);
     coin.setTextureRect({0, 0, 16, 16});
@@ -217,7 +216,7 @@ LoseState::LoseState() {
     timerText.setCharacterSize(30);
     timerText.setFillColor(sf::Color::Black);
     timerText.setString("Time left: " + std::to_string(loseStateTime));
-    
+
     updateSceneSize();
 }
 
@@ -226,7 +225,9 @@ void LoseState::update(sf::Time &dTime) {
     timerText.setString("Time left: " + std::to_string(timeLeft));
 
     if (timer.getElapsedTime().asSeconds() >= loseStateTime) {
-        super_hse::SceneManager::changeScene(std::make_unique<super_hse::LoseScene>());
+        super_hse::SceneManager::changeScene(
+            std::make_unique<super_hse::LoseScene>()
+        );
     }
 }
 
@@ -249,7 +250,7 @@ void LoseState::handleInput(sf::Event &event) {
                 int resumeCost = 5;
                 bool success = buyResume(Game::player_id, resumeCost);
                 if (success) {
-                //     SceneManager::changeScene(std::make_unique<LevelScene>(0));
+                    //     SceneManager::changeScene(std::make_unique<LevelScene>(0));
                     isLose = false;
                     return;
                 } else {
@@ -283,6 +284,5 @@ void LoseState::updateSceneSize() {
         (Game::windowHeight - timerText.getGlobalBounds().height) / 2 + 100
     );
 }
-
 
 }  // namespace super_hse

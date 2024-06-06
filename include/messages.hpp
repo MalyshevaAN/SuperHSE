@@ -3,10 +3,9 @@
 
 #include <SFML/Network.hpp>
 
-namespace super_hse{
+namespace super_hse {
 
-    
-struct query{
+struct query {
     float nextPositionColliderLeft{};
     float nextPositionColliderTop{};
     float nextPositionColliderWidth{};
@@ -21,14 +20,14 @@ struct query{
     void get_query_from_packet(sf::Packet &packet);
 };
 
-struct answer{
+struct answer {
     bool isCollidingWithWall{};
     bool isCollidingWithFloor{};
     float movement_x{};
     float movement_y{};
     float x_partner{};
     float y_partner{};
-    int skin_id_partner=0;
+    int skin_id_partner = 0;
     int skin_col_partner{};
     int skin_row_partner{};
     bool lose_life = false;
@@ -45,7 +44,6 @@ struct answer{
     // add information about enemies, coins, states
 };
 
-
-}
+}  // namespace super_hse
 
 #endif

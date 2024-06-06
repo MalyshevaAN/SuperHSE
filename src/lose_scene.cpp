@@ -51,7 +51,6 @@ void LoseScene::handleInput(sf::Event &event) {
             if (payResume.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                
             }
         }
     }

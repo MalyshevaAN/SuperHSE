@@ -59,7 +59,6 @@ public:
     int getCurrentFrameColumn();
     int getCurrentFrameRow();
     int getCurrentSkinId();
-
 };
 
 }  // namespace super_hse

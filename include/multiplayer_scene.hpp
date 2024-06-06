@@ -1,11 +1,11 @@
 #ifndef MULTILEVEL_SCENE_HPP_
 #define MULTILEVEL_SCENE_HPP_
 
-#include "scene.hpp"
-#include "client.hpp"
 #include <map>
+#include "client.hpp"
 #include "level_info.hpp"
 #include "player_icon.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -15,9 +15,8 @@ private:
     Player player;
     Player_icon partner;
     LevelInfo info;
-    Level level; 
+    Level level;
     client current_client{};
-
 
     sf::Texture waitForPartnerTexture;
     sf::Texture serverIsUnavailableTexture;
@@ -29,12 +28,15 @@ private:
     const sf::Color windowFillColorWait = sf::Color(154, 217, 234);
 
     static inline std::map<int, std::string> storage = {
-        {1, "/assets/files/multi_level.txt"}
-    };
+        {1, "/assets/files/multi_level.txt"}};
 
 public:
     MultiLevelScene() = default;
-    MultiLevelScene(const std::string &serverIp_, const int serverPort_, const int level_number_);
+    MultiLevelScene(
+        const std::string &serverIp_,
+        const int serverPort_,
+        const int level_number_
+    );
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;
