@@ -25,6 +25,15 @@ sudo apt-get install libsfml-dev
 sudo apt-get install sqlite3 libsqlite3-dev
 ```
 
+- CryptoPP
+    - скачать репозиторий: https://github.com/weidai11/cryptopp
+    -установить на wsl рядом с проектом с помощью:
+    ```
+    sudo apt-get install libcrypto++-dev libcrypto++-doc libcrypto++-utils
+    make
+    sudo make install
+    ```
+
 - LDtkLoader
     - скачать репозиторий: https://github.com/Madour/LDtkLoader
     - установить на wsl с помощью:
