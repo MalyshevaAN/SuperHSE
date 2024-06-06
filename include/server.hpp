@@ -32,12 +32,12 @@ struct player_info {
     int skin_id = 0;
     int skin_col = 0;
     int skin_row = 11;
+    int socket_number = 0;
 };
 
 class server {
     sf::IpAddress serverIp;
-    Port serverPort1;
-    Port serverPort2;
+    std::vector<Port> ports;
     sf::TcpListener listener1;
     sf::TcpListener listener2;
     sf::TcpSocket socket1;

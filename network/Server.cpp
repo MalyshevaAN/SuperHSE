@@ -12,34 +12,74 @@
 
 namespace super_hse{
 
-server::server(): serverIp(sf::IpAddress::getLocalAddress()), serverPort1({8000, true}), serverPort2({8001, true}){
+server::server(): serverIp(sf::IpAddress::getLocalAddress()){
+    ports.resize(2);
+    ports[0] = {8000, true};
+    ports[1] = {8001, true};
     std::cout << "Server Address " << sf::IpAddress::getLocalAddress().toString() << '\n';
-    std::cout << "Server is listening on port " << serverPort1.number << '\n';
-    std::cout << "Server is listening on port " << serverPort2.number << '\n';
+    std::cout << "Server is listening on port " << ports[0].number << '\n';
+    std::cout << "Server is listening on port " << ports[1].number << '\n';
     std::filesystem::path p(std::filesystem::current_path());
     entities.init(p.parent_path().string() + "/assets/files/multi_level.txt");
     players.resize(2);
+    listener1.listen(ports[0].number);
+    listener2.listen(ports[1].number);
 };
 
 void server::waitForConnection(int player){
-    sf::Packet server_state;
     if (player == 1){
-        listener1.listen(serverPort1.number);
-        listener1.accept(socket1);
-        state = SERVER_STATE::WAIT_FOR_SECOND_CONNECTION;
-        server_state << 1;
-        socket1.send(server_state);
-
+        if (listener1.accept(socket1) == sf::Socket::Done){
+            sf::Packet server_state;
+            server_state << 1;
+            players[0].socket_number = 0;
+            ports[0].is_available = false;
+            socket1.send(server_state);
+            std::cerr << "Get new client!\n";
+            std::cerr << server_state.getData() << '\n';
+            state = SERVER_STATE::WAIT_FOR_SECOND_CONNECTION;
+            server_state.clear();
+        }else if(listener2.accept(socket2) == sf::Socket::Done){
+            sf::Packet server_state;
+            server_state << 1;
+            players[0].socket_number = 1;
+            ports[1].is_available = false;
+            socket2.send(server_state);
+            std::cerr << "Get new client!\n";
+            std::cerr << server_state.getData() << '\n';
+            state = SERVER_STATE::WAIT_FOR_SECOND_CONNECTION;
+            server_state.clear();
+        }
     } 
-    if (player == 2){
-        listener2.listen(serverPort2.number);
-        listener2.accept(socket2);
-        state = SERVER_STATE::CONNECTED;
-        server_state << 2;
-        socket1.send(server_state);
-        socket2.send(server_state);
+    else if (player == 2){
+        if (listener1.accept(socket1) == sf::Socket::Done && ports[0].is_available == true){
+            sf::Packet server_state;
+            server_state << 2;
+            players[1].socket_number = 0;
+            ports[0].is_available = false;
+            std::cerr << "Get new client!\n";
+            std::cerr << server_state.getData() << '\n';
+            state = SERVER_STATE::CONNECTED;
+            socket1.send(server_state);
+            socket2.send(server_state);
+            listener1.setBlocking(true);
+            listener2.setBlocking(true);
+            server_state.clear();
+        } else if (listener2.accept(socket2) == sf::Socket::Done && ports[1].is_available == true){
+            sf::Packet server_state;
+            server_state << 2;
+            players[1].socket_number = 1;
+            ports[1].is_available = false;
+            std::cerr << "Get new client!\n";
+            std::cerr << server_state.getData() << '\n';
+            state = SERVER_STATE::CONNECTED;
+            socket1.send(server_state);
+            socket2.send(server_state);
+            listener1.setBlocking(true);
+            listener2.setBlocking(true);
+            server_state.clear();
+        }
     }
-    std::cerr << "Get new Client!\n";
+
 }
 
 void server::update_player_state_and_send(query &query_, answer &answer_, sf::FloatRect &nextPositionCollider, int index){
@@ -64,16 +104,15 @@ void server::update_player_state_and_send(query &query_, answer &answer_, sf::Fl
         answer_.killed_enemy_index_partner = players[partner_index].killed_enemy_id;
         sf::Packet sendPacket;
         answer_.fill_answer(sendPacket);
-        if (index == 0){
+        if (players[index].socket_number == 0){
             socket1.send(sendPacket);
-        }else {
+        }else if (players[index].socket_number == 1){
             socket2.send(sendPacket);
         }
 }
 
 void server::updateScene(int num){
     bool is_connected = true;
-    std::cerr << "jkjk" << '\n';
     while(is_connected){
         if (socket1.getRemoteAddress() == sf::IpAddress::None
         || socket2.getRemoteAddress() == sf::IpAddress::None){
@@ -88,7 +127,7 @@ void server::updateScene(int num){
             continue;
         }
         sf::Packet getPacket;
-        if (num == 0){
+        if (players[num].socket_number == 0){
             socket1.receive(getPacket);
         }else{
             socket2.receive(getPacket);
@@ -115,15 +154,16 @@ void server::run() {
     while (true) {
         switch (state) {
             case SERVER_STATE::WAIT_FOR_FIRST_CONNECTION:
-                std::cerr << "1\n";
+                listener1.setBlocking(false);
+                listener2.setBlocking(false);
+                ports[0].is_available = true;
+                ports[1].is_available = true;
                 waitForConnection(1);
                 break;
             case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
                 waitForConnection(2);
-                std::cerr << "2\n";
                 break;  
             case SERVER_STATE::CONNECTED:
-                std::cerr << game_started << '\n';
                 if (!game_started){
                     std::thread th1(&server::updateSceneWrapper, this, 0);
                     std::thread th2(&server::updateSceneWrapper, this, 1);
