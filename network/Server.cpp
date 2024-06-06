@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <iostream>
 #include <thread>
+#include <atomic>
 #include "cstring"
 #include "game.hpp"
 #include "messages.hpp"
@@ -94,26 +95,32 @@ void server::updateSceneWrapper(server *serverObj, int num) {
 }
 
 void server::run() {
+    std::atomic<bool> isWindowLoopThreadFinished(false);
+
     std::thread windowLoopThread([&]() {
         serverInfoScene.init();
         // вообще цикл внутри run, но можно вынести его сюда 
         // чтобы было удобно обновлять доступность портов и передавать обновления
         serverInfoScene.run();
+        isWindowLoopThreadFinished = true;
     });
 
     std::thread stateSwitchThread([&]() {
-        switch (state) {
-            case SERVER_STATE::WAIT_FOR_FIRST_CONNECTION:
-                waitForConnection(1);
-                break;
-            case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
-                waitForConnection(2);
-            case SERVER_STATE::CONNECTED:
-                // updateScene();
-                std::thread th1(updateSceneWrapper, this, 1);
-                std::thread th2(updateSceneWrapper, this, 2);
-                th1.join();
-                th2.join();
+        // ЛАЖА он зависает в waitForConnection и не видит что окно закрылось
+        while (!isWindowLoopThreadFinished) {
+            switch (state) {
+                case SERVER_STATE::WAIT_FOR_FIRST_CONNECTION:
+                    waitForConnection(1);
+                    break;
+                case SERVER_STATE::WAIT_FOR_SECOND_CONNECTION:
+                    waitForConnection(2);
+                case SERVER_STATE::CONNECTED:
+                    // updateScene();
+                    std::thread th1(updateSceneWrapper, this, 1);
+                    std::thread th2(updateSceneWrapper, this, 2);
+                    th1.join();
+                    th2.join();
+            }
         }
     });
 
