@@ -7,7 +7,7 @@
 
 namespace super_hse {
 
-const float GRAVITY = 250.f;
+const float GRAVITY = 300.f;
 
 Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
@@ -37,7 +37,7 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         // TODO прыжок
         if (isGrounded) {
-            verticalVelocity -= 270;
+            verticalVelocity -= 350;
             isGrounded = false;
         }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {

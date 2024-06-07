@@ -28,6 +28,7 @@ Game::Game()
     }
     music.setVolume(50);
     music.play();
+    music.setLoop(true);
 
     get_texture_from_file("sound_off.png", muteSoundButtonTexture);
     get_texture_from_file("sound_on.png", unmuteSoundButtonTexture);
