@@ -24,7 +24,6 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     // он не мог прыгнуть, уже находясь в прыжке.
 
     sf::Vector2f movement(0.f, 0.f);
-    // TODO: одновременное нажатие клавиш (прыжок + движение влево/вправо)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
         state = PlayerState::WALK_LEFT;
@@ -36,7 +35,6 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
         currentFrameRow = 11;
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        // TODO прыжок
         if (isGrounded) {
             verticalVelocity -= JUMP_SPEED;
             isGrounded = false;

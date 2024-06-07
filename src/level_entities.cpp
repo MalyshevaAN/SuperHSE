@@ -92,7 +92,7 @@ void level_entities::check_collider_collision(sf::FloatRect &nextPositionCollide
         if (nextPositionCollider.intersects(entity.brickRect, intersect)) {
             // проверить тип объекта, с кем пересеклись (в данном случае -
             // стены/пол)
-            // TODO - добавить проверку на тип объекта (тут нужна Настя и её
+            // - добавить проверку на тип объекта (тут нужна Настя и её
             // енамы)
 
             // проверка что пересекаемся с полом

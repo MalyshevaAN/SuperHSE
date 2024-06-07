@@ -250,7 +250,6 @@ void LoseState::handleInput(sf::Event &event) {
             if (payResumeButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                // TODO норм возвращение в игру
 
                 int resumeCost = 5;
                 bool success = buyResume(Game::player_id, resumeCost);
