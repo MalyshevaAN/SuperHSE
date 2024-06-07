@@ -9,8 +9,14 @@
 #include "cstring"
 #include <algorithm>
 #include <thread>
+#include <atomic>
 
 namespace super_hse{
+
+std::pair<int, int> getPorts() {
+    // вернуть свободные порты сервера или что-то такое
+    return {8000, 8001};
+}
 
 server::server(): serverIp(sf::IpAddress::getLocalAddress()){
     ports.resize(2);
@@ -133,14 +139,15 @@ void server::updateScene(int num){
             struct query query_;
             query_.get_query_from_packet(getPacket);
             sf::FloatRect nextPositionCollider(query_.nextPositionColliderLeft, query_.nextPositionColliderTop, query_.nextPositionColliderWidth, query_.nextPositionColliderHeight);
+            std::cerr << nextPositionCollider.top << ' ' << num << '\n' ;
             sf::Vector2f movement(query_.movement_x, query_.movement_y);
             for (auto elem : entities.enemies){
                 elem.change_pos();
             }
             answer answer_ = entities.update(nextPositionCollider, movement);
+            std::cerr << nextPositionCollider.top << ' ' << num << '\n' ;
             std::unique_lock l(m);
             update_player_state_and_send(query_, answer_, nextPositionCollider, num);
-            l.unlock();
     }
 }
 
@@ -149,8 +156,21 @@ void server::updateSceneWrapper(server* serverObj, int num){
 }
 
 void server::run() {
-    while (true) {
-        switch (state) {
+    std::atomic<bool> isWindowLoopThreadFinished(false);
+
+    std::thread windowLoopThread([&]() {
+        serverInfoScene.init();
+        // вообще цикл внутри run, но можно вынести его сюда 
+        // чтобы было удобно обновлять доступность портов и передавать обновления
+        serverInfoScene.run();
+        isWindowLoopThreadFinished = true;
+        exit(0);
+    });
+
+    std::thread stateSwitchThread([&]() {
+        // ЛАЖА он зависает в waitForConnection и не видит что окно закрылось
+        while (!isWindowLoopThreadFinished) {
+            switch (state) {
             case SERVER_STATE::WAIT_FOR_FIRST_CONNECTION:
                 listener1.setBlocking(false);
                 listener2.setBlocking(false);
@@ -172,9 +192,13 @@ void server::run() {
 
                 break;
         }
-    }
+        }
+    });
+
+    windowLoopThread.join();
+    stateSwitchThread.join();
+}
 }
 
-}
 
 #endif
