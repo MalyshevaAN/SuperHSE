@@ -2,11 +2,11 @@
 #define LEVEL_INFO_CPP
 
 #include "level_info.hpp"
+#include <filesystem>
 #include <fstream>
 #include "hse_utils.hpp"
-#include <filesystem>
 
-namespace super_hse{
+namespace super_hse {
 LevelInfo::LevelInfo(std::string file) {
     std::string line;
     std::ifstream in(file);
@@ -46,6 +46,6 @@ LevelsStorage::LevelsStorage() {
     storage.push_back(std::move(level1));
     storage.push_back(std::move(level2));
 }
-}
+}  // namespace super_hse
 
 #endif

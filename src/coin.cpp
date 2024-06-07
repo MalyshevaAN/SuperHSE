@@ -40,7 +40,7 @@ void coin::disappear() {
             coin_sprite.getPosition().x, coin_sprite.getPosition().y - 2
         ));
         height_change += 0.1;
-    }else {
+    } else {
         setStatus(CoinStatus::dead);
     }
 }

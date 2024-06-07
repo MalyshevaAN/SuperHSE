@@ -1,8 +1,8 @@
 #ifndef LEVEL_SCENE_HPP_
 #define LEVEL_SCENE_HPP_
 
-#include "scene.hpp"
 #include "level_info.hpp"
+#include "scene.hpp"
 
 namespace super_hse {
 
@@ -52,7 +52,8 @@ private:
 
 public:
     LoseState();
-    bool isLose = false;
+    bool isLose = false;    
+    int level_number;
     bool isPaid = false;
     sf::Clock timer;
 
@@ -68,7 +69,7 @@ private:
     Player player;
     LevelsStorage storage;
     int levelNumber;
-    Level level; 
+    Level level;
 
     PauseState pauseState;
     sf::Texture pauseButtonPicture;
