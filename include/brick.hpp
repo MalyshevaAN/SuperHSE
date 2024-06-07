@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-namespace super_hse{
-struct brick{
+namespace super_hse {
+struct brick {
     sf::Sprite brick_sprite;
     sf::FloatRect brickRect;
 
@@ -13,8 +13,14 @@ struct brick{
     static inline sf::Texture floorTexture;
 
     static void init();
-    brick(float left, float top, float width, float height, const std::string textureName);
+    brick(
+        float left,
+        float top,
+        float width,
+        float height,
+        const std::string textureName
+    );
 };
-}
+}  // namespace super_hse
 
 #endif

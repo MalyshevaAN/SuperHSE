@@ -17,6 +17,7 @@ enum class PlayerState { STAND, WALK_LEFT, WALK_RIGHT, JUMP };
 class Player {
 private:
     sf::Texture playerPicture;
+    int skin_id;
     sf::Sprite sprite;
 
     Position position = {200, 10};
@@ -55,6 +56,9 @@ public:
     Position get_position();
     bool isGrounded = false;
 
+    int getCurrentFrameColumn();
+    int getCurrentFrameRow();
+    int getCurrentSkinId();
 };
 
 }  // namespace super_hse

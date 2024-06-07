@@ -58,38 +58,40 @@ void Game::run() {
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
+            if (window.hasFocus()) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                }
 
-            if (event.type == sf::Event::Resized) {
-                windowWidth = window.getSize().x;
-                windowHeight = window.getSize().y;
+                if (event.type == sf::Event::Resized) {
+                    windowWidth = window.getSize().x;
+                    windowHeight = window.getSize().y;
 
-                const sf::FloatRect visibleArea(
-                    0, 0, event.size.width, event.size.height
-                );
-                window.setView(sf::View(visibleArea));
+                    const sf::FloatRect visibleArea(
+                        0, 0, event.size.width, event.size.height
+                    );
+                    window.setView(sf::View(visibleArea));
 
-                SceneManager::updateSceneSize();
-            }
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left &&
-                    soundButton.getGlobalBounds().contains(
-                        event.mouseButton.x, event.mouseButton.y
-                    )) {
-                    isSoundOn = !isSoundOn;
-                    if (isSoundOn) {
-                        music.play();
-                        soundButton.setTexture(unmuteSoundButtonTexture);
-                    } else {
-                        music.pause();
-                        soundButton.setTexture(muteSoundButtonTexture);
+                    SceneManager::updateSceneSize();
+                }
+                if (event.type == sf::Event::MouseButtonPressed) {
+                    if (event.mouseButton.button == sf::Mouse::Left &&
+                        soundButton.getGlobalBounds().contains(
+                            event.mouseButton.x, event.mouseButton.y
+                        )) {
+                        isSoundOn = !isSoundOn;
+                        if (isSoundOn) {
+                            music.play();
+                            soundButton.setTexture(unmuteSoundButtonTexture);
+                        } else {
+                            music.pause();
+                            soundButton.setTexture(muteSoundButtonTexture);
+                        }
                     }
                 }
-            }
 
-            SceneManager::handleInput(event);
+                SceneManager::handleInput(event);
+            }
         }
 
         sf::Time dTime = clock.restart();

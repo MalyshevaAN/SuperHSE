@@ -1,12 +1,11 @@
 #ifndef LEVEL_INFO_HPP
 #define LEVEL_INFO_HPP
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
-
-namespace super_hse{
+namespace super_hse {
 struct LevelInfo;
 
 struct LevelsStorage {
@@ -28,6 +27,6 @@ struct LevelInfo {
     friend LevelsStorage;
 };
 
-}
+}  // namespace super_hse
 
 #endif

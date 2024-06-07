@@ -2,37 +2,49 @@
 #define MULTILEVEL_CPP
 
 #include "multiplayer_scene.hpp"
-#include "messages.hpp"
 #include "game.hpp"
 #include "main_menu_scene.hpp"
+#include "messages.hpp"
+#include "lose_scene.hpp"
 
-
-namespace super_hse{
-MultiLevelScene::MultiLevelScene(const std::string &serverIp_, const int serverPort_, const int level_number_){
-    std::cerr << serverIp_ << serverPort_ <<'\n';
-    current_client.init(serverIp_, serverPort_); // в будущем данные, введенные польлзователем
-    try{
+namespace super_hse {
+MultiLevelScene::MultiLevelScene(
+    const std::string &serverIp_,
+    const int serverPort_,
+    const int level_number_
+) {
+    current_client.init(
+        serverIp_, serverPort_
+    );  // в будущем данные, введенные польлзователем
+    try {
         std::filesystem::path p(std::filesystem::current_path());
-        std::string filename = p.parent_path().string() + storage.at(level_number_);
+        std::string filename =
+            p.parent_path().string() + storage.at(level_number_);
         info = LevelInfo(filename);
         level.ldtk_filename = info.filename;
         level.project.loadFromFile(info.filename);
         level.init(
-            info.tileLayerName,
-            info.entityLayerName,
-            info.colliderName,
+            info.tileLayerName, info.entityLayerName, info.colliderName,
             level_number_
         );
-    }catch (std::out_of_range &e){
+    } catch (std::out_of_range &e) {
         throw noSuchLevel(std::to_string(level_number_));
     }
     get_texture_from_file("waiting_for_connection.png", waitForPartnerTexture);
     waitForPartner.setTexture(waitForPartnerTexture);
     waitForPartner.setPosition(Game::windowWidth / 8, Game::windowHeight / 2);
     waitForPartner.setScale(0.5, 0.5);
+    get_texture_from_file(
+        "server_is_unavailable.png", serverIsUnavailableTexture
+    );
+    serverIsUnavailable.setTexture(serverIsUnavailableTexture);
+    serverIsUnavailable.setPosition(
+        Game::windowWidth / 6, Game::windowHeight / 2
+    );
+    serverIsUnavailable.setScale(0.5, 0.5);
 }
 
-void MultiLevelScene::handleInput(sf::Event &event){
+void MultiLevelScene::handleInput(sf::Event &event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (Game::backButton.getGlobalBounds().contains(
@@ -45,48 +57,77 @@ void MultiLevelScene::handleInput(sf::Event &event){
     }
 }
 
-void MultiLevelScene::update(sf::Time &dTime){
-    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
-        level.update(dTime, player1.get_position(), player1.get_active_lives());
-        player1.update(dTime);
-        sf::FloatRect nextPositionCollider = player1.getCollider();
-        sf::Vector2f movement = player1.calcMovement(dTime);
+void MultiLevelScene::update(sf::Time &dTime) {
+    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
+        level.update(dTime, player.get_position(), player.get_active_lives());
+        player.update(dTime);
+        if (player.get_active_lives() == 0){
+            // send partner your loss
+            SceneManager::changeScene(std::make_unique<LoseScene>('m', 0));
+        }
+        sf::FloatRect nextPositionCollider = player.getCollider();
+        sf::Vector2f movement = player.calcMovement(dTime);
         nextPositionCollider.left += movement.x;
         nextPositionCollider.top += movement.y;
-        query query_({nextPositionCollider.left, nextPositionCollider.top, nextPositionCollider.width, nextPositionCollider.height, movement.x, movement.y});
+        query query_(
+            {nextPositionCollider.left, nextPositionCollider.top,
+             nextPositionCollider.width, nextPositionCollider.height,
+             movement.x, movement.y, player.getCurrentSkinId(),
+             player.getCurrentFrameColumn(), player.getCurrentFrameRow()}
+        );
         answer answer_ = current_client.send(query_);
-        player1.isGrounded = answer_.isCollidingWithFloor;
-        std::cout << answer_.movement_x << ' ' << answer_.movement_y <<'\n';
-        if(!answer_.isCollidingWithWall){
-            player1.move(movement.x, 0);
-        }
-        if(!answer_.isCollidingWithFloor){
-            player1.move(0, movement.y);
-        }
-        if(answer_.gathered_coin_index != -1){
-            level.entities.coins[answer_.gathered_coin_index].disable();
-        }
-        if (answer_.killed_enemy_index != -1){
-            level.entities.enemies[answer_.killed_enemy_index].disable();
-        }
-        if(answer_.run_into_enemy_index != -1){
-            level.entities.enemies[answer_.run_into_enemy_index].unable();
-        }
-        if(answer_.lose_life){
-            player1.lose_life();
+        if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
+            partner.update(
+                answer_.x_partner, answer_.y_partner, answer_.skin_id_partner,
+                answer_.skin_col_partner, answer_.skin_row_partner
+            );
+            partner.changePos();
+            player.isGrounded = answer_.isCollidingWithFloor;
+            if (!answer_.isCollidingWithWall) {
+                player.move(answer_.movement_x, 0);
+            }
+            if (!answer_.isCollidingWithFloor) {
+                player.move(0, answer_.movement_y);
+            }
+            if (answer_.gathered_coin_index != -1) {
+                level.entities.coins[answer_.gathered_coin_index].disable();
+            }
+            if (answer_.gathered_coin_index_partner != -1) {
+                level.entities.coins[answer_.gathered_coin_index_partner]
+                    .disable();
+            }
+            if (answer_.killed_enemy_index != -1) {
+                level.entities.enemies[answer_.killed_enemy_index].disable();
+            }
+            if (answer_.killed_enemy_index_partner != -1) {
+                level.entities.enemies[answer_.killed_enemy_index_partner]
+                    .disable();
+            }
+            if (answer_.run_into_enemy_index != -1) {
+                level.entities.enemies[answer_.run_into_enemy_index].unable();
+            }
+            if (answer_.lose_life) {
+                player.lose_life();
+            }
         }
     }
 }
 
-void MultiLevelScene::draw(sf::RenderWindow &window){
-    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY){
+void MultiLevelScene::draw(sf::RenderWindow &window) {
+    if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
         window.clear(windowFillColorPlay);
         level.render(window, info.tileLayerName);
-        player1.draw(window);
-    }else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED){
+        player.draw(window);
+        partner.draw(window);
+    } else if (current_client.state == CONNECTION_STATE::IS_NOT_CONNECTED) {
+        sf::View view;
+        view.setSize(Game::windowWidth, Game::windowHeight);
+        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
         window.clear(windowFillColorWait);
+        window.setView(view);
         window.draw(Game::backButton);
-    }else if (current_client.state == CONNECTION_STATE::WAITING_FOR_PARTNER){
+        window.draw(serverIsUnavailable);
+    } else if (current_client.state == CONNECTION_STATE::WAITING_FOR_PARTNER) {
         window.clear(windowFillColorWait);
         current_client.check();
         window.draw(waitForPartner);
@@ -94,11 +135,9 @@ void MultiLevelScene::draw(sf::RenderWindow &window){
     window.display();
 }
 
-
-void MultiLevelScene::updateSceneSize(){
-
+void MultiLevelScene::updateSceneSize() {
 }
 
-}
+}  // namespace super_hse
 
 #endif
