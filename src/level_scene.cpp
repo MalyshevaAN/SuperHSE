@@ -259,9 +259,6 @@ void LoseState::handleInput(sf::Event &event) {
                     isLose = false;
                     balance.setString(std::to_string(getBalance(Game::player_id)));
                     isPaid = true;
-                    return;
-                } else {
-                    std::cerr << "Oops... Go and earn more HSEcoins!\n";
                 }
                 return;
             }
