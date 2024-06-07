@@ -57,7 +57,6 @@ void server::waitForConnection(int player){
             players[1].socket_number = 0;
             ports[0].is_available = false;
             std::cerr << "Get new client!\n";
-            std::cerr << server_state.getData() << '\n';
             state = SERVER_STATE::CONNECTED;
             socket1.send(server_state);
             socket2.send(server_state);
@@ -70,7 +69,6 @@ void server::waitForConnection(int player){
             players[1].socket_number = 1;
             ports[1].is_available = false;
             std::cerr << "Get new client!\n";
-            std::cerr << server_state.getData() << '\n';
             state = SERVER_STATE::CONNECTED;
             socket1.send(server_state);
             socket2.send(server_state);

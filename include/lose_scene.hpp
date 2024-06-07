@@ -17,10 +17,13 @@ private:
     sf::Sprite background;
     sf::Sprite payResume;
 
+    char state;
+    int level_number;
+
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public:
-    LoseScene();
+    LoseScene(char state_, int level_number_);
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;

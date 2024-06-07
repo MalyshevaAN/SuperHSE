@@ -36,6 +36,7 @@ void LevelScene::handleInput(sf::Event &event) {
         return;
     } else if (loseState.isLose) {
         loseState.handleInput(event);
+        loseState.level_number = level.level_number;
         return;
     }
 
@@ -226,7 +227,7 @@ void LoseState::update(sf::Time &dTime) {
 
     if (timer.getElapsedTime().asSeconds() >= loseStateTime) {
         super_hse::SceneManager::changeScene(
-            std::make_unique<super_hse::LoseScene>()
+            std::make_unique<super_hse::LoseScene>('s', level_number)
         );
     }
 }

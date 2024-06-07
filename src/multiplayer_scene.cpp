@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include "main_menu_scene.hpp"
 #include "messages.hpp"
+#include "lose_scene.hpp"
 
 namespace super_hse {
 MultiLevelScene::MultiLevelScene(
@@ -60,6 +61,10 @@ void MultiLevelScene::update(sf::Time &dTime) {
     if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
         level.update(dTime, player.get_position(), player.get_active_lives());
         player.update(dTime);
+        if (player.get_active_lives() == 0){
+            // send partner your loss
+            SceneManager::changeScene(std::make_unique<LoseScene>('m', 0));
+        }
         sf::FloatRect nextPositionCollider = player.getCollider();
         sf::Vector2f movement = player.calcMovement(dTime);
         nextPositionCollider.left += movement.x;

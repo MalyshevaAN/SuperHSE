@@ -53,6 +53,7 @@ private:
 public:
     LoseState();
     bool isLose = false;
+    int level_number;
     sf::Clock timer;
 
     void update(sf::Time &dTime);
