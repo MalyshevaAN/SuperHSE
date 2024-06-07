@@ -3,8 +3,8 @@
 
 #include "level_entities.hpp"
 #include <LDtkLoader/Project.hpp>
-#include "hse_utils.hpp"
-
+// #include "hse_utils.hpp"
+#include "hse_texture.hpp"
 namespace super_hse {
 
 void level_entities::init(std::string description_file) {
