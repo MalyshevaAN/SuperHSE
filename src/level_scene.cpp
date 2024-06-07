@@ -255,6 +255,7 @@ void LoseState::handleInput(sf::Event &event) {
                 bool success = buyResume(Game::player_id, resumeCost);
                 if (success) {
                     isLose = false;
+                    balance.setString(std::to_string(getBalance(Game::player_id)));
                     isPaid = true;
                     return;
                 } else {

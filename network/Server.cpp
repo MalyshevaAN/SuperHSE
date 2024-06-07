@@ -103,6 +103,7 @@ void server::run() {
         // чтобы было удобно обновлять доступность портов и передавать обновления
         serverInfoScene.run();
         isWindowLoopThreadFinished = true;
+        exit(0);
     });
 
     std::thread stateSwitchThread([&]() {
