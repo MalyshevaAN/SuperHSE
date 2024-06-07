@@ -18,7 +18,7 @@ include_directories(super_hse include)
 include_directories(../cryptopp-master)
 
 set(SRC_LIST_SERVER src/sql.cpp src/scene.cpp  src/coin.cpp src/enemy.cpp 
- network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp network/game_server.cpp network/Server.cpp src/messages.cpp src/player_icon.cpp src/hse_texture.cpp src/hse_exceptions.cpp)
+ network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp network/game_server.cpp network/Server.cpp src/messages.cpp src/player_icon.cpp src/hse_texture.cpp src/hse_exceptions.cpp  network/server_info_scene.cpp)
 
  link_directories(${CMAKE_SOURCE_DIR}/lib)
  add_executable(super_hse ${SRC_LIST})
