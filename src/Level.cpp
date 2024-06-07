@@ -116,7 +116,7 @@ void Level::init(
         {(float)Game::windowWidth / 10, (float)Game::windowHeight / 20}
     );
     coinCounterBack.setPosition(
-        {(float)(Game::windowWidth / 1.3), (float)Game::windowHeight / 40}
+        {(float)(Game::windowWidth / 1.3), (float)(-Game::windowHeight / 7)}
     );
     coinCounterBack.setFillColor(sf::Color::White);
     coinCounterFront.setPosition(coinCounterBack.getPosition());
@@ -126,7 +126,7 @@ void Level::init(
         sf::Sprite new_life;
         new_life.setTexture(textures.at("life"));
         new_life.setPosition(
-            Game::windowWidth / 1.1 + i * 35, Game::windowHeight / 40
+            Game::windowWidth / 1.1 + i * 35,(float)(-Game::windowHeight / 7)
         );
         lives.push_back(new_life);
     }
