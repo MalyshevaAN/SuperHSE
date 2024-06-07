@@ -7,7 +7,8 @@
 
 namespace super_hse {
 
-const float GRAVITY = 250.f;
+const float GRAVITY = 450.f;
+const float JUMP_SPEED = 380.f;
 
 Player::Player() {
     const char *skinPath = getCurrentSkin(Game::player_id).c_str();
@@ -23,7 +24,6 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     // он не мог прыгнуть, уже находясь в прыжке.
 
     sf::Vector2f movement(0.f, 0.f);
-    // TODO: одновременное нажатие клавиш (прыжок + движение влево/вправо)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
         state = PlayerState::WALK_LEFT;
@@ -35,9 +35,8 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
         currentFrameRow = 11;
 
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        // TODO прыжок
         if (isGrounded) {
-            verticalVelocity -= 270;
+            verticalVelocity -= JUMP_SPEED;
             isGrounded = false;
         }
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {

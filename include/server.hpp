@@ -1,18 +1,22 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <iostream>
+#include <LDtkLoader/Project.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
-#include <string>
 #include <cstdlib>
+#include <iostream>
+#include <string>
 #include <vector>
-#include <LDtkLoader/Project.hpp>
+#include <utility>
 #include "level_entities.hpp"
+#include "server_info_scene.hpp"
 
-namespace super_hse{
+namespace super_hse {
 
-enum class SERVER_STATE{
+std::pair<int, int> getPorts();
+
+enum class SERVER_STATE {
     WAIT_FOR_FIRST_CONNECTION,
     WAIT_FOR_SECOND_CONNECTION,
     CONNECTED
@@ -29,13 +33,15 @@ class server {
     SERVER_STATE state = SERVER_STATE::WAIT_FOR_FIRST_CONNECTION;
     level_entities entities;
 
+    ServerInfoScene serverInfoScene;
+
 public:
     server();
     void run();
     void waitForConnection(int player);
-    static void updateSceneWrapper(server* serverObj, int num);
+    static void updateSceneWrapper(server *serverObj, int num);
     void updateScene(int num);
 };
-}
+}  // namespace super_hse
 
 #endif
