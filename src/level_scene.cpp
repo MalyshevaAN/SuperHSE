@@ -249,11 +249,7 @@ void LoseState::handleInput(sf::Event &event) {
                 int resumeCost = 5;
                 bool success = buyResume(Game::player_id, resumeCost);
                 if (success) {
-                //     SceneManager::changeScene(std::make_unique<LevelScene>(0));
                     isLose = false;
-                    return;
-                } else {
-                    std::cerr << "Oops... Go and earn more HSEcoins!\n";
                 }
                 return;
             }

@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS "USERS" (
 );
 
 CREATE TABLE IF NOT EXISTS "ITEMS" (
-    "TYPE"	INTEGER NOT NULL,
     "ITEM_ID"	INTEGER NOT NULL UNIQUE,
     "ITEM_NAME"	TEXT NOT NULL,
     "COST"	INTEGER NOT NULL,
@@ -35,46 +34,46 @@ CREATE TABLE IF NOT EXISTS "LEVELS" (
     FOREIGN KEY("USER_ID") REFERENCES "USERS"("USER_ID")
 );
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Ivan Kalinin', 0, 'ivankalinin.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Ivan Kalinin', 0, 'ivankalinin.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Ivan Kalinin');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Mr. Khrabroff', 10, 'khrabrov.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Mr. Khrabroff', 10, 'khrabrov.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Khrabroff');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Mr. Antipoff', 10, 'antipov.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Mr. Antipoff', 10, 'antipov.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Mr. Antipoff');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Anna Gladkaya', 10, 'annaglad.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Anna Gladkaya', 10, 'annaglad.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Anna Gladkaya');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Egor', 10, 'egor2.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Egor', 10, 'egor2.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH") 
-SELECT 0, 'Sergey Kopel Kopeliovich', 10, 'kopel.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
+SELECT 'Sergey Kopel Kopeliovich', 10, 'kopel.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Sergey Kopel Kopeliovich');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
-SELECT 0, 'HSE Raven', 40, 'hse.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH")
+SELECT 'HSE Raven', 40, 'hse.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'HSE Raven');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
-SELECT 0, 'sasha red', 40, 'red.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH")
+SELECT 'sasha red', 40, 'red.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha red');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
-SELECT 0, 'sasha blue', 0, 'blue.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH")
+SELECT 'sasha blue', 0, 'blue.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha blue');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
-SELECT 0, 'sasha white', 0, 'white.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH")
+SELECT 'sasha white', 0, 'white.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha white');
 
-INSERT INTO "ITEMS" ("TYPE", "ITEM_NAME", "COST", "PATH")
-SELECT 0, 'sasha purple', 0, 'purple.png'
+INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH")
+SELECT 'sasha purple', 0, 'purple.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'sasha purple');
