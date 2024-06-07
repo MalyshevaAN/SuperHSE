@@ -23,11 +23,12 @@ Game::Game()
     window.setVerticalSyncEnabled(true);
 
     if (!music.openFromFile("../assets/audio/best_song.wav")) {
-        std::cerr << "Error loading font file best_song.wav" << '\n';
+        std::cerr << "Error loading audio file best_song.wav" << '\n';
         return;
     }
     music.setVolume(50);
     music.play();
+    music.setLoop(true);
 
     get_texture_from_file("sound_off.png", muteSoundButtonTexture);
     get_texture_from_file("sound_on.png", unmuteSoundButtonTexture);
@@ -38,7 +39,6 @@ Game::Game()
     const std::filesystem::path p = std::filesystem::current_path();
     const std::string texture_path =
         p.parent_path().string() + "/assets/images/logo2.png";
-
     if (!icon.loadFromFile(texture_path)) {
         std::cerr << "Error loading texture file logo2.png" << '\n';
     }

@@ -52,8 +52,9 @@ private:
 
 public:
     LoseState();
-    bool isLose = false;
+    bool isLose = false;    
     int level_number;
+    bool isPaid = false;
     sf::Clock timer;
 
     void update(sf::Time &dTime);

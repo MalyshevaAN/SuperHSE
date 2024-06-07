@@ -7,8 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(LDtkLoader 1.5.2)
 find_package(SQLite3)
 
-# set (CMAKE_PREFIX_PATH "/")
-# find_package(box2d REQUIRED)
 
 set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_scene.cpp src/wardrobe_scene.cpp
  src/main_menu_scene.cpp src/level_scene.cpp src/player.cpp src/Level.cpp 
@@ -17,18 +15,19 @@ set(SRC_LIST src/main.cpp src/sql.cpp src/game.cpp src/scene.cpp src/level_map_s
  src/input_box.cpp src/multiplayer_scene.cpp network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp src/multi_connect_scene.cpp src/messages.cpp src/player_icon.cpp src/hse_texture.cpp src/hse_exceptions.cpp)
 
 include_directories(super_hse include)
+include_directories(../cryptopp-master)
 
 set(SRC_LIST_SERVER src/sql.cpp src/scene.cpp  src/coin.cpp src/enemy.cpp 
  network/game_client.cpp src/level_entities.cpp src/brick.cpp src/level_info.cpp network/game_server.cpp network/Server.cpp src/messages.cpp src/player_icon.cpp src/hse_texture.cpp src/hse_exceptions.cpp)
 
-add_executable(super_hse ${SRC_LIST})
-target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio sfml-network ${SQLite3_LIBRARIES})
-
+ link_directories(${CMAKE_SOURCE_DIR}/lib)
+ add_executable(super_hse ${SRC_LIST})
+ target_link_libraries(super_hse LDtkLoader sfml-graphics sfml-window sfml-system sfml-audio sfml-network sqlite3 cryptopp)
 
 include_directories(server include)
 
 add_executable(server ${SRC_LIST_SERVER})
-target_link_libraries(server LDtkLoader sfml-system sfml-graphics sfml-network sfml-audio sfml-window ${SQLite3_LIBRARIES})
+target_link_libraries(server LDtkLoader sfml-system sfml-graphics sfml-network sfml-audio sfml-window sqlite3 cryptopp)
 
 if (SQLITE3_FOUND)
     include_directories(${SQLITE3_INCLUDE_DIRS})

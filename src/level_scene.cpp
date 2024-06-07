@@ -65,6 +65,12 @@ void LevelScene::update(sf::Time &dTime) {
     if (pauseState.isPaused) {
         pauseState.update(dTime);
         return;
+
+    } else if (loseState.isPaid) {
+        player.active_lives = 3;
+        loseState.isPaid = false;
+        loseState.isLose = false;
+
     } else if (loseState.isLose) {
         loseState.update(dTime);
         return;
@@ -246,13 +252,13 @@ void LoseState::handleInput(sf::Event &event) {
             if (payResumeButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                // TODO норм возвращение в игру
 
                 int resumeCost = 5;
                 bool success = buyResume(Game::player_id, resumeCost);
                 if (success) {
-                    //     SceneManager::changeScene(std::make_unique<LevelScene>(0));
                     isLose = false;
+                    balance.setString(std::to_string(getBalance(Game::player_id)));
+                    isPaid = true;
                     return;
                 } else {
                     std::cerr << "Oops... Go and earn more HSEcoins!\n";

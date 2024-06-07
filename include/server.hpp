@@ -5,13 +5,16 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <cstdlib>
-#include <iostream>
-#include <mutex>
-#include <string>
 #include <vector>
+#include <mutex>
+#include <utility>
+#include <LDtkLoader/Project.hpp>
 #include "level_entities.hpp"
+#include "server_info_scene.hpp"
 
 namespace super_hse {
+std::pair<int, int> getPorts();
+
 
 enum class SERVER_STATE {
     WAIT_FOR_FIRST_CONNECTION,
@@ -54,6 +57,8 @@ class server {
         sf::FloatRect &nextPositionCollider,
         int index
     );
+
+    ServerInfoScene serverInfoScene;
 
 public:
     server();
