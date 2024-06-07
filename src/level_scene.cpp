@@ -39,14 +39,20 @@ void LevelScene::handleInput(sf::Event &event) {
         loseState.level_number = level.level_number;
         return;
     }
-
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Escape) {
             pauseState.isPaused = !pauseState.isPaused;
             return;
-        } else if (event.key.code == sf::Keyboard::M) {
-            SceneManager::changeScene(std::make_unique<MainMenuScene>());
-            return;
+        }
+    }
+    if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (pauseButton.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                pauseState.isPaused = !pauseState.isPaused;
+                return;
+            }
         }
     }
     // player.handleInput(event);
