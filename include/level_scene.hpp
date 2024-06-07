@@ -53,6 +53,7 @@ private:
 public:
     LoseState();
     bool isLose = false;
+    bool isPaid = false;
     sf::Clock timer;
 
     void update(sf::Time &dTime);
