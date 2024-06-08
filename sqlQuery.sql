@@ -51,7 +51,7 @@ SELECT 'Anna Gladkaya', 10, 'annaglad.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Anna Gladkaya');
 
 INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
-SELECT 'Egor', 10, 'egor2.png'
+SELECT 'Egor', 10, 'egor.png'
 WHERE NOT EXISTS (SELECT 1 FROM "ITEMS" WHERE "ITEM_NAME" = 'Egor');
 
 INSERT INTO "ITEMS" ("ITEM_NAME", "COST", "PATH") 
