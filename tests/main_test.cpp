@@ -4,6 +4,7 @@
 
 int main() {
     super_hse::level_test();
+    super_hse::test_bd();
     std::cout << "SUCCESS!\n";
     return 0;
 }

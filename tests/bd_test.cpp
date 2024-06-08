@@ -8,7 +8,7 @@ namespace super_hse {
 
 void test_getSkinPath() {
     std::vector<std::string> expected = {
-        "ivankalinin.png", "khrabrov.png", "antipov.png", "annaglag.png",
+        "ivankalinin.png", "khrabrov.png", "antipov.png", "annaglad.png",
         "egor.png",        "kopel.png",    "hse.png",     "red.png",
         "blue.png",        "white.png",    "purple.png"
     };
