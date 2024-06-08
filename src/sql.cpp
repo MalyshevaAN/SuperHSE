@@ -295,7 +295,13 @@ void updateLevel(int id, int level, int newLives, int newCoins) {
 } */
 
 void updateSkin(int id, int newSkin) {
+    if (newSkin < 1 || newSkin > Game::skinsCount) {
+        return;
+    }
     if (getCurrentSkinNum(id) == newSkin) {
+        return;
+    }
+    if (!isSkinAvailable(id, newSkin)) {
         return;
     }
     sqlite3_stmt *stmt;
