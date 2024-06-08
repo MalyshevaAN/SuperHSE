@@ -1,13 +1,13 @@
 #include "sql.hpp"
+#include <sqlite3.h>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <sqlite3.h>
-#include "game.hpp"
-#include "cryptopp/sha.h"
 #include "cryptopp/filters.h"
 #include "cryptopp/hex.h"
 #include "cryptopp/osrng.h"
+#include "cryptopp/sha.h"
+#include "game.hpp"
 
 namespace super_hse {
 sqlite3 *db;
@@ -23,11 +23,14 @@ std::string generateSalt() {
     return hexSalt;
 }
 
-std::string hashPassword(const std::string& password, const std::string& salt) {
+std::string hashPassword(const std::string &password, const std::string &salt) {
     std::string saltedPassword = password + salt;
     CryptoPP::SHA256 hash;
     CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
-    hash.CalculateDigest(digest, (CryptoPP::byte*)saltedPassword.c_str(), saltedPassword.length());
+    hash.CalculateDigest(
+        digest, (CryptoPP::byte *)saltedPassword.c_str(),
+        saltedPassword.length()
+    );
     CryptoPP::HexEncoder encoder;
     std::string output;
     encoder.Attach(new CryptoPP::StringSink(output));
@@ -119,8 +122,9 @@ bool registerUser(const std::string &username, const std::string &password) {
     // new user
     std::string salt = generateSalt();
     std::string hashedPassword = hashPassword(password, salt);
-    std::string sql = "INSERT INTO USERS (USERNAME, SALT, HASHED_PASSWORD) VALUES ('" +
-                      username + "', '" + salt + "', '" + hashedPassword + "')";
+    std::string sql =
+        "INSERT INTO USERS (USERNAME, SALT, HASHED_PASSWORD) VALUES ('" +
+        username + "', '" + salt + "', '" + hashedPassword + "')";
     char *err = 0;
     int rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
     if (rc != SQLITE_OK) {
@@ -152,7 +156,7 @@ bool registerUser(const std::string &username, const std::string &password) {
     for (int i = 1; i <= Game::skinsCount; ++i) {
         sql = "INSERT INTO SKINS (USER_ID, ITEM_ID, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", " +
-              (i == 1 ? "1" : "0") + ")";
+              ((i == 1 || i >= 9 && i <= 11) ? "1" : "0") + ")";
         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
         if (rc != SQLITE_OK) {
             std::cerr << "Add skins error: " << err << '\n';
@@ -165,14 +169,17 @@ bool registerUser(const std::string &username, const std::string &password) {
 
 int loginUser(const std::string &username, const std::string &password) {
     sqlite3_stmt *stmt;
-    std::string sql = "SELECT USER_ID, SALT, HASHED_PASSWORD FROM USERS WHERE USERNAME = ?";
+    std::string sql =
+        "SELECT USER_ID, SALT, HASHED_PASSWORD FROM USERS WHERE USERNAME = ?";
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
     int step = sqlite3_step(stmt);
     int id = -1;
     if (step == SQLITE_ROW) {
-        std::string salt = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        std::string passwordHash = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        std::string salt =
+            reinterpret_cast<const char *>(sqlite3_column_text(stmt, 1));
+        std::string passwordHash =
+            reinterpret_cast<const char *>(sqlite3_column_text(stmt, 2));
         std::string hashedPassword = hashPassword(password, salt);
         if (hashedPassword == passwordHash) {
             id = sqlite3_column_int(stmt, 0);
@@ -288,6 +295,9 @@ void updateLevel(int id, int level, int newLives, int newCoins) {
 } */
 
 void updateSkin(int id, int newSkin) {
+    if (getCurrentSkinNum(id) == newSkin) {
+        return;
+    }
     sqlite3_stmt *stmt;
     std::string sql =
         "UPDATE USERS SET CURRENT_SKIN = " + std::to_string(newSkin) +

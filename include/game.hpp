@@ -43,7 +43,8 @@ public:
     static int errorOn;
 
     const static int levelsCount = 4;
-    const static int skinsCount = 8;
+    const static int skinsCount = 11;
+    const static int simpleSkinsCount = 7;
 
     Game();
     void run();

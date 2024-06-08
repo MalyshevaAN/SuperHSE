@@ -10,8 +10,57 @@
 namespace super_hse {
 
 WardrobeScene::WardrobeScene() {
-    skinIcons.resize(Game::skinsCount);
-    for (int i = 0; i < Game::skinsCount; ++i) {
+    colorIcons.resize(4);
+    get_texture_from_file("red_square.png", colorIcons[0].texture);
+    get_texture_from_file("blue_square.png", colorIcons[1].texture);
+    get_texture_from_file("white_square.png", colorIcons[2].texture);
+    get_texture_from_file("purple_square.png", colorIcons[3].texture);
+    for (auto &colorIcon : colorIcons) {
+        colorIcon.sprite.setTexture(colorIcon.texture);
+        colorIcon.sprite.setScale(2, 2);
+    }
+
+    if (isSkinAvailable(Game::player_id, 8)) {
+        int current_skin = getCurrentSkinNum(Game::player_id);
+        switch (current_skin) {
+            case 8: {
+                get_texture_from_file("skin8_current.png", Sashok.texture);
+                break;
+            }
+            case 9: {
+                get_texture_from_file("skin9_current.png", Sashok.texture);
+                break;
+            }
+            case 10: {
+                get_texture_from_file("skin10_current.png", Sashok.texture);
+                break;
+            }
+            case 11: {
+                get_texture_from_file("skin11_current.png", Sashok.texture);
+                break;
+            }
+            default: {
+                get_texture_from_file("skin8_available.png", Sashok.texture);
+            }
+        }
+    } else {
+        get_texture_from_file("skin8_unavailable.png", Sashok.texture);
+    }
+
+    Sashok.sprite.setTexture(Sashok.texture);
+    Sashok.sprite.setScale(1, 1);
+
+    get_texture_from_file("HSEcoin.png", HSEcoin.texture);
+    HSEcoin.sprite.setTexture(HSEcoin.texture);
+    HSEcoin.sprite.setTextureRect({0, 0, 16, 16});
+    HSEcoin.sprite.setScale(2, 2);
+    SashokCost.setFont(font_8bit);
+    SashokCost.setCharacterSize(25);
+    SashokCost.setFillColor(sf::Color::Black);
+    SashokCost.setString(std::to_string(getSkinCost(8)));
+
+    skinIcons.resize(Game::simpleSkinsCount);
+    for (int i = 0; i < Game::simpleSkinsCount; ++i) {
         skinIcons[i] = skinIcon(i + 1);
     }
 
@@ -79,6 +128,48 @@ void WardrobeScene::handleInput(sf::Event &event) {
                     return;
                 }
             }
+            if (Sashok.sprite.getGlobalBounds().contains(
+                    event.mouseButton.x, event.mouseButton.y
+                )) {
+                Game::errorOn = false;
+                if (isSkinAvailable(Game::player_id, 8) &&
+                    getCurrentSkinNum(Game::player_id) < 8) {
+                    SceneManager::changeScene(std::make_unique<MainMenuScene>()
+                    );
+                    updateSkin(Game::player_id, 8);
+                    SceneManager::changeScene(std::make_unique<WardrobeScene>()
+                    );
+                } else if (!isSkinAvailable(Game::player_id, 8)) {
+                    bool ok = (getBalance(Game::player_id) >= getSkinCost(8));
+                    if (ok) {
+                        buySkin(Game::player_id, 8);
+                    } else {
+                        Game::errorOn = true;
+                    }
+                    SceneManager::changeScene(std::make_unique<WardrobeScene>()
+                    );
+                }
+                return;
+            }
+
+            Game::errorOn = false;
+            for (int i = 0; i < 4; ++i) {
+                if (colorIcons[i].sprite.getGlobalBounds().contains(
+                        event.mouseButton.x, event.mouseButton.y
+                    )) {
+                    if (!isSkinAvailable(Game::player_id, 8)) {
+                        Game::errorOn = true;
+                        continue;
+                    }
+                    SceneManager::changeScene(std::make_unique<MainMenuScene>()
+                    );
+                    updateSkin(Game::player_id, i + 8);
+                    SceneManager::changeScene(std::make_unique<WardrobeScene>()
+                    );
+                    return;
+                }
+            }
+
             if (Game::backButton.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
@@ -137,38 +228,34 @@ void WardrobeScene::updateSceneSize() {
                     buttonHeight * 1.1
             );
         }
+    }
 
-        /* skin.skinIconSprite.setPosition(
-            distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
-                ((skin.number - 1) % 3) * buttonWidth,
-            ((skin.number + 2) / 3) *
-                    ((Game::windowHeight - 2 * buttonHeight) / 3) +
-                ((skin.number + 2) / 3 - 1) * buttonHeight
+    Sashok.sprite.setPosition(
+        distanceBetweenButtons * 4 + 3 * buttonWidth,
+        2 * ((Game::windowHeight - 2 * buttonHeight) / 3) + buttonHeight
+    );
+
+    HSEcoin.sprite.setPosition(
+        distanceBetweenButtons * 4 + 3 * buttonWidth + buttonWidth / 5,
+        2 * ((Game::windowHeight - 2 * buttonHeight) / 3) + buttonHeight +
+            buttonHeight * 1.1
+    );
+
+    SashokCost.setPosition(
+        distanceBetweenButtons * 4 + 3 * buttonWidth +
+            HSEcoin.sprite.getTexture()->getSize().x * 0.8,
+        2 * ((Game::windowHeight - 2 * buttonHeight) / 3) + buttonHeight +
+            buttonHeight * 1.1
+    );
+
+    float square = 32.0f;
+
+    for (int i = 0; i < 4; ++i) {
+        colorIcons[i].sprite.setPosition(
+            distanceBetweenButtons * 4 + 3 * buttonWidth + i * square - 1,
+            2 * ((Game::windowHeight - 2 * buttonHeight) / 3) + buttonHeight -
+                square
         );
-        if (!skin.available) {
-            skin.HSEcoinSprite.setTexture(skin.HSEcoinTexture);
-            skin.HSEcoinSprite.setTextureRect({0, 0, 16, 16});
-
-            skin.HSEcoinSprite.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
-                    ((skin.number - 1) % 3) * buttonWidth + buttonWidth / 5,
-                ((skin.number + 2) / 3) *
-                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
-                    ((skin.number + 2) / 3 - 1) * buttonHeight +
-                    buttonHeight * 1.1
-            );
-
-            skin.HSEcoinSprite.setScale(2, 2);
-            skin.skinCost.setPosition(
-                distanceBetweenButtons * ((skin.number - 9) % 3 + 3) +
-                    ((skin.number - 1) % 3) * buttonWidth +
-                    skin.HSEcoinSprite.getTexture()->getSize().x * 0.8,
-                ((skin.number + 2) / 3) *
-                        ((Game::windowHeight - 2 * buttonHeight) / 3) +
-                    ((skin.number + 2) / 3 - 1) * buttonHeight +
-                    buttonHeight * 1.1
-            );
-        }*/
     }
 
     float windowCenterX = Game::windowWidth / 2.0f;
@@ -229,6 +316,15 @@ void WardrobeScene::draw(sf::RenderWindow &window) {
         window.draw(skin.skinIconSprite);
         window.draw(skin.skinCost);
         window.draw(skin.HSEcoinSprite);
+    }
+
+    for (auto color : colorIcons) {
+        window.draw(color.sprite);
+    }
+    window.draw(Sashok.sprite);
+    if (!isSkinAvailable(Game::player_id, 8)) {
+        window.draw(HSEcoin.sprite);
+        window.draw(SashokCost);
     }
 
     window.draw(coin);

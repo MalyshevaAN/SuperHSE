@@ -9,9 +9,19 @@
 
 namespace super_hse {
 
+struct Icon {
+    sf::Texture texture;
+    sf::Sprite sprite;
+};
+
 class WardrobeScene : public Scene {
 private:
     std::vector<skinIcon> skinIcons;
+    std::vector<Icon> colorIcons;
+
+    Icon Sashok;
+    Icon HSEcoin;
+    sf::Text SashokCost;
 
     sf::Font font;
     sf::Font font_8bit;
