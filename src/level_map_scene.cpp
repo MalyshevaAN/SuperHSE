@@ -17,8 +17,6 @@ LevelMapScene::LevelMapScene() {
     for (int i = 0; i < 4; ++i) {
         levelIcons[i] = levelIcon(i + 1);
     }
-    get_texture_from_file("clothes.png", clothesTexture);
-    clothes.setTexture(clothesTexture);
 
     updateSceneSize();
 }
@@ -92,14 +90,6 @@ void LevelMapScene::updateSceneSize() {
         elem.levelIconSprite.setPosition(x, y);
         elem.levelIconSprite.setScale(0.8, 0.8);
     }
-
-    clothes.setPosition(
-        (Game::windowWidth - clothesTexture.getSize().x) / 2 -
-            Game::windowWidth / 6,
-        (Game::windowHeight - clothesTexture.getSize().y) / 2 -
-            Game::windowHeight / 7
-    );
-    clothes.setScale(x_scale, y_scale);
 }
 
 void LevelMapScene::draw(sf::RenderWindow &window) {
@@ -111,7 +101,6 @@ void LevelMapScene::draw(sf::RenderWindow &window) {
     }
     window.draw(Game::backButton);
     window.draw(Game::soundButton);
-    window.draw(clothes);
     window.display();
 }
 
