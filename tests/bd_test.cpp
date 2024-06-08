@@ -24,5 +24,53 @@ void test_getSkinCost() {
     }
 }
 
-}  // namespace super_hse
+void test_bd() {
+    executeQuery();
 
+    test_getSkinPath();
+    test_getSkinCost();
+    auto game = Game();
+    bool success = false;
+    int num = 0;
+    while (!success) {
+        ++num;
+        success = registerUser("marichka" + std::to_string(num), "password");
+    }
+    int id = loginUser("marichka" + std::to_string(num), "password");
+    assert(id != -1);
+
+    assert(getUsername(id) == "marichka" + std::to_string(num));
+    assert(getBalance(id) == 0);
+    assert(getCurrentSkin(id) == "ivankalinin.png");
+    assert(getCurrentSkinNum(id) == 1);
+
+    assert(isLevelAvailable(id, 1) == true);
+    for (int i = 2; i <= Game::levelsCount; ++i) {
+        assert(isLevelAvailable(id, i) == false);
+    }
+
+    assert(getBalance(id) == 0);
+
+    updateBalance(id, 1703);
+    assert(getBalance(id) == 1703);
+
+    void buySkin(id, 2);
+    assert(getCurrentSkin(id) == "khrabrov.png");
+    assert(getCurrentSkinNum(id) == 2);
+    assert(getBalance(id) == 1703 - getSkinCost(2));
+
+    updateSkin(id, 3);  // skin 3 is not available, should not change
+    assert(getCurrentSkinNum(id) == 2);
+
+    updateLevel(id, 1, 3, 52);
+    auto records = getLevelRecords(id, 1);
+    assert(records.lives == 3);
+    assert(records.coins == 52);
+    assert(isLevelAvailable(id, 2) == true);
+
+    success = registerUser("marichka" + std::to_string(num), "legitCHECK");
+    assert(success == false);
+
+    closeDB();
+}
+}  // namespace super_hse

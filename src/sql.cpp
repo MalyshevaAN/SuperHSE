@@ -298,6 +298,9 @@ void updateSkin(int id, int newSkin) {
     if (getCurrentSkinNum(id) == newSkin) {
         return;
     }
+    if (!isSkinAvailable(id, newSkin)) {
+        return;
+    }
     sqlite3_stmt *stmt;
     std::string sql =
         "UPDATE USERS SET CURRENT_SKIN = " + std::to_string(newSkin) +
