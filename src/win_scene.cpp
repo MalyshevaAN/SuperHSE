@@ -61,11 +61,11 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
         Game::windowHeight / 1.2 + drop
     );
     coin.setPosition(
-        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.2,
+        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.2 + 140,
         Game::windowHeight / 2.85
     );
     lives.setPosition(
-        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.8,
+        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.8 + 140,
         Game::windowHeight / 2.85
     );
     graduate.setPosition(Game::windowWidth / 2, Game::windowHeight / 2);
@@ -81,7 +81,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     collected_coins.setCharacterSize(30);
     collected_coins.setFillColor(sf::Color::Black);
     collected_coins.setPosition(
-        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.3,
+        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.3 + 130,
         Game::windowHeight / 3
     );
     collected_coins.setString(std::to_string(coins_));
@@ -89,7 +89,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     saved_lives_count.setCharacterSize(30);
     saved_lives_count.setFillColor(sf::Color::Black);
     saved_lives_count.setPosition(
-        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.9,
+        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.9 + 140,
         Game::windowHeight / 3
     );
     saved_lives_count.setString(std::to_string(saved_lives_));
@@ -102,7 +102,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     records_txt.setCharacterSize(30);
     records_txt.setFillColor(sf::Color::Black);
     records_txt.setPosition(
-        (Game::windowWidth - coin.getTexture()->getSize().x) / 5,
+        (Game::windowWidth - coin.getTexture()->getSize().x) / 5 + 130,
         Game::windowHeight / 2.7
     );
     records_txt.setString("Best results:");
@@ -110,7 +110,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     result_txt.setCharacterSize(30);
     result_txt.setFillColor(sf::Color::Black);
     result_txt.setPosition(
-        (Game::windowWidth - coin.getTexture()->getSize().x) / 5,
+        (Game::windowWidth - coin.getTexture()->getSize().x) / 5 + 130,
         Game::windowHeight / 3
     );
     result_txt.setString("Your results:");
@@ -118,7 +118,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     best_coins.setCharacterSize(30);
     best_coins.setFillColor(sf::Color::Black);
     best_coins.setPosition(
-        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.3,
+        (Game::windowWidth - coin.getTexture()->getSize().x) / 2.3 + 130,
         Game::windowHeight / 2.7
     );
     best_coins.setString(std::to_string(info.coins));
@@ -126,7 +126,7 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
     best_lives.setCharacterSize(30);
     best_lives.setFillColor(sf::Color::Black);
     best_lives.setPosition(
-        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.9,
+        (Game::windowWidth - lives.getTexture()->getSize().x) / 1.9 + 140,
         Game::windowHeight / 2.7
     );
     best_lives.setString(std::to_string(info.lives));
