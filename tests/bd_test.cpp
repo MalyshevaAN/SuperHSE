@@ -54,7 +54,7 @@ void test_bd() {
     updateBalance(id, 1703);
     assert(getBalance(id) == 1703);
 
-    void buySkin(id, 2);
+    buySkin(id, 2);
     assert(getCurrentSkin(id) == "khrabrov.png");
     assert(getCurrentSkinNum(id) == 2);
     assert(getBalance(id) == 1703 - getSkinCost(2));
@@ -62,11 +62,22 @@ void test_bd() {
     updateSkin(id, 3);  // skin 3 is not available, should not change
     assert(getCurrentSkinNum(id) == 2);
 
+    updateSkin(id, -228);  // incorrect skinId, should not change
+    assert(getCurrentSkinNum(id) == 2);
+
+    updateSkin(id, 52);  // incorrect skinId, should not change
+    assert(getCurrentSkinNum(id) == 2);
+
     updateLevel(id, 1, 3, 52);
     auto records = getLevelRecords(id, 1);
     assert(records.lives == 3);
     assert(records.coins == 52);
     assert(isLevelAvailable(id, 2) == true);
+
+    updateLevel(id, 1, 2, 52);
+    records = getLevelRecords(id, 1);
+    assert(records.lives == 3);
+    assert(records.coins == 52);
 
     success = registerUser("marichka" + std::to_string(num), "legitCHECK");
     assert(success == false);

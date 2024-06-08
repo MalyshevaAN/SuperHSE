@@ -1,9 +1,9 @@
-#include "bd_test.hpp"
-#include "LevelTest.hpp"
 #include <iostream>
+#include "LevelTest.hpp"
+#include "bd_test.hpp"
 
-int main(){
+int main() {
     super_hse::level_test();
-    std::cout << "SUCCESS!";
+    std::cout << "SUCCESS!\n";
     return 0;
 }
