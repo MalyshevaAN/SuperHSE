@@ -84,4 +84,5 @@ void test_bd() {
 
     closeDB();
 }
+
 }  // namespace super_hse
