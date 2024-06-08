@@ -11,6 +11,7 @@
 #include "main_menu_scene.hpp"
 #include "scene.hpp"
 #include "sql.hpp"
+#include "win_scene.hpp"
 
 namespace super_hse {
 
@@ -87,14 +88,17 @@ void LevelScene::update(sf::Time &dTime) {
         loseState.timer.restart();
         return;
     }
+    if (player.get_position().x >= level.tilemap.width - 60){
+        int gatherCoins = level.get_gathered_coins();
+        SceneManager::changeScene(std::make_unique<WinScene>(gatherCoins, level.level_number + 1, player.get_active_lives(), 's'));
+        return;
+    }
     level.update(dTime, player.get_position(), player.get_active_lives());
     player.update(dTime);
-    // посчитаем следующую возможную позицию игрока
     sf::FloatRect nextPositionCollider = player.getCollider();
     sf::Vector2f movement = player.calcMovement(dTime);
     nextPositionCollider.left += movement.x;
     nextPositionCollider.top += movement.y;
-    // Проверяем, будет ли пересечение с блоками
     const float dTimeSeconds = dTime.asSeconds();
     answer answer_ = level.entities.update(nextPositionCollider, movement);
     if (answer_.lose_life) {

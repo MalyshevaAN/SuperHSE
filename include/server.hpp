@@ -28,6 +28,7 @@ struct Port {
 };
 
 struct player_info {
+    int state = game_state["playing"];
     float x;
     float y;
     int gathered_coin_id = -1;
@@ -57,6 +58,8 @@ class server {
         sf::FloatRect &nextPositionCollider,
         int index
     );
+
+    bool is_connection_correct();
 
     ServerInfoScene serverInfoScene;
 

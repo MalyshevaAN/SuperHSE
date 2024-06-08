@@ -132,23 +132,19 @@ void Level::init(
     }
 }
 
+int Level::get_gathered_coins(){
+    int gatheredCoins = 0;
+    for (auto &elem : entities.coins) {
+        if (elem.get_status() != CoinStatus::active) {
+            gatheredCoins++;
+        }
+    };
+    return gatheredCoins;
+}
+
 void Level::update(sf::Time &dTime, Position player_pos, int player_lives) {
     if (player_lives == 0) {
         view.setCenter(Game::windowWidth / 2, Game::windowHeight / 3);
-        return;
-    }
-
-    if (player_pos.x >= tilemap.width - 60) {
-        int gatheredCoins = 0;
-        for (auto &elem : entities.coins) {
-            if (elem.get_status() != CoinStatus::active) {
-                gatheredCoins++;
-            }
-        };
-
-        SceneManager::changeScene(std::make_unique<WinScene>(
-            gatheredCoins, level_number + 1, player_lives
-        ));
         return;
     }
     int diff = Game::windowWidth / 2 - Player::start_position_x;
