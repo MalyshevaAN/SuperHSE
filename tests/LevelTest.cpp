@@ -19,7 +19,7 @@ void checkLevelInfoConstructor(){
     assert(levelInfoEmpty.colliderName.size() == 0);
     assert(levelInfoEmpty.entityLayerName.size() == 0);
     assert(levelInfoEmpty.tileLayerName.size() == 0);
-    LevelInfo levelInfoTestFile(p.parent_path().parent_path().string() + "/assets/files/level1_test.txt");
+    LevelInfo levelInfoTestFile(p.parent_path().string() + "/assets/files/level1_test.txt");
     assert(levelInfoTestFile.filename == "../assets/tilemaps/first_level2.ldtk");
     assert(levelInfoTestFile.tileLayerName.size() == 5);
     assert(levelInfoTestFile.entityLayerName.size() == 1);
@@ -36,8 +36,8 @@ void checkLevelInfoConstructor(){
 }
 
 void checkLevelConstructor(){
-    Level levelFromRightFileName(p.parent_path().parent_path().string() + "/assets/tilemaps/first_level2.ldtk");
-    assert(levelFromRightFileName.ldtk_filename == p.parent_path().parent_path().string() +  "assets/tilemaps/first_level2.ldtk");
+    Level levelFromRightFileName(p.parent_path().string() + "/assets/tilemaps/first_level2.ldtk");
+    assert(levelFromRightFileName.ldtk_filename == p.parent_path().string() + "/assets/tilemaps/first_level2.ldtk");
 
     std::string projectName = "wtf52";
     std::string expectedErrorMessage = "Cannot find \'" + projectName + "\'' project\n";
