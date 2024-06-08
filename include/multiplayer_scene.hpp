@@ -20,9 +20,11 @@ private:
 
     sf::Texture waitForPartnerTexture;
     sf::Texture serverIsUnavailableTexture;
+    sf::Texture disconnectedTexture;
 
     sf::Sprite waitForPartner;
     sf::Sprite serverIsUnavailable;
+    sf::Sprite disconnected;
 
     const sf::Color windowFillColorPlay = sf::Color(125, 166, 218);
     const sf::Color windowFillColorWait = sf::Color(154, 217, 234);

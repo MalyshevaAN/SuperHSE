@@ -10,6 +10,7 @@ namespace super_hse {
 enum class CONNECTION_STATE {
     IS_NOT_CONNECTED,
     WAITING_FOR_PARTNER,
+    DISCONNECTED,
     READY_TO_PLAY
 };
 
