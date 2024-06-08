@@ -141,10 +141,10 @@ bool registerUser(const std::string &username, const std::string &password) {
     sqlite3_finalize(idStmt);
 
     // levels for the new user
-    for (int i = 1; i <= Game::levelsCount; ++i) {
+    for (int i = 1; i <= Game::levelsCount + 1; ++i) {
         sql = "INSERT INTO LEVELS (USER_ID, LVL_NUM, STATUS) VALUES (" +
               std::to_string(id) + ", " + std::to_string(i) + ", " +
-              (i == 1 ? "1" : "0") + ")";
+              ((i == 1 || i > Game::levelsCount) ? "1" : "0") + ")";
         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &err);
         if (rc != SQLITE_OK) {
             std::cerr << "Add levels error: " << err << '\n';
