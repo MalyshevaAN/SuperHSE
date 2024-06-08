@@ -12,7 +12,7 @@ void client::init(const std::string &server_ip_, const unsigned int server_port_
     serverPort = server_port_;
     if (socket.connect(serverIp, serverPort, sf::seconds(1)) != sf::Socket::Done) { // 1 секунд таймаут
         socket.disconnect();
-        state = CONNECTION_STATE::DISCONNECTED;
+        state = CONNECTION_STATE::IS_NOT_CONNECTED;
         return;
     }
     sf::Packet server_state;
