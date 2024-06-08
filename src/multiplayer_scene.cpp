@@ -43,6 +43,10 @@ MultiLevelScene::MultiLevelScene(
         Game::windowWidth / 6, Game::windowHeight / 2
     );
     serverIsUnavailable.setScale(0.5, 0.5);
+
+    get_texture_from_file("disconnected.png", disconnectedTexture);
+    disconnected.setTexture(disconnectedTexture);
+    disconnected.setPosition(Game::windowWidth / 2 - disconnectedTexture.getSize().x / 2, Game::windowHeight / 2 - disconnectedTexture.getSize().y / 2);
 }
 
 void MultiLevelScene::handleInput(sf::Event &event) {
@@ -146,6 +150,14 @@ void MultiLevelScene::draw(sf::RenderWindow &window) {
         window.clear(windowFillColorWait);
         current_client.check();
         window.draw(waitForPartner);
+    } else if (current_client.state == CONNECTION_STATE::DISCONNECTED){
+        sf::View view;
+        view.setSize(Game::windowWidth, Game::windowHeight);
+        view.setCenter(Game::windowWidth / 2, Game::windowHeight / 2);
+        window.clear(windowFillColorWait);
+        window.setView(view);
+        window.draw(Game::backButton);
+        window.draw(disconnected);
     }
     window.display();
 }
