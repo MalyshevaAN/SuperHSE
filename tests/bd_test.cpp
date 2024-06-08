@@ -9,7 +9,7 @@ namespace super_hse {
 void test_getSkinPath() {
     std::vector<std::string> expected = {
         "ivankalinin.png", "khrabrov.png", "antipov.png", "annaglag.png",
-        "egor2.png",       "kopel.png",    "hse.png",     "red.png",
+        "egor.png",        "kopel.png",    "hse.png",     "red.png",
         "blue.png",        "white.png",    "purple.png"
     };
     for (int i = 1; i <= 11; ++i) {
