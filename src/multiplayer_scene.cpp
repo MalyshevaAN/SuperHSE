@@ -26,7 +26,7 @@ MultiLevelScene::MultiLevelScene(
         level.project.loadFromFile(info.filename);
         level.init(
             info.tileLayerName, info.entityLayerName, info.colliderName,
-            level_number_
+            level_number_+5
         );
     } catch (std::out_of_range &e) {
         throw noSuchLevel(std::to_string(level_number_));

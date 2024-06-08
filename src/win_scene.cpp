@@ -94,7 +94,6 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_, char state_)
         Game::windowHeight / 3
     );
     saved_lives_count.setString(std::to_string(saved_lives_));
-
     updateLevel(Game::player_id, level_numb_, saved_lives_, coins_);
     updateBalance(Game::player_id, getBalance(Game::player_id) + coins_);
     LvlRecords info = getLevelRecords(Game::player_id, level_numb_);
@@ -211,12 +210,12 @@ void WinScene::draw(sf::RenderWindow &window) {
     window.draw(lives);
     window.draw(collected_coins);
     window.draw(saved_lives_count);
-    window.draw(records_txt);
     window.draw(result_txt);
+    window.draw(records_txt);
     window.draw(best_coins);
     window.draw(best_lives);
     window.display();
 }
-}  // namespace super_hse
+} 
 
 #endif
