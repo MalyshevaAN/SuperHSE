@@ -11,7 +11,7 @@ namespace super_hse {
 
 bool is_level_available(int num);
 
-static inline int all_levels = 2;
+static inline int all_levels = 4;
 
 }  // namespace super_hse
 
