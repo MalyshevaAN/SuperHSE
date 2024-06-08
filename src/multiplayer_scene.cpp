@@ -26,7 +26,7 @@ MultiLevelScene::MultiLevelScene(
         level.project.loadFromFile(info.filename);
         level.init(
             info.tileLayerName, info.entityLayerName, info.colliderName,
-            level_number_+5
+            level_number_
         );
     } catch (std::out_of_range &e) {
         throw noSuchLevel(std::to_string(level_number_));
@@ -83,7 +83,7 @@ void MultiLevelScene::update(sf::Time &dTime) {
             int gatherCoins = level.get_gathered_coins();
             query_.state = game_state["win"];
             answer answer_ = current_client.send(query_);
-            SceneManager::changeScene(std::make_unique<WinScene>(gatherCoins, level.level_number + 1, player.get_active_lives(), 'm'));
+            SceneManager::changeScene(std::make_unique<WinScene>(gatherCoins, 5, player.get_active_lives(), 'm'));
             return;
         }
         answer answer_ = current_client.send(query_);

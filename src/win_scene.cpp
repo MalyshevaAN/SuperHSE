@@ -94,7 +94,8 @@ WinScene::WinScene(int coins_, int level_numb_, int saved_lives_, char state_)
         Game::windowHeight / 3
     );
     saved_lives_count.setString(std::to_string(saved_lives_));
-    updateLevel(Game::player_id, level_numb_, saved_lives_, coins_);
+    int number = state == 's' ? level_numb : 5;
+    updateLevel(Game::player_id, number, saved_lives_, coins_);
     updateBalance(Game::player_id, getBalance(Game::player_id) + coins_);
     LvlRecords info = getLevelRecords(Game::player_id, level_numb_);
 
