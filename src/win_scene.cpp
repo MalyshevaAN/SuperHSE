@@ -9,14 +9,15 @@
 #include "level_scene.hpp"
 #include "main_menu_scene.hpp"
 #include "sql.hpp"
+#include "multi_connect_scene.hpp"
 
 namespace super_hse {
 
 WinScene::WinScene() {
 }
 
-WinScene::WinScene(int coins_, int level_numb_, int saved_lives_)
-    : coins(coins_), level_numb(level_numb_), saved_lives(saved_lives_) {
+WinScene::WinScene(int coins_, int level_numb_, int saved_lives_, char state_)
+    : coins(coins_), level_numb(level_numb_), saved_lives(saved_lives_), state(state_){
     get_texture_from_file("win_scene.png", BackgroundTexture);
     get_texture_from_file("main_menu_button.png", MainMenuTexture);
     get_texture_from_file("try_again_button.png", TryAgainTexture);
@@ -150,14 +151,19 @@ void WinScene::handleInput(sf::Event &event) {
                 SceneManager::changeScene(std::make_unique<MainMenuScene>());
                 return;
             }
-            // не работает почему-то ((
             if (tryAgain.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y
                 )) {
-                SceneManager::changeScene(
-                    std::make_unique<LevelScene>(level_numb - 1)
-                );
-                return;
+                if (state == 's'){
+                    SceneManager::changeScene(
+                        std::make_unique<LevelScene>(level_numb - 1)
+                    );
+                    return;
+                }else if (state == 'm'){
+                    SceneManager::changeScene(
+                        std::make_unique<MultiConnectScene>()
+                    );
+                }
             }
             if (nextLevel.getGlobalBounds().contains(
                     event.mouseButton.x, event.mouseButton.y

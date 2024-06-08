@@ -10,6 +10,8 @@ Player_icon::Player_icon() = default;
 void Player_icon::update(float x, float y, int skin_id, int col, int row) {
     position.x = x;
     position.y = y;
+    currentFrameColumn = col;
+    currentFrameRow = row;
     if (!get_texture) {
         try {
             const char *skinPath = getSkinPath(skin_id).c_str();
@@ -19,15 +21,13 @@ void Player_icon::update(float x, float y, int skin_id, int col, int row) {
         } catch (...) {
         }
     }
-    currentFrameColumn = col;
-    currentFrameRow = row;
 };
 
 void Player_icon::changePos() {
     sprite.setTextureRect(
-        sf::IntRect(0, currentFrameRow * frameHeight, frameWidth, frameHeight)
+        sf::IntRect(frameWidth * currentFrameColumn, currentFrameRow * frameHeight, frameWidth, frameHeight)
     );
-    sprite.setPosition(position.x, position.y);
+    sprite.setPosition(position.x - 23, position.y - 10);
     sprite.setColor(sf::Color(255, 255, 255, 128));
 }
 

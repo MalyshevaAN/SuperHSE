@@ -36,6 +36,7 @@ struct Level {
     std::vector<sf::Sprite> lives;
     void get_textures();
     int allCoins = 0;
+    int get_gathered_coins();
     const float frameSpeed = 0.004;
     float currentFrameColumn = 0;
     std::map<std::string, sf::Texture> textures = {

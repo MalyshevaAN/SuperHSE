@@ -35,12 +35,13 @@ private:
     int coins;
     int level_numb;
     int saved_lives;
+    char state;
 
     const sf::Color backgroundColor = sf::Color(154, 217, 234);
 
 public:
     WinScene();
-    WinScene(int coins_, int level_numb_, int saved_lives_);
+    WinScene(int coins_, int level_numb_, int saved_lives_, char state_);
     void update(sf::Time &dTime) override;
     void draw(sf::RenderWindow &window) override;
     void handleInput(sf::Event &event) override;

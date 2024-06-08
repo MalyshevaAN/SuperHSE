@@ -23,7 +23,6 @@ Player::Player() {
 sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     // вообще у плеера тоже должны быть стейты, чтобы например
     // он не мог прыгнуть, уже находясь в прыжке.
-
     sf::Vector2f movement(0.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         movement.x -= speed;
@@ -51,7 +50,6 @@ sf::Vector2f Player::calcMovement(const sf::Time &dTime) {
     if (isGrounded) {
         verticalVelocity = 0;
     }
-    std::cout << verticalVelocity << "\n";
     movement.y += verticalVelocity;
     movement *= dTime.asSeconds();
     return movement;

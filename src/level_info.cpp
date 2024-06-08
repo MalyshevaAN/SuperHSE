@@ -43,8 +43,18 @@ LevelsStorage::LevelsStorage() {
     auto level2 = std::make_unique<LevelInfo>(
         p.parent_path().string() + "/assets/files/level3.txt"
     );
+
+    auto level3 = std::make_unique<LevelInfo>(
+        p.parent_path().string() + "/assets/files/level4.txt"
+    );
+    
+    auto level4 = std::make_unique<LevelInfo>(
+        p.parent_path().string() + "/assets/files/level5.txt"
+    );
     storage.push_back(std::move(level1));
     storage.push_back(std::move(level2));
+    storage.push_back(std::move(level3));
+    storage.push_back(std::move(level4));
 }
 }  // namespace super_hse
 

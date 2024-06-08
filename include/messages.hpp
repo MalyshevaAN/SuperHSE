@@ -2,10 +2,19 @@
 #define MESSAGE_HPP
 
 #include <SFML/Network.hpp>
+#include <map>
+#include <string>
 
 namespace super_hse {
 
+static std::map<std::string, int> game_state = {
+    {"playing" , 1}, 
+    {"lose" , 2}, 
+    {"win", 3}
+};
+
 struct query {
+    int state = game_state["playing"];
     float nextPositionColliderLeft{};
     float nextPositionColliderTop{};
     float nextPositionColliderWidth{};
@@ -21,6 +30,7 @@ struct query {
 };
 
 struct answer {
+    int partner_state = game_state["playing"];
     bool isCollidingWithWall{};
     bool isCollidingWithFloor{};
     float movement_x{};

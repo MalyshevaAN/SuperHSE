@@ -6,6 +6,7 @@
 #include "main_menu_scene.hpp"
 #include "messages.hpp"
 #include "lose_scene.hpp"
+#include "win_scene.hpp"
 
 namespace super_hse {
 MultiLevelScene::MultiLevelScene(
@@ -61,22 +62,36 @@ void MultiLevelScene::update(sf::Time &dTime) {
     if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
         level.update(dTime, player.get_position(), player.get_active_lives());
         player.update(dTime);
-        if (player.get_active_lives() == 0){
-            // send partner your loss
-            SceneManager::changeScene(std::make_unique<LoseScene>('m', 0));
-        }
         sf::FloatRect nextPositionCollider = player.getCollider();
         sf::Vector2f movement = player.calcMovement(dTime);
         nextPositionCollider.left += movement.x;
         nextPositionCollider.top += movement.y;
         query query_(
-            {nextPositionCollider.left, nextPositionCollider.top,
+            {game_state["playing"], nextPositionCollider.left, nextPositionCollider.top,
              nextPositionCollider.width, nextPositionCollider.height,
              movement.x, movement.y, player.getCurrentSkinId(),
              player.getCurrentFrameColumn(), player.getCurrentFrameRow()}
         );
+        if (player.get_active_lives() == 0){
+            query_.state = game_state["lose"];
+            answer answer_ = current_client.send(query_);
+            SceneManager::changeScene(std::make_unique<LoseScene>('m', 0));
+            return;
+        }
+
+        if (player.get_position().x >= level.tilemap.width - 60){
+            int gatherCoins = level.get_gathered_coins();
+            query_.state = game_state["win"];
+            answer answer_ = current_client.send(query_);
+            SceneManager::changeScene(std::make_unique<WinScene>(gatherCoins, level.level_number + 1, player.get_active_lives(), 'm'));
+            return;
+        }
         answer answer_ = current_client.send(query_);
         if (current_client.state == CONNECTION_STATE::READY_TO_PLAY) {
+            if (answer_.partner_state == game_state["lose"]){
+                SceneManager::changeScene(std::make_unique<LoseScene>('m', 0));
+                return;
+            }
             partner.update(
                 answer_.x_partner, answer_.y_partner, answer_.skin_id_partner,
                 answer_.skin_col_partner, answer_.skin_row_partner
