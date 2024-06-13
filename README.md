@@ -62,12 +62,6 @@ cmake ../
 cmake --install . 
  ```
 
-Для подключения в проект в Cmake файл необходимо добавить:
-```
-find_package(LDtkLoader 1.5)
-target_link_libraries(YourTarget PRIVATE LDtkLoader)
-```
-
 ## Запуск игры
 
 #### Для запуска singleplayer
